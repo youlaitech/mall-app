@@ -61,10 +61,6 @@
             "urlCheck" : false,
             "minified" : true
         },
-        "permission" : {
-            "scope.userLocation" : {
-                "desc" : ""
-            }
-        }
+        "permission" : {}
     }
 }

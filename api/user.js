@@ -12,7 +12,7 @@ export const getUserInfo = (params) => {
 }
 
 export const login = (data) => {
-	return http.post('/youlai-auth/wx/auth/login',
+	return http.post('/youlai-auth/oauth/token',
 		data
 	)
 }
