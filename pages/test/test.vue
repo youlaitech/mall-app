@@ -40,6 +40,9 @@
 										success: (info) => { //这里请求接口
 
 											_this.login({
+												 grant_type:'password',
+												 client_id:'youlai-mall-weapp',
+												 client_secret:'123456',
 												code: login.code,
 												encryptedData: info.encryptedData,
 												iv: info.iv,
