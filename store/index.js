@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
-		  userInfo: {},
+		userInfo: {}
 	},
 	mutations: {
 		login(state, data) {
@@ -17,18 +17,22 @@ const store = new Vuex.Store({
 			login(data)
 				.then(res => {
 					console.log("登陆成功", res)
+					uni.setStorage({
+						key: 'token',
+						data: res.data.token,
+						success:function() {
+							state.hasLogin = true;
+							state.userInfo = data.userInfo;
+							uni.setStorage({
+								key: 'userInfo',
+								data: data.userInfo
+							})
+						}
+					})
 				})
 				.catch(err => {
 					console.log(err)
 				})
-
-			state.hasLogin = true;
-			state.userInfo = data.userInfo;
-			uni.setStorage({ //缓存用户登陆状态
-				key: 'userInfo',
-				data: data.userInfo
-			})
-			console.log(state.userInfo);
 		},
 		logout(state) {
 			state.hasLogin = false;

@@ -1,0 +1,1 @@
+<view><button class="confirm-btn" open-type="getUserInfo" disabled="{{logining}}" data-event-opts="{{[['tap',[['toLogin',['$event']]]]]}}" bindtap="__e">登录</button><button class="sys_btn" open-type="getUserInfo" lang="zh_CN" data-event-opts="{{[['getuserinfo',[['getUserInfo',['$event']]]]]}}" bindgetuserinfo="__e">小程序登录授权</button></view>
