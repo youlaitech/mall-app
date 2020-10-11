@@ -5,7 +5,7 @@
 			"path": "pages/index/index",
 			"style": {
 				// #ifdef MP 
-				"navigationBarTitleText": "Dloud商城",
+				"navigationBarTitleText": "有来小店",
 				//"navigationStyle": "custom",
 				// #endif 
 				"app-plus": {
@@ -177,13 +177,6 @@
 				"navigationBarTitleText": "商品列表"
 			}
         }
-        ,{
-            "path" : "pages/test/test",
-            "style" : {
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "测试页面"
-			}
-        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -219,14 +212,7 @@
 				"iconPath": "static/tab-my.png",
 				"selectedIconPath": "static/tab-my-current.png",
 				"text": "我的"
-			},
-			{
-				"pagePath": "pages/test/test",
-				"iconPath": "static/tab-my.png",
-				"selectedIconPath": "static/tab-my-current.png",
-				"text": "测试"
 			}
-			
 		]
 	}
 }
