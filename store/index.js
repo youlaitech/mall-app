@@ -15,7 +15,7 @@ const store = new Vuex.Store({
 		login(state, data) {
 			login(data)
 				.then(res => {
-					console.log('登录成功', res.data)
+					console.log('登录成功', res.data.token)
 					uni.setStorage({
 						key: 'token',
 						data: res.data.token,
