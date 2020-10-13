@@ -1,53 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {
-	login
-} from '@/api/user.js'
+import getters from './getters'
 
 Vue.use(Vuex)
 
+// https://webpack.js.org/guides/dependency-management/#requirecontext
+const modulesFiles = require.context('./modules', true, /\.js$/)
+
+// you do not need `import app from './modules/app'`
+// it will auto require all vuex module from modules file
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+  // set './app.js' => 'app'
+  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
+  const value = modulesFiles(modulePath)
+  modules[moduleName] = value.default
+  return modules
+}, {})
+
 const store = new Vuex.Store({
-	state: {
-		hasLogin: false,
-		userInfo: {}
-	},
-	mutations: {
-		login(state, data) {
-			login(data)
-				.then(res => {
-					console.log('登录成功', res.data.token)
-					uni.setStorage({
-						key: 'token',
-						data: res.data.token,
-						success: function() {
-							state.hasLogin = true;
-							state.userInfo = res.data.userInfo;
-							uni.setStorage({
-								key: 'userInfo',
-								data: res.data.userInfo
-							})
-						}
-					})
-
-				})
-				.catch(err => {
-					console.log(err)
-				})
-		},
-		logout(state) {
-			state.hasLogin = false;
-			state.userInfo = {};
-			uni.removeStorage({
-				key: 'userInfo'
-			})
-			uni.removeStorage({
-				key: 'token'
-			})
-		}
-	},
-	actions: {
-
-	}
+  modules,
+  getters
 })
 
 export default store

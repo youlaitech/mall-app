@@ -26,7 +26,6 @@ service.interceptors.request.use(
 	}
 )
 
-
 service.defaults.adapter = function(config) {
     return new Promise((resolve, reject) => {
         console.log(config)

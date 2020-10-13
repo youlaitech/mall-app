@@ -37,9 +37,6 @@
 </template>
 
 <script>
-	import {  
-	    mapMutations  
-	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -47,8 +44,6 @@
 			};
 		},
 		methods:{
-			...mapMutations(['logout']),
-
 			navTo(url){
 				this.$api.msg(`跳转到${url}`);
 			},
@@ -58,7 +53,7 @@
 				    content: '确定要退出登录么',
 				    success: (e)=>{
 				    	if(e.confirm){
-				    		this.logout();
+				    		this.$store.dispatch('user/logout')
 				    		setTimeout(()=>{
 				    			uni.navigateBack();
 				    		}, 200)
