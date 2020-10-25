@@ -11,18 +11,22 @@ export function login(data) {
 	})
 }
 
-export function logout(){
+export function logout() {
 	return request({
 		url: '/youlai-auth/oauth/logout',
-		method: 'delete'
+		method: 'delete',
+		headers: {
+			'auth': true // 需要认证
+		}
 	})
 }
 
 export function getUserInfo() {
 	return request({
 		url: '/youlai-mall-ums/members/me',
-		method: 'get'
+		method: 'get',
+		headers:{
+			'auth':true
+		}
 	})
 }
-
-

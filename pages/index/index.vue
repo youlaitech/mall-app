@@ -11,11 +11,9 @@
 		<view class="carousel-section">
 			<!-- 标题栏和状态栏占位符 -->
 			<view class="titleNview-placing"></view>
-			<!-- 背景色区域 -->
-			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
 			<swiper class="carousel" circular @change="swiperChange">
 				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
-					<image :src="item.src" />
+					<image :src="item.pic" />
 				</swiper-item>
 			</swiper>
 			<!-- 自定义swiper指示器 -->
@@ -241,12 +239,13 @@
 </template>
 
 <script>
+	
+	import {getAdvertList} from '@/api/sms/advert.js'
 
 	export default {
 
 		data() {
 			return {
-				titleNViewBackground: '',
 				swiperCurrent: 0,
 				swiperLength: 0,
 				carouselList: [],
@@ -263,8 +262,9 @@
 			 * 分次请求未作整合
 			 */
 			async loadData() {
-				let carouselList = await this.$api.json('carouselList');
-				this.titleNViewBackground = carouselList[0].background;
+				 // let carouselList = await this.$api.json('carouselList');
+				const carouselList=(await getAdvertList()).data
+				console.log('广告列表',carouselList)
 				this.swiperLength = carouselList.length;
 				this.carouselList = carouselList;
 				
@@ -275,7 +275,6 @@
 			swiperChange(e) {
 				const index = e.detail.current;
 				this.swiperCurrent = index;
-				this.titleNViewBackground = this.carouselList[index].background;
 			},
 			//详情页
 			navToDetailPage(item) {

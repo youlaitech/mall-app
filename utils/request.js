@@ -13,9 +13,11 @@ const service = axios.create({
 service.interceptors.request.use(
 	config => {
 		// do something before request is sent
-		const token = uni.getStorageSync('token')
-		if (token) {
-			config.headers['Authorization'] = 'Bearer ' + token;
+		if (config.headers.auth === true) {  // 判断请求是否需要认证
+			const token = uni.getStorageSync('token')
+			if (token) {
+				config.headers['Authorization'] = 'Bearer ' + token;
+			}
 		}
 		return config
 	},
@@ -27,31 +29,31 @@ service.interceptors.request.use(
 )
 
 service.defaults.adapter = function(config) {
-    return new Promise((resolve, reject) => {
-        console.log(config)
-        var settle = require('axios/lib/core/settle');
-        var buildURL = require('axios/lib/helpers/buildURL');
-        uni.request({
-            method: config.method.toUpperCase(),
-            url: config.baseURL + buildURL(config.url, config.params, config.paramsSerializer),
-            header: config.headers,
-            data: config.data,
-            dataType: config.dataType,
-            responseType: config.responseType,
-            sslVerify: config.sslVerify,
-            complete: function complete(response) {
-                response = {
-                    data: response.data,
-                    status: response.statusCode,
-                    errMsg: response.errMsg,
-                    header: response.header,
-                    config: config
-                };
+	return new Promise((resolve, reject) => {
+		console.log(config)
+		var settle = require('axios/lib/core/settle');
+		var buildURL = require('axios/lib/helpers/buildURL');
+		uni.request({
+			method: config.method.toUpperCase(),
+			url: config.baseURL + buildURL(config.url, config.params, config.paramsSerializer),
+			header: config.headers,
+			data: config.data,
+			dataType: config.dataType,
+			responseType: config.responseType,
+			sslVerify: config.sslVerify,
+			complete: function complete(response) {
+				response = {
+					data: response.data,
+					status: response.statusCode,
+					errMsg: response.errMsg,
+					header: response.header,
+					config: config
+				};
 
-                settle(resolve, reject, response);
-            }
-        })
-    })
+				settle(resolve, reject, response);
+			}
+		})
+	})
 }
 
 
