@@ -264,7 +264,6 @@
 			async loadData() {
 				 // let carouselList = await this.$api.json('carouselList');
 				const carouselList=(await getAdvertList()).data
-				console.log('广告列表',carouselList)
 				this.swiperLength = carouselList.length;
 				this.carouselList = carouselList;
 				
