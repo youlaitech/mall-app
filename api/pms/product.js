@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function getGoodsInfo(id) {
+export function detail(id) {
   return request({
-    url: '/mall-pms/goods/'+id,
+    url: '/mall-pms/products/'+id,
     method: 'get'
   })
 }

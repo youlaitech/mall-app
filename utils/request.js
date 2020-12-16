@@ -13,12 +13,13 @@ const service = axios.create({
 service.interceptors.request.use(
 	config => {
 		// do something before request is sent
-		if (config.headers.auth === true) {  // 判断请求是否需要认证
+		if (config.headers.auth === true) { // 判断请求是否需要认证
 			const token = uni.getStorageSync('token')
 			if (token) {
 				config.headers['Authorization'] = 'Bearer ' + token;
 			}
 		}
+		config.headers['SystemType'] = 2
 		return config
 	},
 	error => {

@@ -3,6 +3,7 @@ import store from './store'
 import App from './App'
 
 import Json from './Json' //测试用数据
+import * as filters from './filters' // global filters
 /**
  *  因工具函数属于公司资产, 所以直接在Vue实例挂载几个常用的函数
  *  所有测试用数据均存放于根目录json.js
@@ -51,3 +52,8 @@ const app = new Vue({
     ...App
 })
 app.$mount()
+
+// register global utility filters
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
