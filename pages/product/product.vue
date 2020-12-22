@@ -270,14 +270,14 @@ export default {
 		detail(22).then(response => {
 			const { spu, attributes, specifications, skuList } = response.data;
 			this.spu = spu;
-			// 图片组合：主图 + 图册
+			// 图片组合：主图 + 图册 (主图顺序靠前)
 			this.spu.pics = [this.spu.pic].concat(this.spu.pics);
-			console.log('图片集合', this.spu.pics);
 			this.attributes = attributes;
 			this.specifications = specifications;
 			this.skuList = skuList;
 			console.log(this.spu, this.attributes, this.specifications, this.skuList);
 		});
+		
 
 		//接收传值,id里面放的是标题，因为测试数据并没写id
 		let id = options.id;

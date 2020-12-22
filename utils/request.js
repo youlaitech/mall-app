@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 // create an axios instance
@@ -19,7 +20,6 @@ service.interceptors.request.use(
 				config.headers['Authorization'] = 'Bearer ' + token;
 			}
 		}
-		config.headers['SystemType'] = 2
 		return config
 	},
 	error => {
