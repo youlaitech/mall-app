@@ -32,7 +32,9 @@ const actions = {
         iv: iv
       }).then(response => {
         const {data} = response
-		uni.setStorage({key: 'token',data: data.token})
+		
+		uni.setStorageSync('token',data.token)
+		
 		commit('SET_HAS_LOGIN', true)
         resolve()
       }).catch(error => {

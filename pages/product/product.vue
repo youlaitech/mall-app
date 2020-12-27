@@ -3,7 +3,7 @@
 	<view class="container">
 		<view class="carousel">
 			<swiper indicator-dots circular="true" duration="400">
-				<swiper-item class="swiper-item" v-for="(item, index) in spu.pics" :key="index">
+				<swiper-item class="swiper-item" v-for="(item, index) in spu.picUrls" :key="index">
 					<view class="image-wrapper"><image :src="item" class="loaded" mode="aspectFill"></image></view>
 				</swiper-item>
 			</swiper>
@@ -172,14 +172,13 @@ export default {
 				brandId: undefined,
 				originPrice: undefined,
 				price: undefined,
-				pic: undefined,
-				pics: [],
+				picUrls: [],
 				unit: undefined,
 				description: undefined,
 				detail: undefined
 			},
-			attributes: [],
-			specifications: [],
+			attrs: [],
+			specs: [],
 			skuList: [],
 
 			specClass: 'none',
@@ -267,15 +266,13 @@ export default {
 		};
 	},
 	async onLoad(options) {
-		detail(22).then(response => {
-			const { spu, attributes, specs, skuList } = response.data;
+		detail(38).then(response => {
+			const { spu, attrs, specs, skuList } = response.data;
 			this.spu = spu;
-			// 图片组合：主图 + 图册 (主图顺序靠前)
-			this.spu.pics = [this.spu.pic].concat(this.spu.pics);
-			this.attributes = attributes;
-			this.specifications = specs;
+			this.attrs = attrs;
+			this.specs = specs;
 			this.skuList = skuList;
-			console.log(this.spu, this.attributes, this.specifications, this.skuList);
+			console.log(this.spu, this.attrs, this.specs, this.skuList);
 		});
 		
 
