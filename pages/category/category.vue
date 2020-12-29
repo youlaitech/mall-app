@@ -18,81 +18,105 @@
 </template>
 
 <script>
-
-import {list} from '@/api/pms/category.js'
+import { list } from '@/api/pms/category.js';
 export default {
 	data() {
 		return {
 			sizeCalcState: false,
 			tabScrollTop: 0,
-			currentId: 1,
+			currentId: 0,
 			flist: [],
 			slist: [],
-			tlist: [],
-		}
+			tlist: []
+		};
 	},
-	onLoad(){
+	onLoad() {
 		this.loadData();
 	},
 	methods: {
-		async loadData(){
-			list().then(response=>{
-				console.log('分类列表',response.data)
-			    const categoryList= response.data
-				categoryList.forEach(item=>{
-					if(item.level==1){
-						this.flist.push(item);  // 一级分类
-					}else if(item.level==2){
+		async loadData() {
+			list().then(response => {
+				console.log('分类列表', response.data);
+				const categoryList = response.data;
+				categoryList.forEach(item => {
+					if (item.level == 1) {
+						this.flist.push(item); // 一级分类
+					} else if (item.level == 2) {
 						this.slist.push(item); // 二级分类
-					}else if(item.level==3){
+					} else if (item.level == 3) {
 						this.tlist.push(item); // 三级分类
 					}
-				})
-			})
+				});
+				// 排序
+				this.flist.sort(function(a, b) {
+					return a.id - b.id;
+				});
+
+				this.slist.sort(function(a, b) {
+					if (a.parentId == b.parentId) {
+						return a.id - b.id;
+					} else {
+						return a.parentId - b.parentId;
+					}
+				});
+
+				this.tlist.sort(function(a, b) {
+					if (a.parentId == b.parentId) {
+						return a.id - b.id;
+					} else {
+						return a.parentId - b.parentId;
+					}
+				});
+
+				this.currentId = this.flist[0].id;
+			});
 		},
 		//一级分类点击
-		tabtap(item){
-			if(!this.sizeCalcState){
+		tabtap(item) {
+			if (!this.sizeCalcState) {
 				this.calcSize();
 			}
 
 			this.currentId = item.id;
-			let index = this.slist.findIndex(sitem=>sitem.pid === item.id);
+			let index = this.slist.findIndex(sitem => sitem.parentId === item.id);
 			this.tabScrollTop = this.slist[index].top;
 		},
 		//右侧栏滚动
-		asideScroll(e){
-			if(!this.sizeCalcState){
+		asideScroll(e) {
+			if (!this.sizeCalcState) {
 				this.calcSize();
 			}
 			let scrollTop = e.detail.scrollTop;
-			let tabs = this.slist.filter(item=>item.top <= scrollTop).reverse();
-			if(tabs.length > 0){
+			let tabs = this.slist.filter(item => item.top <= scrollTop).reverse();
+			if (tabs.length > 0) {
 				this.currentId = tabs[0].pid;
 			}
 		},
 		//计算右侧栏每个tab的高度等信息
-		calcSize(){
+		calcSize() {
 			let h = 0;
-			this.slist.forEach(item=>{
-				let view = uni.createSelectorQuery().select("#main-" + item.id);
-				view.fields({
-					size: true
-				}, data => {
-					item.top = h;
-					h += data.height;
-					item.bottom = h;
-				}).exec();
-			})
+			this.slist.forEach(item => {
+				let view = uni.createSelectorQuery().select('#main-' + item.id);
+				view.fields(
+					{
+						size: true
+					},
+					data => {
+						item.top = h;
+						h += data.height;
+						item.bottom = h;
+					}
+				).exec();
+			});
 			this.sizeCalcState = true;
 		},
-		navToList(sid, tid){
+		navToList(sid, tid) {
 			uni.navigateTo({
 				url: `/pages/product/list?fid=${this.currentId}&sid=${sid}&tid=${tid}`
-			})
+			});
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss">
