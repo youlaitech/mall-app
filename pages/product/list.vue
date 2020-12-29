@@ -101,6 +101,8 @@
 		methods: {
 			//加载分类
 			async loadCateList(fid, sid){
+				
+				
 				let list = await this.$api.json('cateList');
 				let cateList = list.filter(item=>item.pid == fid);
 				
