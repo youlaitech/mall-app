@@ -36,15 +36,18 @@ export default {
 	methods: {
 		async loadData() {
 			list().then(response => {
-				console.log('分类列表', response.data);
 				const categoryList = response.data;
-				categoryList.forEach(item => {
-					if (item.level == 1) {
-						this.flist.push(item); // 一级分类
-					} else if (item.level == 2) {
-						this.slist.push(item); // 二级分类
-					} else if (item.level == 3) {
-						this.tlist.push(item); // 三级分类
+				categoryList.forEach(first => {
+					this.flist.push(first);
+					if (first.children) {
+						first.children.forEach(second => {
+							this.slist.push(second);
+							if (second.children) {
+								second.children.forEach(third => {
+									this.tlist.push(third);
+								});
+							}
+						});
 					}
 				});
 				// 排序
