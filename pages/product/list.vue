@@ -44,6 +44,8 @@ import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 
 import { list as getCategoryList } from '@/api/pms/category.js';
 
+import { list as getGoodsList } from '@/api/pms/product.js';
+
 export default {
 	components: {
 		uniLoadMore
@@ -106,6 +108,11 @@ export default {
 			}
 
 			let goodsList = await this.$api.json('goodsList');
+
+			getGoodsList({ categoryId: this.cateId }).then(response => {
+				console.log('获取分类下的商品列表', response.data);
+			});
+
 			if (type === 'refresh') {
 				this.goodsList = [];
 			}
