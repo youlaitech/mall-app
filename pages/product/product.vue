@@ -197,8 +197,8 @@
 			};
 		},
 		async onLoad(options) {
-			detail(44).then(response => {
-				console.log('商品详情', response.data)
+			const spuId = options.id
+			detail(spuId).then(response => {
 				const {
 					spu,
 					attrs,
@@ -260,15 +260,15 @@
 					}
 				})
 
-				this.selectedSpec=[]
+				this.selectedSpec = []
 				this.specs.forEach(spec => {
 					const selectedSpecValue = spec.values.filter(value => value.selected == true)[0]
 					this.selectedSpec.push(selectedSpecValue)
-					
+
 				})
-				
+
 				const selectedSpecValueIds = this.selectedSpec.map(item => item.id).sort().join(',')
-				
+
 				// 根据规格排序字符串找到匹配的sku信息
 				this.selectedSku = this.skuList.filter(sku => sku.specValueIds == selectedSpecValueIds)[0]
 			},
