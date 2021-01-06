@@ -114,7 +114,7 @@
 
 			<view class="action-btn-group">
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn">加入购物车</button>
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addToCart">加入购物车</button>
 			</view>
 		</view>
 
@@ -157,6 +157,10 @@
 	import {
 		detail
 	} from '@/api/pms/product.js';
+
+	import {
+		save as saveCart
+	} from '@/api/oms/cart.js'
 	export default {
 		components: {
 			share
@@ -284,6 +288,24 @@
 				uni.navigateTo({
 					url: `/pages/order/createOrder`
 				});
+			},
+			addToCart() {
+				const skuId = this.selectedSku.id
+				saveCart(skuId).then(response => {
+					// 1、添加商品到购物车
+					// 2、跳转到购物车页面
+					uni.switchTab({
+						url: `/pages/cart/cart`,
+						success: (res) => {
+							let page = getCurrentPages().pop();
+							if (page == undefined || page == null) return;
+							page.curSegment = 0;
+							page.onLoad();
+						},
+					});
+				})
+
+				
 			},
 			stopPrevent() {}
 		}

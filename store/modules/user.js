@@ -8,6 +8,7 @@ const state = {
 
 const mutations = {
   SET_HAS_LOGIN:(state,hasLogin) =>{
+	  console.log(hasLogin)
 	state.hasLogin=hasLogin  
   },
   SET_NICKNAME: (state, nickname) => {
@@ -34,8 +35,10 @@ const actions = {
         const {data} = response
 		
 		uni.setStorageSync('token',data.token)
-		
+		// debugger;
+		// console(state.hasLogin)
 		commit('SET_HAS_LOGIN', true)
+		// console(state.hasLogin)
         resolve()
       }).catch(error => {
         reject(error)
