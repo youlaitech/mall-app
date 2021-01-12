@@ -23,7 +23,7 @@ export function logout() {
 
 export function getUserInfo() {
 	return request({
-		url: '/mall-ums/members/me',
+		url: '/mall-ums/users/me',
 		method: 'get',
 		headers:{
 			'auth':true
