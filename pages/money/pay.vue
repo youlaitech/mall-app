@@ -5,10 +5,20 @@
 			<text class="price">38.88</text>
 		</view>
 
+<!-- 		<view class="container">
+			<image src="/static/wxpay.png" @click="previewImage"></image>
+		</view> -->
+
+		<view>
+			<image class="upload-img" src=""></image>
+		</view>
+
 		<view class="pay-type-list">
 
 			<view class="type-item b-b" @click="changePayType(1)">
 				<text class="icon yticon icon-weixinzhifu"></text>
+
+
 				<view class="con">
 					<text class="tit">微信支付</text>
 					<text>推荐使用微信支付</text>
@@ -40,25 +50,27 @@
 				</label>
 			</view>
 		</view>
-		
+
 		<text class="mix-btn" @click="confirm">确认支付</text>
 	</view>
 </template>
 
 <script>
-
 	export default {
 		data() {
 			return {
 				payType: 1,
-				orderInfo: {}
+				orderInfo: {},
+				data: {
+					imgalist: ['@/static/wxpay.png']
+				}
 			};
 		},
 		computed: {
-		
+
 		},
 		onLoad(options) {
-			
+
 		},
 
 		methods: {
@@ -68,14 +80,29 @@
 			},
 			//确认支付
 			confirm: async function() {
-				
-				
-				
-				
+
+
+				uni.showToast({
+					title: '成功',
+					icon: 'success',
+					duration: 2000
+				})
+
+				return
+
 				uni.redirectTo({
 					url: '/pages/money/paySuccess'
 				})
 			},
+
+			previewImage(e) {
+				const current = e.target.dataset.src //获取当前点击的 图片 url
+				console.log(current)
+				wx.previewImage({
+					current: current,
+					urls: this.data.imgalist
+				})
+			}
 		}
 	}
 </script>
@@ -95,11 +122,12 @@
 		font-size: 28upx;
 		color: #909399;
 
-		.price{
+		.price {
 			font-size: 50upx;
 			color: #303133;
 			margin-top: 12upx;
-			&:before{
+
+			&:before {
 				content: '￥';
 				font-size: 40upx;
 			}
@@ -110,8 +138,8 @@
 		margin-top: 20upx;
 		background-color: #fff;
 		padding-left: 60upx;
-		
-		.type-item{
+
+		.type-item {
 			height: 120upx;
 			padding: 20upx 0;
 			display: flex;
@@ -119,28 +147,33 @@
 			align-items: center;
 			padding-right: 60upx;
 			font-size: 30upx;
-			position:relative;
+			position: relative;
 		}
-		
-		.icon{
+
+		.icon {
 			width: 100upx;
 			font-size: 52upx;
 		}
+
 		.icon-erjiye-yucunkuan {
 			color: #fe8e2e;
 		}
+
 		.icon-weixinzhifu {
 			color: #36cb59;
 		}
+
 		.icon-alipay {
 			color: #01aaef;
 		}
-		.tit{
+
+		.tit {
 			font-size: $font-lg;
 			color: $font-color-dark;
 			margin-bottom: 4upx;
 		}
-		.con{
+
+		.con {
 			flex: 1;
 			display: flex;
 			flex-direction: column;
@@ -148,6 +181,7 @@
 			color: $font-color-light;
 		}
 	}
+
 	.mix-btn {
 		display: flex;
 		align-items: center;
@@ -161,5 +195,4 @@
 		border-radius: 10upx;
 		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 	}
-
 </style>
