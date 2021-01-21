@@ -23,25 +23,14 @@
 				<text class="name">西城小店铺</text>
 			</view>
 			<!-- 商品列表 -->
-			<view class="g-item">
-				<image src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=756705744,3505936868&fm=11&gp=0.jpg"></image>
+			<view class="g-item" v-for="(item, index) in orderItems" :key="item.skuId">
+				<image :src="item.skuImg"></image>
 				<view class="right">
-					<text class="title clamp">古黛妃 短袖t恤女夏装2019新款</text>
-					<text class="spec">春装款 L</text>
+					<text class="title clamp">{{item.skuName}}</text>
+					<text class="spec">{{item.skuSpec}}</text>
 					<view class="price-box">
-						<text class="price">￥17.8</text>
-						<text class="number">x 1</text>
-					</view>
-				</view>
-			</view>
-			<view class="g-item">
-				<image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg"></image>
-				<view class="right">
-					<text class="title clamp">韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】</text>
-					<text class="spec">春装款 L</text>
-					<view class="price-box">
-						<text class="price">￥17.8</text>
-						<text class="number">x 1</text>
+						<text class="price">￥{{item.price|moneyFormatter}}</text>
+						<text class="number">x {{item.number}}</text>
 					</view>
 				</view>
 			</view>
@@ -54,8 +43,11 @@
 					券
 				</view>
 				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip active">
+				<text class="cell-tip active" v-if="couponTitle == ''">
 					选择优惠券
+				</text>
+				<text class="cell-tip active" v-else>
+					{{couponTitle}}
 				</text>
 				<text class="cell-more wanjia wanjia-gengduo-d"></text>
 			</view>
@@ -71,15 +63,16 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥179.88</text>
+				<text class="cell-tip">￥{{orderConfirmInfo.totalPrice|moneyFormatter}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
-				<text class="cell-tip red">-￥35</text>
+				<text class="cell-tip red">-￥{{couponAmount|moneyFormatter}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
-				<text class="cell-tip">免运费</text>
+				<text class="cell-tip" v-if="freightAmount == 0">免运费</text>
+				<text class="cell-tip" v-else>-￥{{freightAmount|moneyFormatter}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
@@ -92,7 +85,7 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">475</text>
+				<text class="price">{{payAmount|moneyFormatter}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -101,7 +94,7 @@
 		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
 			<view class="mask-content" @click.stop.prevent="stopPrevent">
 				<!-- 优惠券页面，仿mt -->
-				<view class="coupon-item" v-for="(item,index) in couponList" :key="index">
+				<view class="coupon-item" v-for="(item,index) in couponList" :key="index" @click="changeCoupon(item)">
 					<view class="con">
 						<view class="left">
 							<text class="title">{{item.title}}</text>
@@ -124,44 +117,101 @@
 </template>
 
 <script>
+	import {
+		confirm,submit
+	} from '@/api/oms/order.js'
+
+	import {
+		list as addressList
+	} from '@/api/ums/address.js'
+
 	export default {
 		data() {
 			return {
 				maskState: 0, //优惠券面板显示状态
 				desc: '', //备注
 				payType: 1, //1微信 2支付宝
+				couponAmount: 0,
+				couponTitle: '',
+				couponId: 0,
+				freightAmount: 0,
+				payAmount: 0,
 				couponList: [
 					{
+						id: 1,
 						title: '新用户专享优惠券',
 						price: 5,
 					},
 					{
+						id: 2,
 						title: '庆五一发一波优惠券',
 						price: 10,
 					},
 					{
+						id: 3,
 						title: '优惠券优惠券优惠券优惠券',
 						price: 15,
 					}
 				],
 				addressData: {
+					id: 0,
 					name: '许小星',
 					mobile: '13853989563',
 					addressName: '金九大道',
 					address: '山东省济南市历城区',
 					area: '149号',
 					default: false,
-				}
+				},
+				orderConfirmInfo:{},
+				orderItems: [
+					{
+						skuId:1,
+						number: 1,
+						skuImg:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=756705744,3505936868&fm=11&gp=0.jpg",
+						skuName:"古黛妃 短袖t恤女夏装2019新款",
+						price:1000,
+						skuSpec:"春装款 L"
+					},
+					{
+						skuId:2,
+						number: 1,
+						skuImg:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=756705744,3505936868&fm=11&gp=0.jpg",
+						skuName:"韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】",
+						price:17.9,
+						skuSpec:"春装款 L"
+					}
+				]
 			}
 		},
 		onLoad(option){
 			//商品数据
 			//let data = JSON.parse(option.data);
 			//console.log(data);
+			this.loadData();
+			this.defaultAddress();
 		},
 		methods: {
+
+			async defaultAddress() {
+				// 获取当前用户默认地址
+				addressList().then(response =>{
+					const data = response.data;
+					this.addressData = data[0];
+				})
+			},
+			
+			async loadData() {
+				// 调用后端接口，查询订单确认页列表
+				confirm().then(response =>{
+					const data = response.data;
+					this.orderConfirmInfo = data;
+					this.orderItems = data.items;
+					this.calcTotal();
+				})
+			},
 			//显示优惠券面板
 			toggleMask(type){
+				console.info("展示优惠券",type)
 				let timer = type === 'show' ? 10 : 300;
 				let	state = type === 'show' ? 1 : 0;
 				this.maskState = 2;
@@ -169,18 +219,50 @@
 					this.maskState = state;
 				}, timer)
 			},
+			//计算实际支付总价
+			calcTotal() {
+				let totalPrice = this.orderConfirmInfo.totalPrice;
+				let couponAmount = this.couponAmount;
+				let freightAmount = this.freightAmount;
+				console.info("计算实际支付总价",totalPrice,"--",couponAmount,"--",freightAmount)
+				this.payAmount = totalPrice - couponAmount -freightAmount;
+			},
 			numberChange(data) {
 				this.number = data.number;
 			},
 			changePayType(type){
 				this.payType = type;
 			},
-			submit(){
-				uni.redirectTo({
-					url: '/pages/money/pay'
-				})
+			changeCoupon(data){
+				this.couponAmount = data.price;
+				this.couponTitle = data.title;
+				this.calcTotal();
+				this.maskState = 0;
 			},
-			stopPrevent(){}
+			submit(){
+				// 提交订单
+				const submitVO = {};
+				submitVO.addressId = this.addressData.id;
+				if (this.skuId != 0){
+					submitVO.skuId = this.skuId;
+				}
+				if (this.couponId != 0){
+					submitVO.couponId = this.couponId;
+				}
+				submitVO.remark = this.remark;
+				submitVO.payAmount = this.payAmount;
+				console.info("构造订单信息=",submitVO);
+				submit(submitVO).then(response =>{
+					console.info("创建订单结果=",response.data);
+					uni.redirectTo({
+						url: '/pages/money/pay'
+					})
+				})
+
+
+			},
+			stopPrevent(){
+			}
 		}
 	}
 </script>

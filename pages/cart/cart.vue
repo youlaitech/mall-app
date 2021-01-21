@@ -25,7 +25,7 @@
 						<view class="item-right">
 							<text class="clamp title">{{item.skuName}}</text>
 							<!-- <text class="attr">{{item.attr_val}}</text> -->
-							<text class="price">¥{{item.price}}</text>
+							<text class="price">¥{{item.price|moneyFormatter}}</text>
 							<uni-number-box class="step" :min="1" :max="item.stock" :value="item.number>item.stock?item.stock:item.number"
 							 :isMax="item.number>=item.stock?true:false" :isMin="item.number===1" :index="index" @eventChange="numberChange($event,item.skuId)"></uni-number-box>
 						</view>
@@ -42,10 +42,10 @@
 					</view>
 				</view>
 				<view class="total-box">
-					<text class="price">¥{{cart.totalPrice}}</text>
+					<text class="price">¥{{cart.totalPrice|moneyFormatter}}</text>
 					<text class="coupon">
 						已优惠
-						<text>{{cart.totalCoupon}}</text>
+						<text>{{cart.totalCoupon|moneyFormatter}}</text>
 						元
 					</text>
 				</view>
@@ -196,21 +196,19 @@
 			},
 			//创建订单
 			createOrder() {
-				let list = this.cartList;
-				let goodsData = [];
-				list.forEach(item => {
-					if (item.checked) {
-						goodsData.push({
-							attr_val: item.attr_val,
-							number: item.number
-						})
-					}
-				})
+				// let list = this.cartList;
+				// let goodsData = [];
+				// list.forEach(item => {
+				// 	if (item.checked) {
+				// 		goodsData.push({
+				// 			attr_val: item.attr_val,
+				// 			number: item.number
+				// 		})
+				// 	}
+				// })
 
 				uni.navigateTo({
-					url: `/pages/order/createOrder?data=${JSON.stringify({
-						goodsData: goodsData
-					})}`
+					url: `/pages/order/createOrder`
 				})
 				this.$api.msg('跳转下一页 sendData');
 			}
