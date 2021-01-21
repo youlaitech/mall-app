@@ -15,7 +15,10 @@ export function add(data) {
 	return request({
 		url: '/mall-ums/api.app/v1/addresses',
 		method: 'post',
-		data: data
+		data: data,
+		headers: {
+			'auth': true // 需要认证
+		}
 	})
 }
 
@@ -24,6 +27,9 @@ export function update(id,data) {
 	return request({
 		url: '/mall-ums/api.app/v1/addresses/'+id,
 		method: 'put',
-		data: data
+		data: data,
+		headers: {
+			'auth': true // 需要认证
+		}
 	})
 }
