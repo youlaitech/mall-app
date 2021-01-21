@@ -136,6 +136,8 @@
 				couponId: 0,
 				freightAmount: 0,
 				payAmount: 0,
+				skuId: 0,
+				skuNumber: 0,
 				couponList: [
 					{
 						id: 1,
@@ -186,7 +188,9 @@
 		onLoad(option){
 			//商品数据
 			//let data = JSON.parse(option.data);
-			//console.log(data);
+			console.log(option);
+			this.skuId = option.skuId;
+			this.skuNumber = option.skuNumber;
 			this.loadData();
 			this.defaultAddress();
 		},
@@ -202,7 +206,9 @@
 			
 			async loadData() {
 				// 调用后端接口，查询订单确认页列表
-				confirm().then(response =>{
+				const skuId = this.skuId === 0? null:this.skuId;
+				const skuNumber = this.skuNumber === 0? null:this.skuNumber;
+				confirm(skuId,skuNumber).then(response =>{
 					const data = response.data;
 					this.orderConfirmInfo = data;
 					this.orderItems = data.items;
@@ -245,6 +251,7 @@
 				submitVO.addressId = this.addressData.id;
 				if (this.skuId != 0){
 					submitVO.skuId = this.skuId;
+					submitVO.skuNumber = this.skuNumber;
 				}
 				if (this.couponId != 0){
 					submitVO.couponId = this.couponId;

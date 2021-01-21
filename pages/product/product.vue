@@ -157,9 +157,9 @@
 	import {
 		detail
 	} from '@/api/pms/product.js';
-
 	import {
-		save as saveCart
+		save as saveCart,
+		confirm as orderConfirm
 	} from '@/api/oms/cart.js'
 	export default {
 		components: {
@@ -285,8 +285,10 @@
 				this.favorite = !this.favorite;
 			},
 			buy() {
+				const skuId = this.selectedSku.id;
+				const skuNumber = 1;
 				uni.navigateTo({
-					url: `/pages/order/createOrder`
+					url: `/pages/order/createOrder?skuId=`+skuId+`&skuNumber=`+skuNumber,
 				});
 			},
 			addToCart() {
