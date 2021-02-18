@@ -214,14 +214,13 @@
 				this.specs = specs;
 				this.skuList = skuList;
 
-
 				// 默认选择第一条规格
 				this.selectedSpec = []
 				this.specs.forEach(spec => {
-					spec.values[0].selected = true // 添加规格是否选中属性
-
-
-					this.selectedSpec.push(spec.values[0])
+					if(spec.values.length > 0){
+						spec.values[0].selected = true // 添加规格是否选中属性
+						this.selectedSpec.push(spec.values[0])
+					}
 				})
 
 				// 默认选择的规格id排序拼接字符串  例如: 1,2,3
@@ -229,8 +228,6 @@
 
 				// 根据规格排序字符串找到匹配的sku信息
 				this.selectedSku = this.skuList.filter(sku => sku.specValueIds == defaltSpecValueIds)[0]
-
-
 			});
 
 
@@ -292,6 +289,7 @@
 				});
 			},
 			addToCart() {
+				console.info("已选择商品",this.selectedSku)
 				const skuId = this.selectedSku.id
 				saveCart(skuId).then(response => {
 					// 1、添加商品到购物车
