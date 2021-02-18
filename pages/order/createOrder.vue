@@ -265,8 +265,6 @@
 						url: '/pages/money/pay'
 					})
 				})
-
-
 			},
 			stopPrevent(){
 			}

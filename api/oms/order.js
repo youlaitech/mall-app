@@ -104,3 +104,59 @@ export function clear(skuIds) {
 		}
 	})
 }
+
+// 取消订单
+export function orderList(state) {
+	return request({
+		url: '/mall-oms/api.app/v1/orders/list',
+		method: 'get',
+		params: {
+			state: state
+		},
+		headers: {
+			'auth': true // 需要认证
+		}
+	})
+}
+
+// 取消订单
+export function cancelOrder(orderId) {
+	return request({
+		url: '/mall-oms/api.app/v1/orders/cancel',
+		method: 'put',
+		params: {
+			id: orderId
+		},
+		headers: {
+			'auth': true // 需要认证
+		}
+	})
+}
+
+// 删除订单
+export function deleteOrder(orderId) {
+	return request({
+		url: '/mall-oms/api.app/v1/orders',
+		method: 'delete',
+		params: {
+			id: orderId
+		},
+		headers: {
+			'auth': true // 需要认证
+		}
+	})
+}
+
+// 查询订单列表
+export function orderPage(status) {
+	return request({
+		url: '/mall-oms/api.app/v1/orders/list',
+		method: 'get',
+		params: {
+			status: status
+		},
+		headers: {
+			'auth': true // 需要认证
+		}
+	})
+}
