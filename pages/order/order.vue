@@ -255,7 +255,7 @@ export default {
       console.info("订单支付",order.id)
       let orderId = order.id;
       uni.redirectTo({
-        url: "/pages/money/pay",
+        url: "/pages/money/pay?orderId="+orderId,
       });
     },
 

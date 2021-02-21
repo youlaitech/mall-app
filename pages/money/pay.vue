@@ -2,7 +2,7 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">38.88</text>
+			<text class="price">{{payInfo.payPrice | moneyFormatter}}</text>
 		</view>
 
 <!-- 		<view class="container">
@@ -34,7 +34,7 @@
 					<text class="tit">支付宝支付</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 2' />
+					<radio value="" color="#fa436a" :checked='payType == 2' >
 					</radio>
 				</label>
 			</view>
@@ -42,11 +42,10 @@
 				<text class="icon yticon icon-erjiye-yucunkuan"></text>
 				<view class="con">
 					<text class="tit">预存款支付</text>
-					<text>可用余额 ¥198.5</text>
+					<text>可用余额 ¥{{payInfo.balance | moneyFormatter}}</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 3' />
-					</radio>
+					<radio value="" color="#fa436a" :checked='payType == 3' ></radio>
 				</label>
 			</view>
 		</view>
@@ -56,11 +55,17 @@
 </template>
 
 <script>
+import {
+  payInfo,
+  doPay
+} from "@/api/oms/pay.js";
 	export default {
 		data() {
 			return {
 				payType: 1,
-				orderInfo: {},
+				payInfo: {},
+				orderId: 0,
+				balance: 0,
 				data: {
 					imgalist: ['@/static/wxpay.png']
 				}
@@ -70,17 +75,39 @@
 
 		},
 		onLoad(options) {
-
+			console.log(options.orderId);
+			this.orderId=options.orderId;
+			this.loadData(options.orderId);
 		},
 
 		methods: {
+
+			// 查询订单支付信息（支付金额，用户余额）
+			async loadData(orderId) {
+				// 调用后端接口，查询订单确认页列表
+				
+				payInfo(orderId).then(response =>{
+					const data = response.data;
+					this.payInfo = data;
+				})
+			},
+
 			//选择支付方式
 			changePayType(type) {
 				this.payType = type;
 			},
 			//确认支付
 			confirm: async function() {
-
+				const payForm = {};
+				payForm.orderId = this.orderId;
+				payForm.payType = this.payType;
+				doPay(payForm).then(response =>{
+					const data = response.data;
+					console.info("支付结果",data)
+					uni.redirectTo({
+						url: '/pages/money/paySuccess'
+					})
+				})
 
 				uni.showToast({
 					title: '成功',
