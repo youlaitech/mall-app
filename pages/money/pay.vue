@@ -102,23 +102,23 @@ import {
 				payForm.orderId = this.orderId;
 				payForm.payType = this.payType;
 				doPay(payForm).then(response =>{
-					const data = response.data;
-					console.info("支付结果",data)
+					if( response.code != '00000'){
+						uni.showToast({
+							title: response.msg,
+							icon: 'none',
+							duration: 2000
+						});
+						return
+					}else{
+						uni.showToast({
+							title: '订单支付成功',
+							icon: 'success',
+							duration: 2000
+						})
+					}
 					uni.redirectTo({
 						url: '/pages/money/paySuccess'
 					})
-				})
-
-				uni.showToast({
-					title: '成功',
-					icon: 'success',
-					duration: 2000
-				})
-
-				return
-
-				uni.redirectTo({
-					url: '/pages/money/paySuccess'
 				})
 			},
 
