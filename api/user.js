@@ -7,7 +7,10 @@ export function login(data) {
 	return request({
 		url: '/youlai-auth/oauth/token',
 		method: 'post',
-		params: data
+		params: data,
+		headers: {
+			'Authorization': 'Basic eW91bGFpLW1hbGwtd2VhcHA6MTIzNDU2' // 客户端信息加密摘要认证，明文：youlai-mall-weapp:123456
+		}
 	})
 }
 

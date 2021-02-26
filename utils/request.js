@@ -18,7 +18,7 @@ service.interceptors.request.use(
 		if (config.headers.auth === true) { // 判断请求是否需要认证
 			const token = uni.getStorageSync('token')
 			if (token) {
-				config.headers['Authorization'] = 'Bearer ' + token;
+				config.headers['Authorization'] =token;
 			}
 		}
 		return config

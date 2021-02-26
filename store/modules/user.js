@@ -8,7 +8,6 @@ const state = {
 
 const mutations = {
   SET_HAS_LOGIN:(state,hasLogin) =>{
-	  console.log(hasLogin)
 	state.hasLogin=hasLogin  
   },
   SET_NICKNAME: (state, nickname) => {
@@ -26,19 +25,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({
         grant_type: 'password',
-        client_id: 'youlai-mall-weapp',
-        client_secret: '123456',
         code: code,
         encryptedData: encryptedData,
         iv: iv
       }).then(response => {
-        const {data} = response
-		
-		uni.setStorageSync('token',data.token)
-		// debugger;
-		// console(state.hasLogin)
+        const {access_token, token_type } = response
+		const token = token_type + " " +access_token
+		uni.setStorageSync('token',token)
 		commit('SET_HAS_LOGIN', true)
-		// console(state.hasLogin)
         resolve()
       }).catch(error => {
         reject(error)
