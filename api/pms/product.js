@@ -15,3 +15,4 @@ export function detail(id) {
 		method: 'get'
 	})
 }
+

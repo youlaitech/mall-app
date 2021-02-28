@@ -157,6 +157,11 @@
 	import {
 		detail
 	} from '@/api/pms/product.js';
+	
+	import {
+		getInventory
+	} from '@/api/pms/inventory.js';
+	
 	import {
 		save as saveCart,
 		confirm as orderConfirm
@@ -271,7 +276,19 @@
 				const selectedSpecValueIds = this.selectedSpec.map(item => item.id).sort().join(',')
 
 				// 根据规格排序字符串找到匹配的sku信息
-				this.selectedSku = this.skuList.filter(sku => sku.specValueIds == selectedSpecValueIds)[0]
+				const {id,picUrl,price} = this.skuList.filter(sku => sku.specValueIds == selectedSpecValueIds)[0]
+				
+				
+				//  实时获取商品库存信息
+				getInventory(id).then(response=>{
+					const stock=response.data
+					this.selectedSku={
+						id:id,
+						picUrl:picUrl,
+						price:price,
+						stock:stock
+					}
+				})
 			},
 			//分享
 			share() {
