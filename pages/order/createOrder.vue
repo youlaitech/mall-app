@@ -137,7 +137,7 @@
 				freightAmount: 0,
 				payAmount: 0,
 				skuId: 0,
-				skuNumber: 0,
+				skuNum: 0,
 				couponList: [
 					{
 						id: 1,
@@ -186,11 +186,8 @@
 			}
 		},
 		onLoad(option){
-			//商品数据
-			//let data = JSON.parse(option.data);
-			console.log(option);
 			this.skuId = option.skuId;
-			this.skuNumber = option.skuNumber;
+			this.skuNum = option.skuNum;
 			this.loadData();
 			this.defaultAddress();
 		},
@@ -207,8 +204,8 @@
 			async loadData() {
 				// 调用后端接口，查询订单确认页列表
 				const skuId = this.skuId === 0? null:this.skuId;
-				const skuNumber = this.skuNumber === 0? null:this.skuNumber;
-				confirm(skuId,skuNumber).then(response =>{
+				const skuNum = this.skuNum === 0? null:this.skuNum;
+				confirm(skuId,skuNum).then(response =>{
 					const data = response.data;
 					this.orderConfirmInfo = data;
 					this.orderItems = data.items;
@@ -234,7 +231,7 @@
 				this.payAmount = totalPrice - couponAmount -freightAmount;
 			},
 			numberChange(data) {
-				this.number = data.number;
+				this.num = data.num;
 			},
 			changePayType(type){
 				this.payType = type;
@@ -251,7 +248,7 @@
 				submitVO.addressId = this.addressData.id;
 				if (this.skuId != 0){
 					submitVO.skuId = this.skuId;
-					submitVO.skuNumber = this.skuNumber;
+					submitVO.skuNum = this.skuNum;
 				}
 				if (this.couponId != 0){
 					submitVO.couponId = this.couponId;
@@ -397,7 +394,7 @@
 				.price {
 					margin-bottom: 4upx;
 				}
-				.number{
+				.num{
 					font-size: 26upx;
 					color: $font-color-base;
 					margin-left: 20upx;

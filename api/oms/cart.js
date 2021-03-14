@@ -21,71 +21,60 @@ export function save(skuId) {
 			skuId: skuId
 		},
 		headers: {
-			'auth': true // 需要认证
+			'auth': true
 		}
 	})
 }
 
-// 修改购物车商品数量
-export function update(data) {
+/**
+ * 局部更新购物车商品
+ * @param {Object} params
+ */
+export function updateCartItem(skuId, params) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts',
+		url: '/mall-oms/api.app/v1/carts/skuId/' + skuId,
 		method: 'put',
-		data: data,
+		params: params,
 		headers: {
-			'auth': true // 需要认证
+			'auth': true
 		}
 	})
 }
 
-// 是否选择购物车中商品
-export function checkItem(data){
+
+/**
+ * 批量局部更新购物车商品
+ * @param {Object} params
+ */
+export function batchUpdateCartItem(params) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts/check',
+		url: '/mall-oms/api.app/v1/carts/batch',
 		method: 'put',
-		data: data,
+		params: params,
 		headers: {
-			'auth': true // 需要认证
+			'auth': true
 		}
 	})
 }
 
-// 是否选择购物车中商品
-export function checkAll(check){
+// 批量删除购物车商品
+export function deleteCartItem(skuId) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts/checkAll',
-		method: 'put',
-		params: {
-			check: check
-		},
+		url: '/mall-oms/api.app/v1/carts/skuId/' + skuId,
+		method: 'delete',
 		headers: {
-			'auth': true // 需要认证
+			'auth': true
 		}
 	})
 }
 
 // 删除购物车中选中商品
-export function deleteCart(skuIds) {
+export function deleteCart() {
 	return request({
 		url: '/mall-oms/api.app/v1/carts',
 		method: 'delete',
-		params: {
-			skuIds: skuIds
-		},
 		headers: {
-			'auth': true // 需要认证
+			'auth': true
 		}
 	})
 }
-
-// 删除购物车中选中商品
-export function clear(skuIds) {
-	return request({
-		url: '/mall-oms/api.app/v1/carts/clear',
-		method: 'get',
-		headers: {
-			'auth': true // 需要认证
-		}
-	})
-}
-

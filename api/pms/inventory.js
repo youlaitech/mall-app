@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getInventory(skuId) {
 	return request({
-		url: '/mall-pms/api.app/v1/inventories/' + skuId + '/inventory',
+		url: '/mall-pms/api.app/v1/skus/' + skuId + '/inventory',
 		method: 'get'
 	})
 

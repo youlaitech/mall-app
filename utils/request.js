@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-
+import store from '@/store'
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 // create an axios instance
@@ -18,7 +17,7 @@ service.interceptors.request.use(
 		if (config.headers.auth === true) { // 判断请求是否需要认证
 			const token = uni.getStorageSync('token')
 			if (token) {
-				config.headers['Authorization'] =token;
+				config.headers['Authorization'] = token;
 			}
 		}
 		return config
@@ -59,20 +58,33 @@ service.defaults.adapter = function(config) {
 
 
 // response interceptor
-service.interceptors.response.use(
-	/**
-	 * If you want to get http information such as headers or status
-	 * Please return  response => response
-	 */
+service.interceptors.response.use(({
+		config,
+		data
+	}) => {
 
-	/**
-	 * Determine the request status by custom code
-	 * Here is just an example
-	 * You can also judge the status by HTTP Status Code
-	 */
-	response => {
-		const res = response.data
-		return res
+		console.log('响应数据', data)
+		const {
+			code,
+			msg
+		} = data
+
+		if (code && code != '00000') {
+			if (code == 'A0230') { // token过期
+				console.log('token过期')
+				uni.showToast({
+					title: '会话已过期，请重新登录',
+					success() {
+						uni.navigateTo({
+							url: `/pages/public/login`,
+						});
+					}
+				})
+			}
+		} else {
+			return data
+		}
+
 	},
 	error => {
 		console.log('err' + error) // for debug

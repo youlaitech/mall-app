@@ -4,7 +4,7 @@ import request from '@/utils/request'
 // 确认订单
 export function confirm(skuId,number) {
 	return request({
-		url: '/mall-oms/api.app/v1/orders/confirm',
+		url: '/mall-oms/api.app/v1/orders/_confirm',
 		method: 'post',
 		params: {
 			skuId: skuId,
@@ -19,7 +19,7 @@ export function confirm(skuId,number) {
 // 提交订单
 export function submit(data) {
 	return request({
-		url: '/mall-oms/api.app/v1/orders/submit',
+		url: '/mall-oms/api.app/v1/orders/_submit',
 		method: 'post',
 		data: data,
 		headers: {

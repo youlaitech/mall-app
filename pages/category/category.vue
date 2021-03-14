@@ -8,7 +8,7 @@
 				<text class="s-item">{{ item.name }}</text>
 				<view class="t-list">
 					<view @click="navToList(item.id, titem.id)" v-if="titem.parentId === item.id" class="t-item" v-for="titem in tlist" :key="titem.id">
-						<image :src="titem.iconUrl"></image>
+						<image :src="titem.icon"></image>
 						<text>{{ titem.name }}</text>
 					</view>
 				</view>

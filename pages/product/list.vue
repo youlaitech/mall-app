@@ -15,7 +15,7 @@
 		<view class="goods-list">
 			<view v-for="(item, index) in goodsList" :key="index" class="goods-item" @click="navToDetailPage(item)">
 				<view class="image-wrapper">
-					<image :src="item.picUrl" mode="aspectFill"></image>
+					<image :src="item.pic" mode="aspectFill"></image>
 				</view>
 				<text class="title clamp">{{ item.name }}</text>
 				<view class="price-box">
@@ -81,9 +81,9 @@
 			// #ifdef H5
 			this.headerTop = document.getElementsByTagName('uni-page-head')[0].offsetHeight + 'px';
 			// #endif
+			
 			this.cateId = options.tid;
 			this.loadCateList(options.fid, options.sid);
-			this.loadData();
 		},
 		onPageScroll(e) {
 			//兼容iOS端下拉时顶部漂移
@@ -103,13 +103,14 @@
 		},
 		methods: {
 			//加载分类
-			async loadCateList(fid, sid) {
+			loadCateList(fid, sid) {
 				getCategoryList(fid).then(response => {
 					this.cateList = response.data;
+					this.loadData();
 				});
 			},
 			//加载商品 ，带下拉刷新和上滑加载
-			async loadData(type = 'add', loading) {
+			 loadData(type = 'add', loading) {
 				//没有更多直接返回
 				if (type === 'add') { // 上滑加载
 					if (this.loadingType === 'nomore') {
@@ -128,8 +129,6 @@
 
 				this.queryParams.categoryId = this.cateId
 				getGoodsList(this.queryParams).then(response => {
-					console.log('获取分类下的商品列表', response.data);
-
 					const {
 						data,
 						total
@@ -161,7 +160,6 @@
 						return b.price - a.price;
 					});
 				}
-
 
 			},
 			//筛选点击
