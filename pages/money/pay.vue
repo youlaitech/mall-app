@@ -2,224 +2,186 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">{{payInfo.payPrice | moneyFormatter}}</text>
+			<text class="price">{{ payAmount | moneyFormatter }}</text>
 		</view>
 
-<!-- 		<view class="container">
+		<!--<view class="container">
 			<image src="/static/wxpay.png" @click="previewImage"></image>
 		</view> -->
 
-		<view>
-			<image class="upload-img" src=""></image>
-		</view>
-
 		<view class="pay-type-list">
-
-			<view class="type-item b-b" @click="changePayType(1)">
-				<text class="icon yticon icon-weixinzhifu"></text>
-
-
-				<view class="con">
-					<text class="tit">微信支付</text>
-					<text>推荐使用微信支付</text>
-				</view>
-				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 1' />
-					</radio>
-				</label>
-			</view>
-			<view class="type-item b-b" @click="changePayType(2)">
-				<text class="icon yticon icon-alipay"></text>
-				<view class="con">
-					<text class="tit">支付宝支付</text>
-				</view>
-				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 2' >
-					</radio>
-				</label>
-			</view>
 			<view class="type-item" @click="changePayType(3)">
 				<text class="icon yticon icon-erjiye-yucunkuan"></text>
 				<view class="con">
 					<text class="tit">预存款支付</text>
-					<text>可用余额 ¥{{payInfo.balance | moneyFormatter}}</text>
+					<text>可用余额 ¥{{ balance | moneyFormatter }}</text>
 				</view>
-				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 3' ></radio>
-				</label>
+				<label class="radio"><radio value="" color="#fa436a" :checked="payType == 3"></radio></label>
+			</view>
+
+			<view class="type-item b-b" @click="changePayType(1)">
+				<text class="icon yticon icon-weixinzhifu"></text>
+				<view class="con">
+					<text class="tit">微信支付</text>
+					<text>推荐使用微信支付</text>
+				</view>
+				<label class="radio"><radio value="" color="#fa436a" :checked="payType == 1" /></label>
+			</view>
+
+			<view class="type-item b-b" @click="changePayType(2)">
+				<text class="icon yticon icon-alipay"></text>
+				<view class="con"><text class="tit">支付宝支付</text></view>
+				<label class="radio"><radio value="" color="#fa436a" :checked="payType == 2"></radio></label>
 			</view>
 		</view>
-
-		<text class="mix-btn" @click="confirm">确认支付</text>
+		<text class="mix-btn" @click="pay">确认支付</text>
 	</view>
 </template>
 
 <script>
-import {
-  payInfo,
-  doPay
-} from "@/api/oms/pay.js";
-	export default {
-		data() {
-			return {
-				payType: 1,
-				payInfo: {},
-				orderId: 0,
-				balance: 0,
-				data: {
-					imgalist: ['@/static/wxpay.png']
-				}
-			};
-		},
-		computed: {
-
-		},
-		onLoad(options) {
-			console.log(options.orderId);
-			this.orderId=options.orderId;
-			this.loadData(options.orderId);
-		},
-
-		methods: {
-
-			// 查询订单支付信息（支付金额，用户余额）
-			async loadData(orderId) {
-				// 调用后端接口，查询订单确认页列表
-				
-				payInfo(orderId).then(response =>{
-					const data = response.data;
-					this.payInfo = data;
-				})
-			},
-
-			//选择支付方式
-			changePayType(type) {
-				this.payType = type;
-			},
-			//确认支付
-			confirm: async function() {
-				const payForm = {};
-				payForm.orderId = this.orderId;
-				payForm.payType = this.payType;
-				doPay(payForm).then(response =>{
-					if( response.code != '00000'){
-						uni.showToast({
-							title: response.msg,
-							icon: 'none',
-							duration: 2000
-						});
-						return
-					}else{
-						uni.showToast({
-							title: '订单支付成功',
-							icon: 'success',
-							duration: 2000
-						})
-					}
-					uni.redirectTo({
-						url: '/pages/money/paySuccess'
-					})
-				})
-			},
-
-			previewImage(e) {
-				const current = e.target.dataset.src //获取当前点击的 图片 url
-				console.log(current)
-				wx.previewImage({
-					current: current,
-					urls: this.data.imgalist
-				})
+import { getPayInfo, pay } from '@/api/oms/pay.js';
+export default {
+	data() {
+		return {
+			payType: 3, // 支付方式 1-微信 2-支付宝 3-会员余额
+			orderId: undefined,
+			payAmount: 0,
+			balance: 0,
+			data: {
+				imgalist: ['@/static/wxpay.png']
 			}
+		};
+	},
+	onLoad(options) {
+		console.log('========>> 进入支付页面, 路径：', this.$mp.page.route, '订单ID：', options.orderId);
+		this.orderId = options.orderId;
+		this.loadData();
+	},
+	methods: {
+		loadData() {
+			console.info('========获取支付信息========');
+			getPayInfo(this.orderId).then(response => {
+				console.log('支付信息:', response.data);
+				const { payAmount, balance } = response.data;
+				this.payAmount = payAmount;
+				this.balance = balance;
+			});
+		},
+		//选择支付方式
+		changePayType(type) {
+			this.payType = type;
+		},
+		pay() {
+			console.info('========确认支付========');
+			pay(this.orderId, this.payType).then(response => {
+				uni.showToast({
+					title: '订单支付成功',
+					icon: 'success',
+					duration: 2000
+				});
+				uni.redirectTo({
+					url: '/pages/money/paySuccess'
+				});
+			});
+		},
+
+		previewImage(e) {
+			const current = e.target.dataset.src; 
+			wx.previewImage({
+				current: current,
+				urls: this.data.imgalist
+			});
 		}
 	}
+};
 </script>
 
-<style lang='scss'>
-	.app {
-		width: 100%;
+<style lang="scss">
+.app {
+	width: 100%;
+}
+
+.price-box {
+	background-color: #fff;
+	height: 265upx;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 28upx;
+	color: #909399;
+
+	.price {
+		font-size: 50upx;
+		color: #303133;
+		margin-top: 12upx;
+
+		&:before {
+			content: '￥';
+			font-size: 40upx;
+		}
+	}
+}
+
+.pay-type-list {
+	margin-top: 20upx;
+	background-color: #fff;
+	padding-left: 60upx;
+
+	.type-item {
+		height: 120upx;
+		padding: 20upx 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-right: 60upx;
+		font-size: 30upx;
+		position: relative;
 	}
 
-	.price-box {
-		background-color: #fff;
-		height: 265upx;
+	.icon {
+		width: 100upx;
+		font-size: 52upx;
+	}
+
+	.icon-erjiye-yucunkuan {
+		color: #fe8e2e;
+	}
+
+	.icon-weixinzhifu {
+		color: #36cb59;
+	}
+
+	.icon-alipay {
+		color: #01aaef;
+	}
+
+	.tit {
+		font-size: $font-lg;
+		color: $font-color-dark;
+		margin-bottom: 4upx;
+	}
+
+	.con {
+		flex: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		font-size: 28upx;
-		color: #909399;
-
-		.price {
-			font-size: 50upx;
-			color: #303133;
-			margin-top: 12upx;
-
-			&:before {
-				content: '￥';
-				font-size: 40upx;
-			}
-		}
+		font-size: $font-sm;
+		color: $font-color-light;
 	}
+}
 
-	.pay-type-list {
-		margin-top: 20upx;
-		background-color: #fff;
-		padding-left: 60upx;
-
-		.type-item {
-			height: 120upx;
-			padding: 20upx 0;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding-right: 60upx;
-			font-size: 30upx;
-			position: relative;
-		}
-
-		.icon {
-			width: 100upx;
-			font-size: 52upx;
-		}
-
-		.icon-erjiye-yucunkuan {
-			color: #fe8e2e;
-		}
-
-		.icon-weixinzhifu {
-			color: #36cb59;
-		}
-
-		.icon-alipay {
-			color: #01aaef;
-		}
-
-		.tit {
-			font-size: $font-lg;
-			color: $font-color-dark;
-			margin-bottom: 4upx;
-		}
-
-		.con {
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-			font-size: $font-sm;
-			color: $font-color-light;
-		}
-	}
-
-	.mix-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 630upx;
-		height: 80upx;
-		margin: 80upx auto 30upx;
-		font-size: $font-lg;
-		color: #fff;
-		background-color: $base-color;
-		border-radius: 10upx;
-		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
-	}
+.mix-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 630upx;
+	height: 80upx;
+	margin: 80upx auto 30upx;
+	font-size: $font-lg;
+	color: #fff;
+	background-color: $base-color;
+	border-radius: 10upx;
+	box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
+}
 </style>

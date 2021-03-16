@@ -62,8 +62,6 @@ service.interceptors.response.use(({
 		config,
 		data
 	}) => {
-
-		console.log('响应数据', data)
 		const {
 			code,
 			msg

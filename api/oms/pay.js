@@ -2,13 +2,10 @@ import request from '@/utils/request'
 
 
 // 查询购物车
-export function payInfo(orderId) {
+export function getPayInfo(orderId) {
 	return request({
-		url: '/mall-oms/api.app/v1/order/pay/info',
+		url: '/mall-oms/api.app/v1/order_pays/orderId/' + orderId,
 		method: 'get',
-		params: {
-			orderId:orderId
-		},
 		headers: {
 			'auth': true // 需要认证
 		}
@@ -16,16 +13,16 @@ export function payInfo(orderId) {
 }
 
 // 支付
-export function doPay(payForm) {
+export function pay(orderId, payType) {
 	return request({
-		url: '/mall-oms/api.app/v1/order/pay',
+		url: '/mall-oms/api.app/v1/order_pays',
 		method: 'post',
-		data: payForm,
+		params: {
+			orderId: orderId,
+			payType: payType
+		},
 		headers: {
 			'auth': true // 需要认证
 		}
 	})
 }
-
-
-

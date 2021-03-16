@@ -89,6 +89,7 @@
 		},
 		onLoad() {
 			//加载页面时，查询购物车详情
+			console.log('========>> 进入购物车页面, 路径：', this.$mp.page.route);
 			this.loadData();
 		},
 		watch: {
