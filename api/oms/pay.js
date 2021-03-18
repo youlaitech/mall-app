@@ -2,9 +2,9 @@ import request from '@/utils/request'
 
 
 // 查询购物车
-export function getPayInfo(orderId) {
+export function getPayment(orderId) {
 	return request({
-		url: '/mall-oms/api.app/v1/order_pays/orderId/' + orderId,
+		url: '/mall-oms/api.app/v1/payments/orderId/' + orderId,
 		method: 'get',
 		headers: {
 			'auth': true // 需要认证
@@ -15,7 +15,7 @@ export function getPayInfo(orderId) {
 // 支付
 export function pay(orderId, payType) {
 	return request({
-		url: '/mall-oms/api.app/v1/order_pays',
+		url: '/mall-oms/api.app/v1/payments',
 		method: 'post',
 		params: {
 			orderId: orderId,

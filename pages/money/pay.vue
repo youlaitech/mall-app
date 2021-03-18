@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { getPayInfo, pay } from '@/api/oms/pay.js';
+import { getPayment, pay } from '@/api/oms/pay.js';
 export default {
 	data() {
 		return {
@@ -60,7 +60,7 @@ export default {
 	methods: {
 		loadData() {
 			console.info('========获取支付信息========');
-			getPayInfo(this.orderId).then(response => {
+			getPayment(this.orderId).then(response => {
 				console.log('支付信息:', response.data);
 				const { payAmount, balance } = response.data;
 				this.payAmount = payAmount;
