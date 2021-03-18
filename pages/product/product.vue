@@ -21,7 +21,7 @@
 			</view>
 			<view class="bot-row">
 				<text>销量: {{spu.sales}}</text>
-				<text>库存: {{selectedSku.inventory}}</text>
+				<text>库存: {{selectedSku.stock}}</text>
 				<text>浏览量: 768</text>
 			</view>
 		</view>
@@ -127,7 +127,7 @@
 					<image :src="selectedSku.pic"></image>
 					<view class="right">
 						<text class="price">¥{{selectedSku.price|moneyFormatter}}</text>
-						<text class="stock">库存：{{selectedSku.inventory}}件</text>
+						<text class="stock">库存：{{selectedSku.stock}}件</text>
 						<view class="selected">
 							已选：
 							<text class="selected-text" v-for="(sItem, sIndex) in selectedSpecValueIdArr" :key="sIndex">{{ sItem.value }}</text>
@@ -155,15 +155,11 @@
 	import share from '@/components/share';
 
 	import {
-		detail
+		detail,getSkuStock
 	} from '@/api/pms/product.js';
 	
 	import {
-		getInventory
-	} from '@/api/pms/inventory.js';
-	
-	import {
-		save as saveCart,
+		addCartItem ,
 		confirm as orderConfirm
 	} from '@/api/oms/cart.js'
 	export default {
@@ -206,6 +202,7 @@
 			};
 		},
 		async onLoad(options) {
+			console.log('========>> 进入商品详情页面, 路径:', this.$mp.page.route, '参数', options);
 			const spuId = options.id
 			detail(spuId).then(response => {
 				const {
@@ -276,15 +273,14 @@
 				// 根据规格排序字符串找到匹配的sku信息
 				const {id,pic,price} = this.skus.filter(sku => sku.specValueIds == selectedSpecValueIds)[0]
 				
-				
 				//  实时获取商品库存信息
-				getInventory(id).then(response=>{
-					const inventory=response.data
+				getSkuStock(id).then(response=>{
+					const stock=response.data
 					this.selectedSku={
 						id:id,
 						pic:pic,
 						price:price,
-						inventory:inventory
+						stock:stock
 					}
 				})
 			},
@@ -307,9 +303,7 @@
 			// 添加至购物车
 			addToCart() {
 				const skuId = this.selectedSku.id
-				saveCart(skuId).then(response => {
-					// 1、添加商品到购物车
-					// 2、跳转到购物车页面
+				addCartItem(skuId).then(response => {
 					uni.switchTab({
 						url: `/pages/cart/cart`,
 						success: (res) => {

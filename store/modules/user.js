@@ -60,7 +60,7 @@ const actions = {
 
   // user logout
   logout({commit, state,}) {
-	  console.log('logout')
+	console.log('logout')
     return new Promise((resolve, reject) => {
       logout().then(() => {
 		 uni.removeStorage({
@@ -77,10 +77,7 @@ const actions = {
         reject(error)
       })
     })
-  },
-  
-  
-  
+  }
 }
 
 export default {

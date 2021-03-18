@@ -13,7 +13,7 @@ export function detail() {
 }
 
 // 添加购物车
-export function save(skuId) {
+export function addCartItem(skuId) {
 	return request({
 		url: '/mall-oms/api.app/v1/carts',
 		method: 'post',

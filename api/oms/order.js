@@ -6,7 +6,7 @@ export function confirm(skuId,number) {
 	return request({
 		url: '/mall-oms/api.app/v1/orders/_confirm',
 		method: 'post',
-		params: {
+		data: {
 			skuId: skuId,
 			number: number
 		},

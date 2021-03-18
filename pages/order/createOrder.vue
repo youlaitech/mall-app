@@ -57,7 +57,7 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥{{ orderConfirmInfo.totalPrice | moneyFormatter }}</text>
+				<text class="cell-tip">￥{{ totalPrice | moneyFormatter }}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
@@ -130,12 +130,11 @@ export default {
 			couponList: [],
 			totalPrice: 0,
 			selectedAddress: {},
-			orderConfirmInfo: {},
 			orderItems: []
 		};
 	},
 	onLoad(option) {
-		console.log('========>> 进入订单详情页面, 路径:', this.$mp.page.route, '参数', option);
+		console.log('========>> 进入订单确认页面, 路径:', this.$mp.page.route, '参数', option);
 		this.skuId = option.skuId;
 		this.skuNum = option.skuNum;
 		this.loadData();

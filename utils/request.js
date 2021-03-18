@@ -69,7 +69,7 @@ service.interceptors.response.use(({
 
 		if (code && code != '00000') {
 			if (code == 'A0230') { // token过期
-				console.log('token过期')
+				
 				uni.showToast({
 					title: '会话已过期，请重新登录',
 					success() {
