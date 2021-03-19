@@ -26,13 +26,13 @@
 			</view>
 			<!-- 商品列表 -->
 			<view class="g-item" v-for="(item, index) in orderItems" :key="item.skuId">
-				<image :src="item.skuImg"></image>
+				<image :src="item.pic"></image>
 				<view class="right">
-					<text class="title clamp">{{ item.skuName }}</text>
+					<text class="title clamp">{{ item.title }}</text>
 					<text class="spec"></text>
 					<view class="price-box">
 						<text class="price">￥{{ item.price | moneyFormatter }}</text>
-						<text class="number">x {{ item.num }}</text>
+						<text class="number">x {{ item.count }}</text>
 					</view>
 				</view>
 			</view>
@@ -117,16 +117,14 @@ import { list as addressList } from '@/api/ums/address.js';
 export default {
 	data() {
 		return {
+			orderToken: undefined, // 订单提交令牌，防止订单重复提交实现幂等
 			maskState: 0, //优惠券面板显示状态
 			remark: undefined, //备注
-			payType: 1, // 支付方式： 1-微信 2-支付宝 3-会员支付
-			couponAmount: 0,
-			couponTitle: undefined,
 			couponId: 0,
+			couponTitle: undefined,
+			couponAmount: 0,
 			freightAmount: 0,
 			payAmount: 0,
-			skuId: undefined,
-			skuNum: undefined,
 			couponList: [],
 			totalPrice: 0,
 			selectedAddress: {},
@@ -135,34 +133,38 @@ export default {
 	},
 	onLoad(option) {
 		console.log('========>> 进入订单确认页面, 路径:', this.$mp.page.route, '参数', option);
-		this.skuId = option.skuId;
-		this.skuNum = option.skuNum;
-		this.loadData();
-		this.defaultAddress();
+		this.loadData(option);
 	},
 	methods: {
-		async defaultAddress() {
-			console.info('========获取地址========');
-			addressList().then(response => {
-				const data = response.data;
-				const addresses = data.filter(item => item.defaulted == 1);
-				// 如果没有默认地址，则选择第一条地址
-				if (addresses.length > 0) {
-					this.selectedAddress = addresses[0];
-				} else {
-					this.selectedAddress = data[0];
-				}
-				console.log('选择地址', this.selectedAddress);
-			});
-		},
+		async loadData(param) {
+			const data = {
+				skuId: param.skuId,
+				count: param.count
+			};
+			confirm(data).then(response => {
+				console.log('订单确认页加载数据', response.data);
 
-		async loadData() {
-			confirm(this.skuId, this.skuNum).then(response => {
-				console.info('========订单确认========');
-				const { totalPrice, items } = response.data;
-				console.log('订单确认响应', response.data);
-				this.orderItems = items;
-				this.totalPrice = totalPrice;
+				const { orderToken, orderItems, addresses } = response.data;
+				// 选择一个地址，有默认地址首选默认，无则获取第一个地址
+				if (addresses && addresses.length > 0) {
+					const candidateAddresses = addresses.filter(item => item.defaulted == 1);
+					if (candidateAddresses.length > 0) {
+						this.selectedAddress = candidateAddresses[0];
+					} else {
+						this.selectedAddress = addresses[0];
+					}
+				}
+				// 获取订单商品列表,计算总价
+				this.orderItems = orderItems;
+				if (this.orderItems.length == 1) {
+					this.totalPrice = this.orderItems[0].count * this.orderItems[0].price;
+				} else {
+					this.totalPrice = this.orderItems.reduce((prev, curr) => {
+						return prev.price * prev.count + curr.price * curr.count;
+					});
+				}
+
+				this.orderToken = orderToken;
 				this.calcPayAmount();
 			});
 		},
@@ -180,11 +182,6 @@ export default {
 			this.payAmount = this.totalPrice - this.couponAmount - this.freightAmount;
 		},
 
-		// 支付方式change
-		changePayType(type) {
-			this.payType = type;
-		},
-
 		// 优惠券change
 		changeCoupon(data) {
 			this.couponAmount = data.price;
@@ -195,21 +192,21 @@ export default {
 
 		// 订单提交
 		submit() {
-			console.info('========订单提交========');
-			const orderInfo = {
-				skuId: this.skuId,
-				skuNum: this.skuNum,
-				payAmount: this.payAmount,
-				couponId: this.couponId,
-				addressId: this.selectedAddress.id,
-				remark: this.remark
+			const data = {
+				orderToken: this.orderToken, // 订单提交令牌，防止重复提交
+				orderItems: this.orderItems, // 订单商品
+				totalPrice: this.totalPrice, // 订单商品总价，用于后台验价
+				deliveryAddress: this.selectedAddress, // 收货地址
+				remark: this.remark, // 订单备注
+				payAmount: this.payAmount // 订单支付金额
 			};
-			console.log('订单提交参数', orderInfo);
-			submit(orderInfo).then(response => {
-				console.log('订单提交响应', response.data);
-				const orderId = response.data.id;
+			console.log('========订单提交========', data);
+			submit(data).then(response => {
+				console.log('订单提交响应结果', response.data);
+
+				const { orderId, orderSn } = response.data;
 				uni.redirectTo({
-					url: '/pages/money/pay?orderId=' + response.data.id
+					url: '/pages/money/pay?orderId=' + orderId + '&orderSn=' + orderSn + '&payAmount=' + this.payAmount
 				});
 			});
 		}

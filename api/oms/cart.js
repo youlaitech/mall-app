@@ -16,7 +16,7 @@ export function getCart() {
  * 全选/全不选
  * @param {Object} params
  */
-export function check(params) {
+export function checkAll(params) {
 	return request({
 		url: '/mall-oms/api.app/v1/carts/_check',
 		method: 'put',
@@ -59,7 +59,7 @@ export function updateCartItem(skuId, data) {
 	return request({
 		url: '/mall-oms/api.app/v1/carts/skuId/' + skuId,
 		method: 'put',
-		data:data,
+		data: data,
 		headers: {
 			'auth': true
 		}

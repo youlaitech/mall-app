@@ -39,12 +39,13 @@
 </template>
 
 <script>
-import { getPayment, pay } from '@/api/oms/pay.js';
+import { pay } from '@/api/oms/order.js';
 export default {
 	data() {
 		return {
 			payType: 3, // 支付方式 1-微信 2-支付宝 3-会员余额
 			orderId: undefined,
+			orderSn: undefined,
 			payAmount: 0,
 			balance: 0,
 			data: {
@@ -53,20 +54,12 @@ export default {
 		};
 	},
 	onLoad(options) {
-		console.log('========>> 进入支付页面, 路径：', this.$mp.page.route, '订单ID：', options.orderId);
+		console.log('========>> 进入支付页面, 路径：', this.$mp.page.route, '参数：', options);
 		this.orderId = options.orderId;
-		this.loadData();
+		this.orderSn = options.orderSn;
+		this.payAmount = options.payAmount;
 	},
 	methods: {
-		loadData() {
-			console.info('========获取支付信息========');
-			getPayment(this.orderId).then(response => {
-				console.log('支付信息:', response.data);
-				const { payAmount, balance } = response.data;
-				this.payAmount = payAmount;
-				this.balance = balance;
-			});
-		},
 		//选择支付方式
 		changePayType(type) {
 			this.payType = type;
@@ -86,7 +79,7 @@ export default {
 		},
 
 		previewImage(e) {
-			const current = e.target.dataset.src; 
+			const current = e.target.dataset.src;
 			wx.previewImage({
 				current: current,
 				urls: this.data.imgalist
