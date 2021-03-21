@@ -232,7 +232,7 @@
 			};
 		},
 
-		onLoad() {
+		onShow() {
 			this.loadData();
 		},
 		methods: {

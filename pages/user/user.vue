@@ -38,7 +38,7 @@
 
 			<view class="tj-sction">
 				<view class="tj-item">
-					<text class="num">128.8</text>
+					<text class="num">{{balance|moneyFormatter}}</text>
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
@@ -46,27 +46,27 @@
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">20</text>
+					<text class="num">0</text>
 					<text>积分</text>
 				</view>
 			</view>
 			<!-- 订单 -->
 			<view class="order-section">
-				<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?status=0')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-shouye"></text>
 					<text>全部订单</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?status=101')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-daifukuan"></text>
 					<text>待付款</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?state=301')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-yishouhuo"></text>
-					<text>待收货</text>
+					<text>待发货</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?state=901')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-shouhoutuikuan"></text>
-					<text>退款/售后</text>
+					<text>已完成</text>
 				</view>
 			</view>
 			<!-- 浏览历史 -->
@@ -156,7 +156,7 @@ export default {
 	},
 	// #endif
 	computed: {
-		...mapGetters(['hasLogin', 'nickname', 'avatar'])
+		...mapGetters(['hasLogin', 'nickname', 'avatar','balance'])
 	},
 	methods: {
 		/**

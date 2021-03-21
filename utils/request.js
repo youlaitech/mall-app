@@ -66,10 +66,8 @@ service.interceptors.response.use(({
 			code,
 			msg
 		} = data
-
 		if (code && code != '00000') {
 			if (code == 'A0230') { // token过期
-				
 				uni.showToast({
 					title: '会话已过期，请重新登录',
 					success() {
@@ -78,11 +76,15 @@ service.interceptors.response.use(({
 						});
 					}
 				})
+			} else {
+				uni.showToast({
+					title: msg
+				});
+				return Promise.reject(new Error(msg || 'Error'))
 			}
 		} else {
 			return data
 		}
-
 	},
 	error => {
 		console.log('err' + error) // for debug

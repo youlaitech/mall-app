@@ -76,9 +76,8 @@
 				}
 			};
 		},
-
 		onLoad(options) {
-			console.log('========>> 进入订单列表页面, 路径:', this.$mp.page.route, '参数', options);
+			console.log('========>> 进入商品列表页面, 路径:', this.$mp.page.route, '参数', options);
 			
 			// #ifdef H5
 			this.headerTop = document.getElementsByTagName('uni-page-head')[0].offsetHeight + 'px';

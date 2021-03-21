@@ -65,8 +65,9 @@ export default {
 			this.payType = type;
 		},
 		pay() {
-			console.info('========确认支付========');
+			console.info('========付款开始========');
 			pay(this.orderId, this.payType).then(response => {
+				console.log('订单付款结果',response)
 				uni.showToast({
 					title: '订单支付成功',
 					icon: 'success',

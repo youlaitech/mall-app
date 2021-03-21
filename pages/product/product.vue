@@ -295,9 +295,8 @@
 			// 立即购买
 			buy() {
 				const skuId = this.selectedSku.id;
-				const skuNum = 1;
 				uni.navigateTo({
-					url: `/pages/order/createOrder?skuId=`+skuId+`&skuNum=`+skuNum,
+					url: `/pages/order/createOrder?skuId=`+skuId+`&count=1`,
 				});
 			},
 			// 添加至购物车

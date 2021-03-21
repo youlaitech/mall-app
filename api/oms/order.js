@@ -1,5 +1,16 @@
 import request from '@/utils/request'
 
+// 订单列表
+export function orderList(params) {
+	return request({
+		url: '/mall-oms/api.app/v1/orders',
+		method: 'get',
+		params: params,
+		headers: {
+			'auth': true // 需要认证
+		}
+	})
+}
 
 // 订单确认
 export function confirm(data) {
@@ -39,21 +50,6 @@ export function pay(orderId, payType) {
 	})
 }
 
-
-// 取消订单
-export function orderList(state) {
-	return request({
-		url: '/mall-oms/api.app/v1/orders/list',
-		method: 'get',
-		params: {
-			state: state
-		},
-		headers: {
-			'auth': true // 需要认证
-		}
-	})
-}
-
 // 取消订单
 export function cancelOrder(orderId) {
 	return request({
@@ -75,20 +71,6 @@ export function deleteOrder(orderId) {
 		method: 'delete',
 		params: {
 			id: orderId
-		},
-		headers: {
-			'auth': true // 需要认证
-		}
-	})
-}
-
-// 查询订单列表
-export function orderPage(status) {
-	return request({
-		url: '/mall-oms/api.app/v1/orders/list',
-		method: 'get',
-		params: {
-			status: status
 		},
 		headers: {
 			'auth': true // 需要认证

@@ -3,7 +3,8 @@ import { login , getUserInfo , logout } from '@/api/user'
 const state = {
   hasLogin:false,
   nickname: '',
-  avatar: ''
+  avatar: '',
+  balance:0
 }
 
 const mutations = {
@@ -15,7 +16,10 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  }
+  },
+  SET_BALANCE: (state, balance) => {
+    state.balance = balance
+  },
 }
 
 const actions = {
@@ -48,9 +52,10 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        const {nickname, avatar} = data
+        const {nickname, avatar,balance} = data
         commit('SET_NICKNAME', nickname)
         commit('SET_AVATAR', avatar)
+        commit('SET_BALANCE', balance)
         resolve(data)
       }).catch(error => {
         reject(error)
