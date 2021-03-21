@@ -1,9 +1,12 @@
 import request from '@/utils/request'
 
-export function list() {
+export function list(memberId) {
 	return request({
 		url: '/mall-ums/api.app/v1/addresses',
 		method: 'get',
+		params: {
+			memberId: memberId
+		},
 		headers: {
 			'auth': true // 需要认证
 		}
@@ -23,9 +26,9 @@ export function add(data) {
 }
 
 
-export function update(id,data) {
+export function update(id, data) {
 	return request({
-		url: '/mall-ums/api.app/v1/addresses/'+id,
+		url: '/mall-ums/api.app/v1/addresses/' + id,
 		method: 'put',
 		data: data,
 		headers: {

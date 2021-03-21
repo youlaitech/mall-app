@@ -68,7 +68,6 @@
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
 				cateList: [],
 				goodsList: [],
-
 				queryParams: {
 					page: 0,
 					limit: 10,

@@ -40,6 +40,9 @@
 
 <script>
 import { pay } from '@/api/oms/order.js';
+import {
+		mapGetters
+	} from 'vuex';
 export default {
 	data() {
 		return {
@@ -47,7 +50,6 @@ export default {
 			orderId: undefined,
 			orderSn: undefined,
 			payAmount: 0,
-			balance: 0,
 			data: {
 				imgalist: ['@/static/wxpay.png']
 			}
@@ -58,6 +60,9 @@ export default {
 		this.orderId = options.orderId;
 		this.orderSn = options.orderSn;
 		this.payAmount = options.payAmount;
+	},
+	computed: {
+		...mapGetters(['balance'])
 	},
 	methods: {
 		//选择支付方式

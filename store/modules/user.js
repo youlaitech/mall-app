@@ -4,7 +4,8 @@ const state = {
   hasLogin:false,
   nickname: '',
   avatar: '',
-  balance:0
+  balance:0,
+  memberId:''
 }
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   SET_BALANCE: (state, balance) => {
     state.balance = balance
   },
+  SET_MEMBERID: (state, memberId) => {
+    state.memberId = memberId
+  }
 }
 
 const actions = {
@@ -52,10 +56,11 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        const {nickname, avatar,balance} = data
+        const {id,nickname, avatar,balance} = data
         commit('SET_NICKNAME', nickname)
         commit('SET_AVATAR', avatar)
         commit('SET_BALANCE', balance)
+        commit('SET_MEMBERID', id)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -77,6 +82,8 @@ const actions = {
 		 commit('SET_HAS_LOGIN', false)
 		 commit('SET_NICKNAME', '')
 		 commit('SET_AVATAR', '')
+		 commit('SET_BALANCE', '')
+		 commit('SET_MEMBERID', '')
 		resolve()
       }).catch(error => {
         reject(error)

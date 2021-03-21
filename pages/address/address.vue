@@ -13,9 +13,6 @@
 			</view>
 			<text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
 		</view>
-		<text style="display:block;padding: 16upx 30upx 10upx;lihe-height: 1.6;color: #fa436a;font-size: 24upx;">
-			重要：添加和修改地址回调仅增加了一条数据做演示，实际开发中将回调改为请求后端接口刷新一下列表即可
-		</text>
 
 		<button class="add-btn" @click="addAddress('add')">新增地址</button>
 	</view>
@@ -25,6 +22,9 @@
 	import {
 		list
 	} from '@/api/ums/address.js';
+	import {
+		mapGetters
+	} from 'vuex';
 
 	export default {
 		data() {
@@ -33,15 +33,19 @@
 				addressList: []
 			};
 		},
-		onLoad(option) {
-			console.log(option.source);
-			this.source = option.source;
+		onLoad(options) {
+			console.log('========>> 进入会员地址页面, 路径：', this.$mp.page.route, '参数：', options);
+			this.source = options.source;
 			this.getAddressList()
+		},
+		computed: {
+			...mapGetters(['memberId'])
 		},
 		methods: {
 			getAddressList() {
-				list().then(response => {
-					console.log('地址列表', response.data)
+				console.log('会员ID',this.memberId)
+				list(this.memberId).then(response => {
+					console.log('获取地址数据', response.data)
 					this.addressList = response.data;
 				});
 			},
