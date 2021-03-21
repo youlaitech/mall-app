@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<scroll-view scroll-y class="left-aside">
-			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{ active: item.id === currentId }" @click="tabtap(item)">{{ item.name }}</view>
+			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{ active: item.id == currentId }" @click="tabtap(item)">{{ item.name }}</view>
 		</scroll-view>
 		<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll" :scroll-top="tabScrollTop">
 			<view v-for="item in slist" :key="item.id" class="s-list" :id="'main-' + item.id">
@@ -79,9 +79,8 @@ export default {
 			if (!this.sizeCalcState) {
 				this.calcSize();
 			}
-
 			this.currentId = item.id;
-			let index = this.slist.findIndex(sitem => sitem.parentId === item.id);
+			let index = this.slist.findIndex(sitem => sitem.parentId == item.id);
 			this.tabScrollTop = this.slist[index].top;
 		},
 		//右侧栏滚动
@@ -92,7 +91,7 @@ export default {
 			let scrollTop = e.detail.scrollTop;
 			let tabs = this.slist.filter(item => item.top <= scrollTop).reverse();
 			if (tabs.length > 0) {
-				this.currentId = tabs[0].pid;
+				this.currentId = tabs[0].parentId;
 			}
 		},
 		//计算右侧栏每个tab的高度等信息
