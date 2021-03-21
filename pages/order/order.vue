@@ -33,7 +33,7 @@
 							<view class="right">
 								<text class="title clamp">{{ orderItem.skuName }}</text>
 								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.skuQuantity }}</text>
-								<text class="price">{{ orderItem.skuTotalPrice | moneyFormatter }}</text>
+								<text class="price">{{ orderItem.skuPrice | moneyFormatter }}</text>
 							</view>
 						</view>
 						<view class="price-box">
@@ -88,8 +88,8 @@
 		},
 		data() {
 			return {
-				page:1,
-				limit:10,
+				page: 1,
+				limit: 10,
 				reload: false,
 				status: "more",
 				contentText: {
@@ -144,21 +144,21 @@
 
 		methods: {
 			loadData() {
-				let status = this.navList[this.tabCurrentIndex].status;
-
+				let navItem = this.navList[this.tabCurrentIndex]
+				let status = navItem.status
 				if (navItem.loadingType === "loading") {
 					return;
 				}
 				navItem.loadingType = "loading";
 				setTimeout(() => {
 					const orderStatus = status == 0 ? null : orderStatus
-					
-					const params={
-						page:this.page,
-						limit:this.limit,
-						status:orderStatus
+
+					const params = {
+						page: this.page,
+						limit: this.limit,
+						status: orderStatus
 					}
-					
+
 					orderList(params).then((response) => {
 						console.log('========获取订单数据========', response.data)
 						navItem.orderList = response.data;
