@@ -67,11 +67,8 @@ export function cancelOrder(orderId) {
 // 删除订单
 export function deleteOrder(orderId) {
 	return request({
-		url: '/mall-oms/api.app/v1/orders',
+		url: '/mall-oms/api.app/v1/orders/'+orderId,
 		method: 'delete',
-		params: {
-			id: orderId
-		},
 		headers: {
 			'auth': true // 需要认证
 		}

@@ -69,6 +69,7 @@
 			}
 		},
 		onLoad(option) {
+			console.log('========>> 进入会员地址管理页面, 路径：', this.$mp.page.route, '参数：', option);
 			let title = '新增收货地址';
 			if (option.type === 'edit') {
 				title = '编辑收货地址'
@@ -115,7 +116,6 @@
 			//回传已选的省市区的值
 			choseValue(res) {
 				//res数据源包括已选省市区与省市区code
-				console.log('地址选择回调', res);
 				this.lotusAddressData.visible = res.visible; //visible为显示与关闭组件标识true显示false隐藏
 				//res.isChose = 1省市区已选 res.isChose = 0;未选
 				if (res.isChose) {
@@ -133,7 +133,6 @@
 					this.addressData.provice = provice
 					this.addressData.city = city
 					this.addressData.area = town
-					console.log(this.addressData)
 				}
 			},
 
@@ -159,6 +158,7 @@
 
 				if (data.id) {
 					update(data.id,data).then(response => {
+						console.log('修改地址响应',response)
 						this.$api.prePage().refreshList(data, this.manageType);
 						this.$api.msg(`地址修改成功`);
 						setTimeout(() => {
@@ -169,6 +169,7 @@
 				} else {
 					add(data).then(response => {
 						//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
+						console.log("添加地址响应",response)
 						this.$api.prePage().refreshList(data, this.manageType);
 						this.$api.msg(`地址添加成功`);
 						setTimeout(() => {

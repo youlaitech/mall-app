@@ -34,7 +34,7 @@
 			};
 		},
 		onLoad(options) {
-			console.log('========>> 进入会员地址页面, 路径：', this.$mp.page.route, '参数：', options);
+			console.log('========>> 进入会员地址列表页面, 路径：', this.$mp.page.route, '参数：', options);
 			this.source = options.source;
 			this.getAddressList()
 		},
@@ -43,9 +43,8 @@
 		},
 		methods: {
 			getAddressList() {
-				console.log('会员ID',this.memberId)
 				list(this.memberId).then(response => {
-					console.log('获取地址数据', response.data)
+					console.log('获取会员地址', response.data)
 					this.addressList = response.data;
 				});
 			},
@@ -53,7 +52,7 @@
 			checkAddress(item) {
 				if (this.source == 1) {
 					//this.$api.prePage()获取上一页实例，在App.vue定义
-					this.$api.prePage().addressData = item;
+					this.$api.prePage().selectedAddress = item;
 					uni.navigateBack();
 				}
 			},

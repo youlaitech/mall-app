@@ -31,9 +31,9 @@
 						 :key="itemIndex">
 							<image class="goods-img" :src="orderItem.skuPic" mode="aspectFill"></image>
 							<view class="right">
-								<text class="title clamp">{{ orderItem.skuName }}</text>
+								<text class="title clamp">{{ orderItem.spuName }}</text>
 								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.skuQuantity }}</text>
-								<text class="price">{{ orderItem.skuPrice | moneyFormatter }}</text>
+								<text class="price">{{ orderItem.skuTotalPrice | moneyFormatter }}</text>
 							</view>
 						</view>
 						<view class="price-box">
@@ -140,6 +140,7 @@
 			console.log('========>> 进入订单列表页面, 路径：', this.$mp.page.route, '参数：', options);
 			this.tabCurrentIndex = this.navList.map(item => item.status).indexOf(parseInt(options.status));
 			this.loadData();
+			
 		},
 
 		methods: {
@@ -150,9 +151,9 @@
 					return;
 				}
 				navItem.loadingType = "loading";
+				this.limit=this.limit+10;
 				setTimeout(() => {
 					const orderStatus = status == 0 ? null : orderStatus
-
 					const params = {
 						page: this.page,
 						limit: this.limit,
@@ -168,6 +169,7 @@
 
 					//判断是否还有数据， 有改为 more， 没有改为noMore
 					navItem.loadingType = "more";
+					
 				}, 600);
 			},
 
