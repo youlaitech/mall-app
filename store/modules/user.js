@@ -37,7 +37,7 @@ const actions = {
         encryptedData: encryptedData,
         iv: iv
       }).then(response => {
-        const {access_token, token_type } = response
+        const {access_token, token_type } = response.data
 		const token = token_type + " " +access_token
 		uni.setStorageSync('token',token)
 		commit('SET_HAS_LOGIN', true)
