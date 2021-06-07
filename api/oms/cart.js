@@ -4,7 +4,7 @@ import request from '@/utils/request'
 // 查询购物车
 export function getCart() {
 	return request({
-		url: '/mall-oms/api.app/v1/carts',
+		url: '/mall-oms/app-api/v1/carts',
 		method: 'get',
 		headers: {
 			'auth': true // 需要认证
@@ -18,7 +18,7 @@ export function getCart() {
  */
 export function checkAll(params) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts/_check',
+		url: '/mall-oms/app-api/v1/carts/_check',
 		method: 'put',
 		params: params,
 		headers: {
@@ -31,7 +31,7 @@ export function checkAll(params) {
 // 清空购物车
 export function deleteCart() {
 	return request({
-		url: '/mall-oms/api.app/v1/carts',
+		url: '/mall-oms/app-api/v1/carts',
 		method: 'delete',
 		headers: {
 			'auth': true
@@ -43,7 +43,7 @@ export function deleteCart() {
 // 添加购物车
 export function addCartItem(skuId) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts',
+		url: '/mall-oms/app-api/v1/carts',
 		method: 'post',
 		params: {
 			skuId: skuId
@@ -57,7 +57,7 @@ export function addCartItem(skuId) {
 // 更新购物车商品
 export function updateCartItem(skuId, data) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts/skuId/' + skuId,
+		url: '/mall-oms/app-api/v1/carts/skuId/' + skuId,
 		method: 'put',
 		data: data,
 		headers: {
@@ -70,7 +70,7 @@ export function updateCartItem(skuId, data) {
 // 批量删除购物车商品
 export function removeCartItem(skuId) {
 	return request({
-		url: '/mall-oms/api.app/v1/carts/skuId/' + skuId,
+		url: '/mall-oms/app-api/v1/carts/skuId/' + skuId,
 		method: 'delete',
 		headers: {
 			'auth': true

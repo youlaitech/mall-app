@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function list(params) {
 	return request({
-		url: '/mall-pms/api.app/v1/products',
+		url: '/mall-pms/app-api/v1/products',
 		method: 'get',
 		params: params
 	})
@@ -11,7 +11,7 @@ export function list(params) {
 
 export function detail(id) {
 	return request({
-		url: '/mall-pms/api.app/v1/products/' + id,
+		url: '/mall-pms/app-api/v1/products/' + id,
 		method: 'get'
 	})
 }
@@ -22,7 +22,7 @@ export function detail(id) {
  */
 export function getSkuStock(skuId) {
 	return request({
-		url: '/mall-pms/api.app/v1/skus/' + skuId + '/stock',
+		url: '/mall-pms/app-api/v1/skus/' + skuId + '/stock',
 		method: 'get'
 	})
 }

@@ -9,7 +9,7 @@ export function login(data) {
 		method: 'post',
 		params: data,
 		headers: {
-			'Authorization': 'Basic eW91bGFpLW1hbGwtd2VhcHA6MTIzNDU2' // 客户端信息加密摘要认证，明文：youlai-mall-weapp:123456
+			'Authorization': 'Basic eW91bGFpLXdlYXBwOjEyMzQ1Ng==' // 客户端信息加密摘要认证，明文：youlai-weapp:123456
 		}
 	})
 }
@@ -26,7 +26,7 @@ export function logout() {
 
 export function getUserInfo() {
 	return request({
-		url: '/mall-ums/api.app/v1/members/me',
+		url: '/mall-ums/app-api/v1/members/me',
 		method: 'get',
 		headers:{
 			'auth':true

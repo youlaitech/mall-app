@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function list(memberId) {
 	return request({
-		url: '/mall-ums/api.app/v1/addresses',
+		url: '/mall-ums/app-api/v1/addresses',
 		method: 'get',
 		params: {
 			memberId: memberId
@@ -16,7 +16,7 @@ export function list(memberId) {
 
 export function add(data) {
 	return request({
-		url: '/mall-ums/api.app/v1/addresses',
+		url: '/mall-ums/app-api/v1/addresses',
 		method: 'post',
 		data: data,
 		headers: {
@@ -28,7 +28,7 @@ export function add(data) {
 
 export function update(id, data) {
 	return request({
-		url: '/mall-ums/api.app/v1/addresses/' + id,
+		url: '/mall-ums/app-api/v1/addresses/' + id,
 		method: 'put',
 		data: data,
 		headers: {
