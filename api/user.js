@@ -4,6 +4,7 @@
 import request from '@/utils/request'
 
 export function login(data) {
+
 	return request({
 		url: '/youlai-auth/oauth/token',
 		method: 'post',
@@ -28,8 +29,8 @@ export function getUserInfo() {
 	return request({
 		url: '/mall-ums/app-api/v1/members/me',
 		method: 'get',
-		headers:{
-			'auth':true
+		headers: {
+			'auth': true
 		}
 	})
 }
