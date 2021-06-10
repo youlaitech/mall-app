@@ -113,24 +113,16 @@
 					lang: 'zh_CN',
 					desc: '获取用户相关信息',
 					success: response => {
-						console.log('userInfo', response)
-
-						const {
-							rawData,
-							signature
-						} = response
-
-						this.login(rawData, signature)
+						this.login(response.rawData)
 					}
 				})
 			},
 
-			async login(rawData, signature) {
+			async login(rawData) {
 				this.logining = true;
 				this.$store.dispatch('user/login', {
 					code: await this.getCode(),
-					rawData: rawData,
-					signature: signature
+					rawData
 				}).then(res => {
 					this.$store.dispatch('user/getUserInfo');
 					uni.navigateBack()

@@ -37,16 +37,10 @@ const actions = {
 	}, data) {
 		const {
 			code,
-			rawData,
-			signature
+			rawData
 		} = data
 		return new Promise((resolve, reject) => {
-			login({
-				grant_type: 'password',
-				code: code,
-				rawData: rawData,
-				signature: signature
-			}).then(response => {
+			login(code,rawData).then(response => {
 				const {
 					access_token,
 					token_type

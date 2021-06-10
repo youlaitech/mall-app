@@ -3,15 +3,11 @@
  */
 import request from '@/utils/request'
 
-export function login(data) {
-
+export function login(code, rawData) {
 	return request({
-		url: '/youlai-auth/oauth/token',
+		url: '/youlai-auth/oauth/token/' + code,
 		method: 'post',
-		params: data,
-		headers: {
-			'Authorization': 'Basic eW91bGFpLXdlYXBwOjEyMzQ1Ng==' // 客户端信息加密摘要认证，明文：youlai-weapp:123456
-		}
+		data: rawData
 	})
 }
 
