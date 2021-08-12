@@ -5,7 +5,8 @@
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>
 			<view v-if="hasLogin" class="empty-tips">
 				空空如也
-				<navigator class="navigator" v-if="hasLogin" url="../index/index" open-type="switchTab">随便逛逛></navigator>
+				<navigator class="navigator" v-if="hasLogin" url="../index/index" open-type="switchTab">随便逛逛>
+				</navigator>
 			</view>
 			<view v-else class="empty-tips">
 				空空如也
@@ -15,17 +16,22 @@
 		<view v-else>
 			<!-- 列表 -->
 			<view class="cart-list">
-				<block v-for="(item, index) in cartItems" :key="item.skuId">
+				<block v-for="(item, index) in cartItemList" :key="item.skuId">
 					<view class="cart-item" :class="{ 'b-b': index !== cartList.length - 1 }">
 						<view class="image-wrapper">
-							<image :src="item.pic" class="loaded" mode="aspectFill" lazy-load @load="onImageLoad('cartItems', index)" @error="onImageError('cartItems', index)"></image>
-							<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="handleCheckItem(index, item.skuId)"></view>
+							<image :src="item.picUrl" class="loaded" mode="aspectFill" lazy-load
+								@load="onImageLoad('cartItemList', index)" @error="onImageError('cartItemList', index)">
+							</image>
+							<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }"
+								@click="handleCheckItem(index, item.skuId)"></view>
 						</view>
 						<view class="item-right">
 							<text class="clamp title">{{ item.skuName }}</text>
 							<text class="price">¥{{ item.price | moneyFormatter }}</text>
-							<uni-number-box  class="step" :min="1" :max="item.stock" :value="item.count > item.stock ? item.stock : item.count"
-							 :isMax="item.count >= item.stock ? true : false" :isMin="item.count === 1" :index="index" @eventChange="handleChangeCount($event, item.skuId)" />
+							<uni-number-box class="step" :min="1" :max="item.stock"
+								:value="item.count > item.stock ? item.stock : item.count"
+								:isMax="item.count >= item.stock ? true : false" :isMin="item.count === 1"
+								:index="index" @eventChange="handleChangeCount($event, item.skuId)" />
 						</view>
 						<text class="del-btn yticon icon-fork" @click="removeCartItem(item.skuId)"></text>
 					</view>
@@ -34,7 +40,8 @@
 			<!-- 底部菜单栏 -->
 			<view class="action-section">
 				<view class="checkbox">
-					<image :src="allChecked ? '/static/selected.png' : '/static/select.png'" mode="aspectFit" @click="handleCheckAll()"></image>
+					<image :src="allChecked ? '/static/selected.png' : '/static/select.png'" mode="aspectFit"
+						@click="handleCheckAll()"></image>
 					<view class="clear-btn" :class="{ show: allChecked }" @click="clearCart">清空</view>
 				</view>
 				<view class="total-box">
@@ -76,7 +83,7 @@
 				totalPrice: 0, //总价格
 				allChecked: false, //全选状态  true|false
 				empty: false, //空白页现实  true|false
-				cartItems: [],
+				cartItemList: [],
 				coupon: 0
 			};
 		},
@@ -88,7 +95,7 @@
 		},
 		watch: {
 			//显示空白页
-			cartItems(e) {
+			cartItemList(e) {
 				let empty = e.length === 0 ? true : false;
 				if (this.empty !== empty) {
 					this.empty = empty;
@@ -102,18 +109,12 @@
 			//请求数据
 			async loadData() {
 				getCart().then(response => {
-					this.cartItems = [];
+					this.cartItemList = [];
 					this.totalPrice = 0;
+
 					console.log('获取购物车数据', response.data);
-					const {
-						items
-					} = response.data;
-					if (items.length > 0) {
-						items.forEach((item,index)=>{
-							this.$set(this.cartItems,index,item)
-						})
-						this.changeCart(); //计算总价
-					}
+					this.cartItemList = response.data;
+					this.changeCart(); //计算总价
 				});
 			},
 
@@ -142,7 +143,7 @@
 			// 购物车(单个)商品选中/取消选中事件
 			handleCheckItem(index, skuId) {
 				const params = {
-					checked: !this.cartItems[index].checked
+					checked: !this.cartItemList[index].checked
 				};
 				updateCartItem(skuId, params).then(() => {
 					this.loadData();
@@ -182,24 +183,24 @@
 			},
 
 			changeCart() {
-				if (this.cartItems.length == 0) {
+				if (this.cartItemList.length == 0) {
 					this.empty = true;
 					return;
 				}
 
 				let checked = true;
-				for (let i = 0; i < this.cartItems.length; i++) {
-					if (this.cartItems[i].checked == false) {
+				for (let i = 0; i < this.cartItemList.length; i++) {
+					if (this.cartItemList[i].checked == false) {
 						checked = false;
 						break;
 					}
 				}
 				this.allChecked = checked;
 
-				if (this.cartItems.length == 1) {
-					this.totalPrice = this.cartItems[0].count * this.cartItems[0].price;
+				if (this.cartItemList.length == 1) {
+					this.totalPrice = this.cartItemList[0].count * this.cartItemList[0].price;
 				} else {
-					this.totalPrice = this.cartItems
+					this.totalPrice = this.cartItemList
 						.filter(item => item.checked)
 						.reduce((prev, curr) => {
 							return prev.price * prev.count + curr.price * curr.count;

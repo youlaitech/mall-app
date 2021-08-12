@@ -1,17 +1,17 @@
 import request from '@/utils/request'
 
-export function list(params) {
+export function getGoodsList(params) {
 	return request({
-		url: '/mall-pms/app-api/v1/products',
+		url: '/mall-pms/app-api/v1/goods',
 		method: 'get',
 		params: params
 	})
 }
 
 
-export function detail(id) {
+export function getGoodsById(id) {
 	return request({
-		url: '/mall-pms/app-api/v1/products/' + id,
+		url: '/mall-pms/app-api/v1/goods/' + id,
 		method: 'get'
 	})
 }
