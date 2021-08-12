@@ -96,7 +96,7 @@
 
 		<view class="detail-desc">
 			<view class="d-header"><text>图文详情</text></view>
-			<rich-text :nodes="desc"></rich-text>
+			<rich-text :nodes="goodsInfo.detail"></rich-text>
 		</view>
 
 		<!-- 底部操作菜单 -->
@@ -126,13 +126,13 @@
 			<view class="mask"></view>
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
-					<image :src="selectedSku.pic"></image>
+					<image :src="selectedSku.picUrl"/>
 					<view class="right">
 						<text class="price">¥{{selectedSku.price|moneyFormatter}}</text>
 						<text class="stock">库存：{{selectedSku.stock}}件</text>
 						<view class="selected">
 							已选：
-							<text class="selected-text" v-for="(sItem, sIndex) in selectedSpec"
+							<text class="selected-text" v-for="(sItem, sIndex) in selectedSpecValues"
 								:key="sIndex">{{ sItem.value }}</text>
 						</view>
 					</view>
@@ -188,16 +188,7 @@
 				selectedSku: {},
 				selectedSpecValues: [], // 选择的规格项集合
 				favorite: true,
-				shareList: [],
-				desc: `
-					<div style="width:100%">
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i4/479184430/O1CN01nCpuLc1iaz4bcSN17_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd2.alicdn.com/imgextra/i2/479184430/O1CN01gwbN931iaz4TzqzmG_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i3/479184430/O1CN018wVjQh1iaz4aupv1A_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd4.alicdn.com/imgextra/i4/479184430/O1CN01tWg4Us1iaz4auqelt_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd1.alicdn.com/imgextra/i1/479184430/O1CN01Tnm1rU1iaz4aVKcwP_!!479184430.jpg_400x400.jpg" />
-					</div>
-				`,
+				shareList: []
 
 			};
 		},
@@ -216,7 +207,7 @@
 				this.specList = specList;
 				this.skuList = skuList;
 
-				// 默认选择第一条规格
+				// 默认选择规格的第一项
 				this.selectedSpec = []
 				this.specList.forEach(item => {
 					if (item.values.length > 0) {
@@ -225,12 +216,12 @@
 					}
 				})
 
-				// 默认选择的规格id排序拼接字符串  例如: 1,2,3
+				// 默认选择规格项ID的集合
 				const defaultSelectedSpecIds = this.selectedSpecValues.map(item => item.id)
-				// 根据规格排序字符串找到匹配的sku信息
-				this.selectedSku = this.skuList.filter(sku => sku.specIds.split('_').equals(defaultSelectedSpecIds))[0]
+				// 默认规格项集合生成默认商品库存单元
+				this.selectedSku = this.skuList.filter(sku => sku.specIds.split('_').equals(
+					defaultSelectedSpecIds))[0]
 			});
-
 			this.shareList = await this.$api.json('shareList');
 		},
 		methods: {
@@ -264,11 +255,10 @@
 				const selectedSpecValueIds = this.selectedSpecValues.map(item => item.id)
 
 				// 根据选择的规格项匹配商品库存单元
-				console.log('skuList',this.skuList)
+				this.selectedSku = this.skuList.filter(item => item.specIds.split('_').equals(selectedSpecValueIds))[0]
 				
-				this.selectedSku = this.skuList.filter(item => item.specIds.split('_').equals(this.selectedSpecValues))[0]
-				
-				console.log('this.selectedSku ',this.selectedSku )
+				console.log('您选择的商品:',this.selectedSku)
+
 			},
 			// 分享
 			share() {
