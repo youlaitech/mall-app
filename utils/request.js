@@ -81,14 +81,14 @@ service.interceptors.response.use(({
 					title: msg,
 					icon: 'none'
 				});
-				return Promise.reject(new Error(msg || 'Error'))
+				return Promise.reject(new Error(msg || 'Errors'))
 			}
 		} else {
-			return data
+			return  data 
 		}
 	},
 	error => {
-		console.log('err' + error) // for debug
+		console.log('err' + error) 
 		return Promise.reject(error)
 	}
 )
