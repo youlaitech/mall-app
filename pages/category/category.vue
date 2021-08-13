@@ -8,7 +8,7 @@
 				<text class="s-item">{{ item.name }}</text>
 				<view class="t-list">
 					<view @click="navToList(item.id, titem.id)" v-if="titem.parentId === item.id" class="t-item" v-for="titem in tlist" :key="titem.id">
-						<image :src="titem.icon"></image>
+						<image :src="titem.iconUrl"></image>
 						<text>{{ titem.name }}</text>
 					</view>
 				</view>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { list } from '@/api/pms/category.js';
+import { getCategoryList } from '@/api/pms/category.js';
 export default {
 	data() {
 		return {
@@ -35,7 +35,7 @@ export default {
 	},
 	methods: {
 		async loadData() {
-			list().then(response => {
+			getCategoryList().then(response => {
 				const categoryList = response.data;
 				categoryList.forEach(first => {
 					this.flist.push(first);

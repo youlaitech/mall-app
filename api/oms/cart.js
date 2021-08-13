@@ -19,7 +19,7 @@ export function getCart() {
 export function checkAll(params) {
 	return request({
 		url: '/mall-oms/app-api/v1/carts/_check',
-		method: 'put',
+		method: 'patch',
 		params: params,
 		headers: {
 			'auth': true

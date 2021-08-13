@@ -7,7 +7,8 @@
 				<text>价格</text>
 				<view class="p-box">
 					<text :class="{ active: priceOrder === 1 && filterIndex === 2 }" class="yticon icon-shang"></text>
-					<text :class="{ active: priceOrder === 2 && filterIndex === 2 }" class="yticon icon-shang xia"></text>
+					<text :class="{ active: priceOrder === 2 && filterIndex === 2 }"
+						class="yticon icon-shang xia"></text>
 				</view>
 			</view>
 			<text class="cate-item yticon icon-fenlei1" @click="toggleCateMask('show')"></text>
@@ -15,7 +16,7 @@
 		<view class="goods-list">
 			<view v-for="(item, index) in goodsList" :key="index" class="goods-item" @click="navToDetailPage(item)">
 				<view class="image-wrapper">
-					<image :src="item.pic" mode="aspectFill"></image>
+					<image :src="item.picUrl" mode="aspectFill"></image>
 				</view>
 				<text class="title clamp">{{ item.name }}</text>
 				<view class="price-box">
@@ -26,13 +27,15 @@
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
 
-		<view class="cate-mask" :class="cateMaskState === 0 ? 'none' : cateMaskState === 1 ? 'show' : ''" @click="toggleCateMask">
+		<!-- 分类列表 -->
+		<view class="cate-mask" :class="cateMaskState === 0 ? 'none' : cateMaskState === 1 ? 'show' : ''"
+			@click="toggleCateMask">
 			<view class="cate-content" @click.stop.prevent="stopPrevent" @touchmove.stop.prevent="stopPrevent">
 				<scroll-view scroll-y class="cate-list">
 					<view v-for="item in cateList" :key="item.id">
 						<view class="cate-item b-b two">{{ item.name }}</view>
-						<view v-for="tItem in item.children" :key="tItem.id" class="cate-item b-b" :class="{ active: tItem.id == cateId }"
-						 @click="changeCate(tItem)">
+						<view v-for="tItem in item.children" :key="tItem.id" class="cate-item b-b"
+							:class="{ active: tItem.id == cateId }" @click="changeCate(tItem)">
 							{{ tItem.name }}
 						</view>
 					</view>
@@ -46,12 +49,12 @@
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 
 	import {
-		list as getCategoryList
+		getCategoryList
 	} from '@/api/pms/category.js';
 
 	import {
-		list as getGoodsList
-	} from '@/api/pms/product.js';
+		getGoodsList
+	} from '@/api/pms/goods.js';
 
 	export default {
 		components: {
@@ -77,11 +80,11 @@
 		},
 		onLoad(options) {
 			console.log('========>> 进入商品列表页面, 路径:', this.$mp.page.route, '参数', options);
-			
+
 			// #ifdef H5
 			this.headerTop = document.getElementsByTagName('uni-page-head')[0].offsetHeight + 'px';
 			// #endif
-			
+
 			this.cateId = options.tid;
 			this.loadCateList(options.fid, options.sid);
 		},
@@ -110,7 +113,7 @@
 				});
 			},
 			//加载商品 ，带下拉刷新和上滑加载
-			 loadData(type = 'add', loading) {
+			loadData(type = 'add', loading) {
 				//没有更多直接返回
 				if (type === 'add') { // 上滑加载
 					if (this.loadingType === 'nomore') {
@@ -127,15 +130,33 @@
 					this.goodsList = [];
 				}
 
+
+				// 排序处理
+				let isAsc = true
+				let orderBy = undefined
+
+				if (this.filterIndex === 1) { // 销量排序
+					orderBy = 'sales'
+				}
+				if (this.filterIndex === 2) { // 价格排序
+					orderBy = 'price'
+					if (this.priceOrder == 1) { // 升序
+						isAsc = true
+					} else {
+						isAsc = false // 降序
+					}
+				}
+
 				this.queryParams.categoryId = this.cateId
+				this.queryParams.isAsc = isAsc
+				this.queryParams.orderBy = orderBy
+
 				getGoodsList(this.queryParams).then(response => {
 					const {
 						data,
 						total
 					} = response
-
-					this.goodsList = this.goodsList.concat(data );
-
+					this.goodsList = this.goodsList.concat(data);
 					//判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
 					this.loadingType = this.goodsList.length >= total ? 'nomore' : 'more';
 					if (type === 'refresh') {
@@ -146,20 +167,6 @@
 						}
 					}
 				});
-
-
-				//筛选，测试数据直接前端筛选了
-				if (this.filterIndex === 1) {
-					goodsList.sort((a, b) => b.sales - a.sales);
-				}
-				if (this.filterIndex === 2) {
-					goodsList.sort((a, b) => {
-						if (this.priceOrder == 1) {
-							return a.price - b.price;
-						}
-						return b.price - a.price;
-					});
-				}
 
 			},
 			//筛选点击
