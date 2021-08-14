@@ -190,21 +190,22 @@
 
 				let checked = true;
 				for (let i = 0; i < this.cartItemList.length; i++) {
-					if (this.cartItemList[i].checked == false) {
+					if (this.cartItemList[i].checked === false) {
 						checked = false;
 						break;
 					}
 				}
 				this.allChecked = checked;
 
-				if (this.cartItemList.length == 1) {
-					this.totalPrice = this.cartItemList[0].count * this.cartItemList[0].price;
+				const checkedItemList = this.cartItemList.filter(item => item.checked)
+				if (!checkedItemList || checkedItemList.length === 0) {
+					this.totalPrice = 0
+				} else if (checkedItemList.length == 1) {
+					this.totalPrice = checkedItemList[0].count * checkedItemList[0].price;
 				} else {
-					this.totalPrice = this.cartItemList
-						.filter(item => item.checked)
-						.reduce((prev, curr) => {
-							return prev.price * prev.count + curr.price * curr.count;
-						});
+					this.totalPrice = checkedItemList.reduce((prev, curr) => {
+						return prev.price * prev.count + curr.price * curr.count;
+					});
 				}
 			},
 
