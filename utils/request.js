@@ -62,34 +62,28 @@ service.interceptors.response.use(({
 		config,
 		data
 	}) => {
-		const {
-			code,
-			msg
-		} = data
-		if (code != '00000') {
-			if (code == 'A0230') { // token过期
-				uni.showToast({
-					title: '会话已过期，请重新登录',
-					success() {
-						uni.navigateTo({
-							url: `/pages/public/login`,
-						});
-					}
-				})
-			} else {
-				uni.showToast({
-					title: msg,
-					icon: 'none'
-				});
-				return Promise.reject(new Error(msg || 'Errors'))
-			}
-		} else {
-			return  data 
-		}
+		return data
 	},
 	error => {
-		console.log('err' + error) 
-		return Promise.reject(error)
+		const {
+			code,msg
+		} = error.response.data
+		if (code === 'A0230') { // token过期
+			uni.showToast({
+				title: '会话已过期，请重新登录',
+				success() {
+					uni.navigateTo({
+						url: `/pages/public/login`,
+					});
+				}
+			})
+		} else {
+			uni.showToast({
+				title: msg,
+				icon: 'none'
+			});
+			return Promise.reject(new Error(msg || 'Errors'))
+		}
 	}
 )
 
