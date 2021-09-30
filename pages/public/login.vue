@@ -96,6 +96,33 @@
 				}
 			},
 
+
+
+			getUserProfile() {
+				uni.getUserProfile({
+					lang: 'zh_CN',
+					desc: '获取用户相关信息',
+					success: response => {
+						console.log('获取用户信息',response)
+						this.login(response.rawData)
+					}
+				})
+			},
+
+
+			async login(userInfo) {
+				this.logining = true;
+				this.$store.dispatch('user/login', {
+					code: await this.getCode(),
+					userInfo
+				}).then(res => {
+					this.$store.dispatch('user/getUserInfo');
+					uni.navigateBack()
+				}).catch(() => {
+					this.logining = false;
+				});
+			},
+			
 			getCode() {
 				return new Promise((resolve, reject) => {
 					uni.login({
@@ -106,29 +133,6 @@
 						fail: reject
 					})
 				})
-			},
-
-			getUserProfile() {
-				uni.getUserProfile({
-					lang: 'zh_CN',
-					desc: '获取用户相关信息',
-					success: response => {
-						this.login(response.rawData)
-					}
-				})
-			},
-
-			async login(rawData) {
-				this.logining = true;
-				this.$store.dispatch('user/login', {
-					code: await this.getCode(),
-					rawData
-				}).then(res => {
-					this.$store.dispatch('user/getUserInfo');
-					uni.navigateBack()
-				}).catch(() => {
-					this.logining = false;
-				});
 			}
 		}
 	};

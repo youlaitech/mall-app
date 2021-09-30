@@ -37,10 +37,10 @@ const actions = {
 	}, data) {
 		const {
 			code,
-			rawData
+			userInfo
 		} = data
 		return new Promise((resolve, reject) => {
-			login(code,rawData).then(response => {
+			login(code,userInfo).then(response => {
 				const {
 					access_token,
 					token_type

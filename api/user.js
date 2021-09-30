@@ -3,11 +3,14 @@
  */
 import request from '@/utils/request'
 
-export function login(code, rawData) {
+export function login(code, userInfo) {
 	return request({
-		url: '/youlai-auth/oauth/token/' + code,
-		method: 'post',
-		data: rawData
+		url: '/youlai-auth/oauth/token',
+		method:'post',
+		params: {code:code,userInfo:userInfo,grant_type:'wechat'},
+		headers: {
+			'Authorization': 'Basic eW91bGFpLW1hbGwtd2VhcHA6MTIzNDU2' // 客户端信息加密摘要认证，明文：youlai-mall-weapp:123456
+		}
 	})
 }
 
