@@ -67,7 +67,7 @@
 				"navigationBarTitleText": "购物车"
 			}
 		}, {
-			"path": "pages/public/login",
+			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom",

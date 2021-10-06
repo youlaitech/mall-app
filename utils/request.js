@@ -73,7 +73,7 @@ service.interceptors.response.use(({
 				title: '会话已过期，请重新登录',
 				success() {
 					uni.navigateTo({
-						url: `/pages/public/login`,
+						url: `/pages/login/login`,
 					});
 				}
 			})

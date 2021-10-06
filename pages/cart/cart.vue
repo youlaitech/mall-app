@@ -219,7 +219,7 @@
 			// 跳转到登录页
 			navToLogin() {
 				uni.navigateTo({
-					url: '/pages/public/login'
+					url: '/pages/login/login'
 				});
 			}
 		}

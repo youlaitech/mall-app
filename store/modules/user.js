@@ -31,7 +31,7 @@ const mutations = {
 }
 
 const actions = {
-	// login
+	//  #ifdef MP
 	login({
 		commit
 	}, data) {
@@ -54,6 +54,33 @@ const actions = {
 			})
 		})
 	},
+	// #endif
+	
+	//  #ifndef MP
+	login({
+		commit
+	}, data) {
+		const {
+			mobile,
+			code
+		} = data
+		return new Promise((resolve, reject) => {
+			login(mobile,code).then(response => {
+				const {
+					access_token,
+					token_type
+				} = response.data
+				const token = token_type + " " + access_token
+				uni.setStorageSync('token', token)
+				commit('SET_HAS_LOGIN', true)
+				resolve()
+			}).catch(error => {
+				reject(error)
+			})
+		})
+	},
+	// #endif
+	
 
 	// get user info
 	getUserInfo({

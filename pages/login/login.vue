@@ -5,34 +5,36 @@
 		<view class="right-top-sign"></view>
 		<!-- 设置白色背景防止软键盘把下部绝对定位元素顶上来盖住输入框等 -->
 		<view class="wrapper">
+			<!-- #ifdef MP -->
 			<button class="confirm-btn" @click.stop="getUserProfile">小程序登录授权</button>
 			<view class="tip">
 				温馨提示:未注册有来小店的用户,初次登录时将完成注册
 			</view>
-			<!-- <view class="left-top-sign">LOGIN</view>
+			<!-- #endif -->
+
+			<!-- #ifndef MP -->
+			<view class="left-top-sign">LOGIN</view>
 			<view class="welcome">欢迎回来！</view>
 			<view class="input-content">
-				<view class="input-item">
+				<view class="input-item" style="position: relative;">
 					<text class="tit">手机号码</text>
-					<input type="number" :value="mobile" placeholder="请输入手机号码" maxlength="11" data-key="mobile" @input="inputChange" />
+					<input :value="mobile" placeholder="请输入手机号码" maxlength="11" data-key="mobile"
+						@input="inputChange" />
+					<button :disabled="!isCorretPhoneNumber" class="sms-code-btn"
+						:class="{correct_phone_number:isCorretPhoneNumber}" @click.prevent="getSmsCode">
+						{{countdown>0 ? `(${countdown}s)已发送` : '获取验证码'}}
+					</button>
 				</view>
+
 				<view class="input-item">
-					<text class="tit">密码</text>
-					<input
-						type="mobile"
-						value=""
-						placeholder="8-18位不含特殊字符的数字、字母组合"
-						placeholder-class="input-empty"
-						maxlength="20"
-						password
-						data-key="password"
-						@input="inputChange"
-						@confirm="toLogin"
-					/>
+					<text class="tit">验证码</text>
+					<input :value="code" placeholder="6位随机数字组合" placeholder-class="input-empty" maxlength="20"
+						data-key="code" @input="inputChange" @confirm="toLogin" />
 				</view>
-			</view> 
+			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
-			<view class="forget-section">忘记密码?</view>-->
+			<view class="forget-section">忘记密码?</view>
+			<!-- #endif -->
 		</view>
 		<view class="register-section">
 			还没有账号?
@@ -46,13 +48,26 @@
 		mapMutations
 	} from 'vuex';
 
+	import {
+		sendSmsCode
+	} from '@/api/user.js';
+
 	export default {
 		data() {
 			return {
-				mobile: '',
-				password: '',
-				logining: false
+				mobile: '17621590365',
+				code: '666666',
+				password: undefined,
+				logining: false,
+				countdown: 0,
+				timer: null
 			};
+		},
+		computed: {
+			// 手机号码验证
+			isCorretPhoneNumber() {
+				return /^1[3456789]\d{9}$/.test(this.mobile);
+			}
 		},
 		onLoad() {},
 		methods: {
@@ -67,49 +82,17 @@
 			toRegist() {
 				this.$api.msg('去注册');
 			},
-			async toLogin() {
-				this.logining = true;
-				const {
-					mobile,
-					password
-				} = this;
-				/* 数据验证模块
-					if(!this.$api.match({
-						mobile,
-						password
-					})){
-						this.logining = false;
-						return;
-					}
-					*/
-				const sendData = {
-					mobile,
-					password
-				};
-				const result = await this.$api.json('userInfo');
-				if (result.status === 1) {
-					this.login(result.data);
-					uni.navigateBack();
-				} else {
-					this.$api.msg(result.msg);
-					this.logining = false;
-				}
-			},
-
-
 
 			getUserProfile() {
 				uni.getUserProfile({
 					lang: 'zh_CN',
 					desc: '获取用户相关信息',
 					success: response => {
-						console.log('获取用户信息',response)
+						console.log('获取用户信息', response)
 						this.login(response.rawData)
 					}
 				})
 			},
-
-
 			async login(userInfo) {
 				this.logining = true;
 				this.$store.dispatch('user/login', {
@@ -122,7 +105,7 @@
 					this.logining = false;
 				});
 			},
-			
+
 			getCode() {
 				return new Promise((resolve, reject) => {
 					uni.login({
@@ -133,7 +116,38 @@
 						fail: reject
 					})
 				})
-			}
+			},
+
+			//  #ifndef MP
+			getSmsCode() {
+				if (!this.countdown) {
+					this.countdown = 60;
+					this.timer = setInterval(() => {
+						this.countdown--;
+						if (this.countdown <= 0) {
+							clearInterval(this.timer)
+						}
+					}, 1000);
+
+					sendSmsCode(this.mobile).then(res => {
+						this.$api.msg('短信已发送');
+					})
+				}
+			},
+
+			async toLogin() {
+				this.logining = true;
+				this.$store.dispatch('user/login', {
+					code: this.code,
+					mobile: this.mobile
+				}).then(res => {
+					this.$store.dispatch('user/getUserInfo');
+					uni.navigateBack()
+				}).catch(() => {
+					this.logining = false;
+				});
+			},
+			// #endif
 		}
 	};
 </script>
@@ -257,6 +271,20 @@
 			width: 100%;
 		}
 	}
+
+	.sms-code-btn {
+		position: absolute;
+		right: 0;
+		border: none;
+		color: #ccc;
+		background: transparent;
+		font-size: 14px;
+	}
+
+	.correct_phone_number {
+		color: #000;
+	}
+
 
 	.confirm-btn {
 		width: 630upx;

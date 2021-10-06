@@ -3,7 +3,7 @@
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
-				<view class="portrait-box" @click="hasLogin == false && navTo('/pages/public/login')">
+				<view class="portrait-box" @click="hasLogin == false && navTo('/pages/login/login')">
 					<image class="portrait" :src="avatar || '/static/missing-face.png'"></image>
 				</view>
 				<view class="info-box">
@@ -166,7 +166,7 @@ export default {
 		navTo(url) {
 			console.log('跳转路径', url);
 			if (!this.hasLogin) {
-				url = '/pages/public/login';
+				url = '/pages/login/login';
 			}
 			uni.navigateTo({
 				url
