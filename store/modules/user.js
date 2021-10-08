@@ -37,10 +37,11 @@ const actions = {
 	}, data) {
 		const {
 			code,
-			userInfo
+			encryptedData,
+			iv
 		} = data
 		return new Promise((resolve, reject) => {
-			login(code,userInfo).then(response => {
+			login(code,encryptedData,iv).then(response => {
 				const {
 					access_token,
 					token_type

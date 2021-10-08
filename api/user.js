@@ -5,13 +5,14 @@ import request from '@/utils/request'
 
 // 小程序登录
 // #ifdef MP
-export function login(code, userInfo) {
+export function login(code, encryptedData,iv) {
 	return request({
 		url: '/youlai-auth/oauth/token',
 		method: 'post',
 		params: {
 			code: code,
-			userInfo: userInfo,
+			encryptedData: encryptedData,
+			iv:iv,
 			grant_type: 'wechat'
 		},
 		headers: {

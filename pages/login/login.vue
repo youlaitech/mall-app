@@ -89,15 +89,20 @@
 					desc: '获取用户相关信息',
 					success: response => {
 						console.log('获取用户信息', response)
-						this.login(response.rawData)
+						const {
+							encryptedData,
+							iv
+						} = response
+						this.login(encryptedData, iv)
 					}
 				})
 			},
-			async login(userInfo) {
+			async login(encryptedData, iv) {
 				this.logining = true;
 				this.$store.dispatch('user/login', {
 					code: await this.getCode(),
-					userInfo
+					encryptedData:encryptedData,
+					iv:iv
 				}).then(res => {
 					this.$store.dispatch('user/getUserInfo');
 					uni.navigateBack()

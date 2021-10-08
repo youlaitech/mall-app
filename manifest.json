@@ -62,5 +62,9 @@
             "minified" : true
         },
         "permission" : {}
+    },
+    "h5" : {
+        "title" : "有来商城H5",
+        "domain" : "www.youlai.tech"
     }
 }
