@@ -3,7 +3,7 @@
  */
 import request from '@/utils/request'
 
-// 小程序登录
+// 小程序授权登录
 // #ifdef MP
 export function login(code, encryptedData,iv) {
 	return request({
@@ -16,26 +16,25 @@ export function login(code, encryptedData,iv) {
 			grant_type: 'wechat'
 		},
 		headers: {
-			'Authorization': 'Basic bWFsbC13ZWFwcDoxMjM0NTY=' // 客户端信息加密摘要认证，明文：mall-weapp:123456
+			'Authorization': 'Basic bWFsbC13ZWFwcDoxMjM0NTY=' // 客户端信息Base64加密，明文：mall-weapp:123456
 		}
 	})
 }
 // #endif
 
-// H5、Android、IOS 手机验证码登录
+// H5/Android/IOS 手机短信验证码登录
 // #ifndef MP
 export function login( mobile,code) {
-	console.log('login',code)
 	return request({
 		url: '/youlai-auth/oauth/token',
 		method: 'post',
 		params: {
-			code: code,
 			mobile: mobile,
+			code: code,
 			grant_type: 'sms_code'
 		},
 		headers: {
-			'Authorization': 'Basic bWFsbC1hcHA6MTIzNDU2' // 客户端信息加密摘要认证，明文：mall-app:123456
+			'Authorization': 'Basic bWFsbC1hcHA6MTIzNDU2' // 客户端信息Base64加密，明文：mall-app:123456
 		}
 	})
 }
@@ -65,7 +64,7 @@ export function getUserInfo() {
 
 export function sendSmsCode(phoneNumber) {
 	return request({
-		url: '/youlai-admin/api/v1/sms/code',
+		url: '/youlai-auth/sms-code',
 		method: 'post',
 		params: {
 			phoneNumber: phoneNumber

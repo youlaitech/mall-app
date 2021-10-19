@@ -3,15 +3,16 @@
 		<view class="left-bottom-sign"></view>
 		<view class="back-btn yticon icon-zuojiantou-up" @click="navBack"></view>
 		<view class="right-top-sign"></view>
-		<!-- 设置白色背景防止软键盘把下部绝对定位元素顶上来盖住输入框等 -->
 		<view class="wrapper">
+			<!-- 小程序登录授权界面 -->
 			<!-- #ifdef MP -->
 			<button class="confirm-btn" @click.stop="getUserProfile">小程序登录授权</button>
 			<view class="tip">
 				温馨提示:未注册有来小店的用户,初次登录时将完成注册
 			</view>
 			<!-- #endif -->
-
+			
+			<!-- H5、Android、IOS登录授权界面 -->
 			<!-- #ifndef MP -->
 			<view class="left-top-sign">LOGIN</view>
 			<view class="welcome">欢迎回来！</view>
@@ -33,7 +34,9 @@
 				</view>
 			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
-			<view class="forget-section">忘记密码?</view>
+			<view class="tip">
+				默认手机号码/验证码: 17621590365/666666
+			</view>
 			<!-- #endif -->
 		</view>
 		<view class="register-section">
@@ -56,7 +59,7 @@
 		data() {
 			return {
 				mobile: '17621590365',
-				code: '666666',
+				code: undefined,
 				password: undefined,
 				logining: false,
 				countdown: 0,
