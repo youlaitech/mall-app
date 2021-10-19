@@ -44,8 +44,9 @@
 			<view class="c-row b-b" @click="toggleSpec">
 				<text class="tit">购买类型</text>
 				<view class="con">
-					<text class="selected-text" v-for="(sItem, sIndex) in selectedSpec"
-						:key="sIndex">{{ sItem.value }}</text>
+					<text class="selected-text" v-for="sItem in selectedSpecValues">
+						{{ sItem.value }}
+				    </text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -138,7 +139,7 @@
 					</view>
 				</view>
 				<!-- 规格选项构建 -->
-				<view v-for="(spec,specIndex) in specList" :key="index" class="attr-list">
+				<view v-for="(spec,specIndex) in specList" class="attr-list">
 					<text>{{ spec.name }}</text>
 					<view class="item-list">
 						<text v-for="(specItem, specItemIndex) in spec.values" :key="specItem.id" class="tit"
@@ -208,7 +209,6 @@
 				this.skuList = skuList;
 
 				// 默认选择规格的第一项
-				this.selectedSpec = []
 				this.specList.forEach(item => {
 					if (item.values.length > 0) {
 						item.values[0].selected = true // 添加规格是否选中属性

@@ -11,7 +11,7 @@
 				温馨提示:未注册有来小店的用户,初次登录时将完成注册
 			</view>
 			<!-- #endif -->
-			
+
 			<!-- H5、Android、IOS登录授权界面 -->
 			<!-- #ifndef MP -->
 			<view class="left-top-sign">LOGIN</view>
@@ -59,7 +59,7 @@
 		data() {
 			return {
 				mobile: '17621590365',
-				code: undefined,
+				code: 666666,
 				password: undefined,
 				logining: false,
 				countdown: 0,
@@ -104,8 +104,8 @@
 				this.logining = true;
 				this.$store.dispatch('user/login', {
 					code: await this.getCode(),
-					encryptedData:encryptedData,
-					iv:iv
+					encryptedData: encryptedData,
+					iv: iv
 				}).then(res => {
 					this.$store.dispatch('user/getUserInfo');
 					uni.navigateBack()
@@ -144,13 +144,23 @@
 			},
 
 			async toLogin() {
+
 				this.logining = true;
 				this.$store.dispatch('user/login', {
 					code: this.code,
 					mobile: this.mobile
 				}).then(res => {
 					this.$store.dispatch('user/getUserInfo');
-					uni.navigateBack()
+					const pages = getCurrentPages();
+					if (pages.length > 1) {
+						uni.navigateBack()
+					} else {
+						console.log("跳转首页")
+						// 跳转首页
+						uni.switchTab({
+							url: '/pages/index/index'
+						});
+					}
 				}).catch(() => {
 					this.logining = false;
 				});

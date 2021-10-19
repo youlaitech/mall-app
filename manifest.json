@@ -1,5 +1,5 @@
 {
-    "name" : "youlai-mall-weapp",
+    "name" : "有来小店",
     "appid" : "__UNI__C4E2002",
     "description" : "",
     "versionName" : "1.0.0",
@@ -47,7 +47,20 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "C:/Users/xianrui/Desktop/logo.png",
+                    "xhdpi" : "C:/Users/xianrui/Desktop/logo.png",
+                    "xxxhdpi" : "C:/Users/xianrui/Desktop/logo.png",
+                    "xxhdpi" : "C:/Users/xianrui/Desktop/logo.png"
+                },
+                "ios" : {
+                    "appstore" : "C:/Users/xianrui/Desktop/logo.png"
+                }
+            }
         }
     },
     /* SDK配置 */

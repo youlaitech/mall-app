@@ -32,7 +32,7 @@
 
 		<view class="row default-row">
 			<text class="tit">设为默认</text>
-			<switch :checked="addressData.defaulted" color="#fa436a" @change="switchChange" />
+			<switch :checked="addressData.defaulted==1" color="#fa436a" @change="switchChange" />
 		</view>
 		<button class="add-btn" @click="confirm">提交</button>
 	</view>

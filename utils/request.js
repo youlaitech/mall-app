@@ -4,8 +4,8 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 // create an axios instance
 const service = axios.create({
-	//baseURL: "http://www.youlai.tech:81/prod-api", // url = base url + request url  线上地址
-	baseURL: "http://localhost:9999", // url = base url + request url
+	baseURL: "http://www.youlai.tech:81/prod-api", // url = base url + request url  线上地址
+	//baseURL: "http://localhost:9999", // url = base url + request url
 	withCredentials: true, // send cookies when cross-domain requests
 	timeout: 10000 // request timeout
 })

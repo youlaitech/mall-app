@@ -17,7 +17,7 @@
 			<!-- 列表 -->
 			<view class="cart-list">
 				<block v-for="(item, index) in cartItemList" :key="item.skuId">
-					<view class="cart-item" :class="{ 'b-b': index !== cartList.length - 1 }">
+					<view class="cart-item" :class="{ 'b-b': index !== cartItemList.length - 1 }">
 						<view class="image-wrapper">
 							<image :src="item.picUrl" class="loaded" mode="aspectFill" lazy-load
 								@load="onImageLoad('cartItemList', index)" @error="onImageError('cartItemList', index)">
@@ -29,7 +29,7 @@
 							<text class="clamp title">{{ item.skuName }}</text>
 							<text class="price">¥{{ item.price | moneyFormatter }}</text>
 							<uni-number-box class="step" :min="1" :max="item.stock"
-								:value="item.count > item.stock ? item.stock : item.count"
+								:value="item.count"
 								:isMax="item.count >= item.stock ? true : false" :isMin="item.count === 1"
 								:index="index" @eventChange="handleChangeCount($event, item.skuId)" />
 						</view>
