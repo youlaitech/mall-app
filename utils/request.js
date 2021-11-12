@@ -4,8 +4,9 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 // create an axios instance
 const service = axios.create({
-	baseURL: "http://www.youlai.tech:81/prod-api", // url = base url + request url  线上地址
-	//baseURL: "http://localhost:9999", // url = base url + request url
+	//baseURL: "https://www.youlai.tech/prod-api", //  微信线上接口地址
+	//baseURL: "http://www.youlai.tech:81", //  H5/Android/iOS 线上接口地址
+	baseURL: "http://localhost:9999", // 本地开发环境地址
 	withCredentials: true, // send cookies when cross-domain requests
 	timeout: 10000 // request timeout
 })
@@ -68,6 +69,7 @@ service.interceptors.response.use(({
 		const {
 			code,msg
 		} = error.response.data
+	
 		if (code === 'A0230') { // token过期
 			uni.showToast({
 				title: '会话已过期，请重新登录',
@@ -78,7 +80,6 @@ service.interceptors.response.use(({
 				}
 			})
 		} else {
-			console.log('异常信息',code)
 			uni.showToast({
 				title: msg,
 				icon: 'none'
