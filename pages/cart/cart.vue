@@ -26,7 +26,7 @@
 								@click="handleCheckItem(index, item.skuId)"></view>
 						</view>
 						<view class="item-right">
-							<text class="clamp title">{{ item.skuName }}</text>
+							<text class="clamp title">{{ item.goodsName }}</text>
 							<text class="price">¥{{ item.price | moneyFormatter }}</text>
 							<uni-number-box class="step" :min="1" :max="item.stock"
 								:value="item.count"

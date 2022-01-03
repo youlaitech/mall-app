@@ -153,13 +153,12 @@
 				navItem.loadingType = "loading";
 				this.limit=this.limit+10;
 				setTimeout(() => {
-					const orderStatus = status == 0 ? null : orderStatus
+					const orderStatus = status == 0 ? null : status
 					const params = {
 						page: this.page,
 						limit: this.limit,
 						status: orderStatus
 					}
-
 					orderList(params).then((response) => {
 						console.log('========获取订单数据========', response.data)
 						navItem.orderList = response.data;
