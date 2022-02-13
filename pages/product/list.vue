@@ -48,13 +48,9 @@
 <script>
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 
-	import {
-		getCategoryList
-	} from '@/api/pms/category.js';
+	import {getCategoryList} from '@/api/pms/category.js';
 
-	import {
-		getGoodsList
-	} from '@/api/pms/goods.js';
+	import {listSpuWithPage} from '@/api/pms/goods.js';
 
 	export default {
 		components: {
@@ -72,8 +68,8 @@
 				cateList: [],
 				goodsList: [],
 				queryParams: {
-					page: 0,
-					limit: 10,
+					pageNum: 0,
+					pageSize: 10,
 					categoryId: undefined
 				}
 			};
@@ -119,11 +115,11 @@
 					if (this.loadingType === 'nomore') {
 						return;
 					}
-					this.queryParams.page = this.queryParams.page + 1
+					this.queryParams.pageNum = this.queryParams.pageNum + 1
 					this.loadingType = 'loading';
 				} else { // 刷新
 					this.loadingType = 'more';
-					this.queryParams.page = 0
+					this.queryParams.pageNum = 0
 				}
 
 				if (type === 'refresh') {
@@ -132,26 +128,24 @@
 
 
 				// 排序处理
-				let isAsc = true
-				let orderBy = undefined
+				let sortField = undefined
+				let sort = 'desc'
 
 				if (this.filterIndex === 1) { // 销量排序
-					orderBy = 'sales'
+					sortField = 'sales'
 				}
 				if (this.filterIndex === 2) { // 价格排序
-					orderBy = 'price'
+					sortField = 'price'
 					if (this.priceOrder == 1) { // 升序
-						isAsc = true
-					} else {
-						isAsc = false // 降序
+						sort = 'asc'
 					}
 				}
 
 				this.queryParams.categoryId = this.cateId
-				this.queryParams.isAsc = isAsc
-				this.queryParams.orderBy = orderBy
+				this.queryParams.sort = sort
+				this.queryParams.sortField = sortField
 
-				getGoodsList(this.queryParams).then(response => {
+				listSpuWithPage(this.queryParams).then(response => {
 					const {
 						data,
 						total

@@ -2,8 +2,8 @@
 	<view class="content">
 		<!-- 订单列表顶部tab页切换 -->
 		<view class="navbar">
-			<view v-for="(item, index) in navList" :key="index" class="nav-item" :class="{ current: tabCurrentIndex === index }"
-			 @click="tabClick(index)">
+			<view v-for="(item, index) in navList" :key="index" class="nav-item"
+				:class="{ current: tabCurrentIndex === index }" @click="tabClick(index)">
 				{{ item.text }}
 			</view>
 		</view>
@@ -20,15 +20,17 @@
 							<text class="time">{{ order.gmtCreate }}</text>
 							<text class="status" style="#fa436a">{{order.status|orderStatusFilter}}</text>
 							<!-- 已关闭订单可删除 -->
-							<text v-if="order.status === 102 || order.status === 103" class="del-btn yticon icon-iconfontshanchu1" @click="deleteOrder(order.id)"></text>
+							<text v-if="order.status === 102 || order.status === 103"
+								class="del-btn yticon icon-iconfontshanchu1" @click="deleteOrder(order.id)"></text>
 						</view>
 						<scroll-view v-if="order.orderItems.length > 1" class="goods-box" scroll-x>
-							<view v-for="(orderItem, itemIndex) in order.orderItems" :key="itemIndex" class="goods-item">
+							<view v-for="(orderItem, itemIndex) in order.orderItems" :key="itemIndex"
+								class="goods-item">
 								<image class="goods-img" :src="orderItem.skuPic" mode="aspectFill"></image>
 							</view>
 						</scroll-view>
-						<view v-if="order.orderItems.length === 1" class="goods-box-single" v-for="(orderItem, itemIndex) in order.orderItems"
-						 :key="itemIndex">
+						<view v-if="order.orderItems.length === 1" class="goods-box-single"
+							v-for="(orderItem, itemIndex) in order.orderItems" :key="itemIndex">
 							<image class="goods-img" :src="orderItem.skuPic" mode="aspectFill"></image>
 							<view class="right">
 								<text class="title clamp">{{ orderItem.spuName }}</text>
@@ -45,6 +47,8 @@
 							<button class="action-btn recom" @click="doPay(order)">立即支付</button>
 						</view>
 					</view>
+					
+					
 					<uni-load-more :status="tabItem.loadingType" @clickLoadMore="clickLoadMore"></uni-load-more>
 				</scroll-view>
 			</swiper-item>
@@ -59,7 +63,7 @@
 	import {
 		cancelOrder,
 		deleteOrder,
-		orderList
+		listOrdersWithPage
 	} from "@/api/oms/order.js";
 
 	const orderStatusMap = {
@@ -88,8 +92,8 @@
 		},
 		data() {
 			return {
-				page: 1,
-				limit: 10,
+				pageNum: 1,
+				pageSize: 10,
 				reload: false,
 				status: "more",
 				contentText: {
@@ -140,7 +144,7 @@
 			console.log('========>> 进入订单列表页面, 路径：', this.$mp.page.route, '参数：', options);
 			this.tabCurrentIndex = this.navList.map(item => item.status).indexOf(parseInt(options.status));
 			this.loadData();
-			
+
 		},
 
 		methods: {
@@ -151,16 +155,16 @@
 					return;
 				}
 				navItem.loadingType = "loading";
-				this.limit=this.limit+10;
+				this.pageNum = this.pageNum++;
 				setTimeout(() => {
 					const orderStatus = status == 0 ? null : status
 					const params = {
-						page: this.page,
-						limit: this.limit,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize,
 						status: orderStatus
 					}
-					orderList(params).then((response) => {
-						console.log('========获取订单数据========', response.data)
+					listOrdersWithPage(params).then((response) => {
+						console.log('订单列表数据', response.data)
 						navItem.orderList = response.data;
 					});
 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
@@ -168,7 +172,7 @@
 
 					//判断是否还有数据， 有改为 more， 没有改为noMore
 					navItem.loadingType = "more";
-					
+
 				}, 600);
 			},
 

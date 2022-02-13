@@ -6,10 +6,10 @@
 				<text class="yticon icon-shouhuodizhi"></text>
 				<view v-if="selectedAddress" class="cen">
 					<view class="top">
-						<text class="name">{{ selectedAddress.name }}</text>
-						<text class="mobile">{{ selectedAddress.mobile }}</text>
+						<text class="name">{{ selectedAddress.consigneeName }}</text>
+						<text class="mobile">{{ selectedAddress.consigneeMobile }}</text>
 					</view>
-					<text class="address">{{ selectedAddress.address }} {{ selectedAddress.area }}</text>
+					<text class="address">{{ selectedAddress.province }} {{ selectedAddress.city }}  {{ selectedAddress.area }} {{ selectedAddress.address }}</text>
 				</view>
 				<view v-else class="cen">
 					<text>请选择收货地址</text>
@@ -26,7 +26,7 @@
 			</view>
 			<!-- 商品列表 -->
 			<view class="g-item" v-for="(item, index) in orderItems" :key="item.skuId">
-				<image :src="item.pic"></image>
+				<image :src="item.picUrl"></image>
 				<view class="right">
 					<text class="title clamp">{{ item.skuName }}</text>
 					<text class="spec"></text>
@@ -57,7 +57,7 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥{{ totalPrice | moneyFormatter }}</text>
+				<text class="cell-tip">￥{{ totalAmount | moneyFormatter }}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
@@ -131,7 +131,7 @@
 				freightAmount: 0,
 				payAmount: 0,
 				couponList: [],
-				totalPrice: 0,
+				totalAmount: 0,
 				selectedAddress: undefined,
 				orderItems: []
 			};
@@ -146,6 +146,7 @@
 					skuId: param.skuId,
 					count: param.count
 				};
+				
 				confirm(data).then(response => {
 					console.log('订单确认页加载数据', response.data);
 
@@ -166,9 +167,9 @@
 					// 获取订单商品列表,计算总价
 					this.orderItems = orderItems;
 					if (this.orderItems.length == 1) {
-						this.totalPrice = this.orderItems[0].count * this.orderItems[0].price;
+						this.totalAmount = this.orderItems[0].count * this.orderItems[0].price;
 					} else {
-						this.totalPrice = this.orderItems.reduce((prev, curr) => {
+						this.totalAmount = this.orderItems.reduce((prev, curr) => {
 							return prev.price * prev.count + curr.price * curr.count;
 						});
 					}
@@ -188,7 +189,7 @@
 			},
 			// 计算实际支付金额
 			calcPayAmount() {
-				this.payAmount = this.totalPrice - this.couponAmount - this.freightAmount;
+				this.payAmount = this.totalAmount - this.couponAmount - this.freightAmount;
 			},
 
 			// 优惠券change
@@ -209,7 +210,7 @@
 				const data = {
 					orderToken: this.orderToken, // 订单提交令牌，防止重复提交
 					orderItems: this.orderItems, // 订单商品
-					totalPrice: this.totalPrice, // 订单商品总价，用于后台验价
+					totalAmount: this.totalAmount, // 订单商品总价，用于后台验价
 					deliveryAddress: this.selectedAddress, // 收货地址
 					remark: this.remark, // 订单备注
 					payAmount: this.payAmount // 订单支付金额

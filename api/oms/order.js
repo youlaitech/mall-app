@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 订单列表
-export function orderList(params) {
+export function listOrdersWithPage(params) {
 	return request({
 		url: '/mall-oms/app-api/v1/orders',
 		method: 'get',
@@ -67,7 +67,7 @@ export function cancelOrder(orderId) {
 // 删除订单
 export function deleteOrder(orderId) {
 	return request({
-		url: '/mall-oms/app-api/v1/orders/'+orderId,
+		url: '/mall-oms/app-api/v1/orders/' + orderId,
 		method: 'delete',
 		headers: {
 			'auth': true // 需要认证

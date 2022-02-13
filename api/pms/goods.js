@@ -1,17 +1,26 @@
 import request from '@/utils/request'
 
-export function getGoodsList(params) {
+/**
+ * 获取商品分页列表
+ * 
+ * @param {Object} params
+ */
+export function listSpuWithPage(params) {
 	return request({
-		url: '/mall-pms/app-api/v1/goods',
+		url: '/mall-pms/app-api/v1/spu/page',
 		method: 'get',
 		params: params
 	})
 }
 
-
-export function getGoodsById(id) {
+/**
+ * 获取商品详情
+ *
+ * @param {Object} spuId
+ */
+export function getSpuDetail(spuId) {
 	return request({
-		url: '/mall-pms/app-api/v1/goods/' + id,
+		url: '/mall-pms/app-api/v1/spu/' + spuId,
 		method: 'get'
 	})
 }
@@ -22,7 +31,7 @@ export function getGoodsById(id) {
  */
 export function getSkuStock(skuId) {
 	return request({
-		url: '/mall-pms/app-api/v1/skus/' + skuId + '/stock',
+		url: '/mall-pms/app-api/v1/sku/' + skuId + '/stock_num',
 		method: 'get'
 	})
 }

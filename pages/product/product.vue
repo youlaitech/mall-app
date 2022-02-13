@@ -21,7 +21,7 @@
 			</view>
 			<view class="bot-row">
 				<text>销量: {{goodsInfo.sales}}</text>
-				<text>库存: {{selectedSku.stock}}</text>
+				<text>库存: {{selectedSku.stockNum}}</text>
 				<text>浏览量: 768</text>
 			</view>
 		</view>
@@ -46,7 +46,7 @@
 				<view class="con">
 					<text class="selected-text" v-for="sItem in selectedSpecValues">
 						{{ sItem.value }}
-				    </text>
+					</text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -127,10 +127,10 @@
 			<view class="mask"></view>
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
-					<image :src="selectedSku.picUrl"/>
+					<image :src="selectedSku.picUrl" />
 					<view class="right">
 						<text class="price">¥{{selectedSku.price|moneyFormatter}}</text>
-						<text class="stock">库存：{{selectedSku.stock}}件</text>
+						<text class="stock">库存：{{selectedSku.stockNum}}件</text>
 						<view class="selected">
 							已选：
 							<text class="selected-text" v-for="(sItem, sIndex) in selectedSpecValues"
@@ -160,8 +160,8 @@
 	import share from '@/components/share';
 
 	import {
-		getGoodsById,
-		getSkuStock
+		getSpuDetail,
+		getStockNum
 	} from '@/api/pms/goods.js';
 
 	import {
@@ -196,7 +196,7 @@
 		async onLoad(options) {
 			console.log('========>> 进入商品详情页面, 路径:', this.$mp.page.route, '参数', options);
 			const goodsId = options.id
-			getGoodsById(goodsId).then(response => {
+			getSpuDetail(goodsId).then(response => {
 				const {
 					goodsInfo,
 					attributeList,
@@ -256,8 +256,8 @@
 
 				// 根据选择的规格项匹配商品库存单元
 				this.selectedSku = this.skuList.filter(item => item.specIds.split('_').equals(selectedSpecValueIds))[0]
-				
-				console.log('您选择的商品:',this.selectedSku)
+
+				console.log('您选择的商品:', this.selectedSku)
 
 			},
 			// 分享
