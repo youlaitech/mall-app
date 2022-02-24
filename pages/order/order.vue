@@ -35,7 +35,7 @@
 							<view class="right">
 								<text class="title clamp">{{ orderItem.spuName }}</text>
 								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.count }}</text>
-								<text class="price">{{ orderItem.totalAmount | moneyFormatter }}</text>
+								<text class="price">{{ orderItem.price | moneyFormatter }}</text>
 							</view>
 						</view>
 						<view class="price-box">
