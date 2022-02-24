@@ -26,16 +26,16 @@
 						<scroll-view v-if="order.orderItems.length > 1" class="goods-box" scroll-x>
 							<view v-for="(orderItem, itemIndex) in order.orderItems" :key="itemIndex"
 								class="goods-item">
-								<image class="goods-img" :src="orderItem.skuPic" mode="aspectFill"></image>
+								<image class="goods-img" :src="orderItem.picUrl" mode="aspectFill"></image>
 							</view>
 						</scroll-view>
 						<view v-if="order.orderItems.length === 1" class="goods-box-single"
 							v-for="(orderItem, itemIndex) in order.orderItems" :key="itemIndex">
-							<image class="goods-img" :src="orderItem.skuPic" mode="aspectFill"></image>
+							<image class="goods-img" :src="orderItem.picUrl" mode="aspectFill"></image>
 							<view class="right">
 								<text class="title clamp">{{ orderItem.spuName }}</text>
-								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.skuQuantity }}</text>
-								<text class="price">{{ orderItem.skuTotalPrice | moneyFormatter }}</text>
+								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.count }}</text>
+								<text class="price">{{ orderItem.totalAmount | moneyFormatter }}</text>
 							</view>
 						</view>
 						<view class="price-box">
