@@ -9,7 +9,7 @@
 						<text class="name">{{ selectedAddress.consigneeName }}</text>
 						<text class="mobile">{{ selectedAddress.consigneeMobile }}</text>
 					</view>
-					<text class="address">{{ selectedAddress.province }} {{ selectedAddress.city }}  {{ selectedAddress.area }} {{ selectedAddress.address }}</text>
+					<text class="address">{{ selectedAddress.province }} {{ selectedAddress.city }}  {{ selectedAddress.area }} {{ selectedAddress.detailAddress }}</text>
 				</view>
 				<view v-else class="cen">
 					<text>请选择收货地址</text>

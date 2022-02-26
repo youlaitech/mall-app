@@ -4,11 +4,11 @@
 			<view class="wrapper">
 				<view class="address-box">
 					<text v-if="item.defaulted==1" class="tag">默认</text>
-					<text class="address">{{ item.province }}{{item.city}}{{item.area}} {{ item.address }}</text>
+					<text class="address">{{ item.province }}{{item.city}}{{item.area}} {{ item.detailAddress }}</text>
 				</view>
 				<view class="u-box">
-					<text class="name">{{ item.name }}</text>
-					<text class="mobile">{{ item.mobile }}</text>
+					<text class="name">{{ item.consigneeName }}</text>
+					<text class="mobile">{{ item.consigneeMobile }}</text>
 				</view>
 			</view>
 			<text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
