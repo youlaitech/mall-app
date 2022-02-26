@@ -29,8 +29,8 @@
 
 				<view class="input-item">
 					<text class="tit">验证码</text>
-					<input :value="code" placeholder="6位随机数字组合" placeholder-class="input-empty" maxlength="20"
-						data-key="code" @input="inputChange" @confirm="toLogin" />
+					<input :value="verificationCode" placeholder="6位随机数字组合" placeholder-class="input-empty" maxlength="20"
+						data-key="verificationCode" @input="inputChange" @confirm="toLogin" />
 				</view>
 			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
@@ -59,11 +59,12 @@
 		data() {
 			return {
 				mobile: '17621590365',
-				code: 666666,
+				verificationCode: 666666,
 				password: undefined,
 				logining: false,
 				countdown: 0,
-				timer: null
+				timer: null,
+				code: undefined
 			};
 		},
 		computed: {
@@ -72,7 +73,11 @@
 				return /^1[3456789]\d{9}$/.test(this.mobile);
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			// #ifdef MP
+			this.getCode()
+			// #endif
+		},
 		methods: {
 			...mapMutations(['login']),
 			inputChange(e) {
@@ -85,13 +90,11 @@
 			toRegist() {
 				this.$api.msg('去注册');
 			},
-
 			getUserProfile() {
 				uni.getUserProfile({
 					lang: 'zh_CN',
 					desc: '获取用户相关信息',
 					success: response => {
-						console.log('获取用户信息', response)
 						const {
 							encryptedData,
 							iv
@@ -103,7 +106,7 @@
 			async login(encryptedData, iv) {
 				this.logining = true;
 				this.$store.dispatch('user/login', {
-					code: await this.getCode(),
+					code: this.code,
 					encryptedData: encryptedData,
 					iv: iv
 				}).then(res => {
@@ -115,14 +118,15 @@
 			},
 
 			getCode() {
-				return new Promise((resolve, reject) => {
-					uni.login({
-						provider: 'weixin',
-						success: res => {
-							resolve(res.code)
-						},
-						fail: reject
-					})
+				uni.login({
+					provider: 'weixin',
+					success: res => {
+						console.log('code:'+res.code)
+						this.code = res.code
+					},
+					fail: err => {
+						console.log(err)
+					}
 				})
 			},
 
@@ -144,10 +148,9 @@
 			},
 
 			async toLogin() {
-
 				this.logining = true;
 				this.$store.dispatch('user/login', {
-					code: this.code,
+					code: this.verificationCode,
 					mobile: this.mobile
 				}).then(res => {
 					this.$store.dispatch('user/getUserInfo');
