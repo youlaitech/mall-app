@@ -147,10 +147,9 @@
 
 				listSpuWithPage(this.queryParams).then(response => {
 					const {
-						data,
-						total
-					} = response
-					this.goodsList = this.goodsList.concat(data);
+						total,list
+					} = response.data
+					this.goodsList = this.goodsList.concat(list);
 					//判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
 					this.loadingType = this.goodsList.length >= total ? 'nomore' : 'more';
 					if (type === 'refresh') {

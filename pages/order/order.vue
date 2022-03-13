@@ -164,8 +164,8 @@
 						status: orderStatus
 					}
 					listOrdersWithPage(params).then((response) => {
-						console.log('订单列表数据', response.data)
-						navItem.orderList = response.data;
+						console.log('订单列表数据', response.data.list)
+						navItem.orderList = response.data.list;
 					});
 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 					this.$set(navItem, "loaded", true);

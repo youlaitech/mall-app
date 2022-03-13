@@ -257,7 +257,7 @@
 				// 根据选择的规格项匹配商品库存单元
 				this.selectedSku = this.skuList.filter(item => item.specIds.split('_').equals(selectedSpecValueIds))[0]
 
-				console.log('您选择的商品:', this.selectedSku)
+				console.log('您选择的商品:', JSON.stringify(this.selectedSku))
 
 			},
 			// 分享
