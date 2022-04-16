@@ -13,11 +13,13 @@ export function listOrdersWithPage(params) {
 }
 
 // 订单确认
-export function confirm(data) {
+export function confirm(skuId) {
 	return request({
 		url: '/mall-oms/app-api/v1/orders/_confirm',
 		method: 'post',
-		data: data,
+		params: {
+			skuId: skuId
+		},
 		headers: {
 			'auth': true // 需要认证
 		}

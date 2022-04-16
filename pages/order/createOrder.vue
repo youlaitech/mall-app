@@ -137,18 +137,13 @@
 			};
 		},
 		onLoad(option) {
-			console.log('========>> 进入订单确认页面, 路径:', this.$mp.page.route, '参数', option);
+			console.log('========>> 进入创建订单页面, 路径:', this.$mp.page.route, '参数', option);
 			this.loadData(option);
 		},
 		methods: {
 			async loadData(param) {
-				const data = {
-					skuId: param.skuId,
-					count: param.count
-				};
-				
-				confirm(data).then(response => {
-					console.log('订单确认页加载数据', response.data);
+				confirm( param.skuId).then(response => {
+					console.log('创建订单页加载数据', response.data);
 
 					const {
 						orderToken,

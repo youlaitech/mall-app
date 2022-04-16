@@ -90,7 +90,7 @@
 		// onLoad(options) {
 		onShow: function(options) {
 			//加载页面时，查询购物车详情
-			console.log('========>> 进入商品详情页面, 路径:', this.$mp.page.route, '参数', options);
+			console.log('========>> 进入购物车详情, 路径:', this.$mp.page.route, '参数', options);
 			this.loadData();
 		},
 		watch: {
