@@ -129,12 +129,12 @@
 					this.region = `${res.province} ${res.city} ${res.town}`; //region为已选的省市区的值
 
 					const {
-						provice,
-						city,
-						town
-					} = res
+                        province,
+                        city,
+                        town
+                    } = res
 
-					this.addressData.provice = provice
+                    this.addressData.province = province
 					this.addressData.city = city
 					this.addressData.area = town
 				}
