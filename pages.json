@@ -14,7 +14,7 @@
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
-							"placeholder": "请输入地址 如：大钟寺",
+							"placeholder": "请输入地址 如：琉璃仙境",
 							"disabled": true,
 							"placeholderColor": "#606266"
 						},
@@ -154,33 +154,30 @@
 			"style": {
 				"navigationBarTitleText": "支付成功"
 			}
-		}
-	    ,{
-            "path" : "pages/notice/notice",
-            "style" : {
+		}, {
+			"path": "pages/notice/notice",
+			"style": {
 				"navigationBarTitleText": "通知"
 			}
-        }
-        ,{
-            "path" : "pages/category/category",
-            "style" : {
+		}, {
+			"path": "pages/category/category",
+			"style": {
 				"navigationBarTitleText": "分类",
 				"app-plus": {
 					"bounce": "none"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/product/list",
-            "style" : {
+		}, {
+			"path": "pages/product/list",
+			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "商品列表"
 			}
-        }
-    ],
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "有来小店",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#f8f8f8"
 	},

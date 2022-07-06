@@ -5,11 +5,23 @@ import request from '@/utils/request'
  * 
  * @param {Object} params
  */
-export function listSpuWithPage(params) {
+export function listSpuPages(params) {
 	return request({
-		url: '/mall-pms/app-api/v1/spu/page',
+		url: '/mall-pms/app-api/v1/spu/pages',
 		method: 'get',
 		params: params
+	})
+}
+
+/**
+ * 获取秒杀商品列表
+ * 
+ * @param {Object} params
+ */
+export function listSeckillingSpu() {
+	return request({
+		url: '/mall-pms/app-api/v1/spu/seckilling_list',
+		method: 'get',
 	})
 }
 

@@ -50,7 +50,7 @@
 
 	import {getCategoryList} from '@/api/pms/category.js';
 
-	import {listSpuWithPage} from '@/api/pms/goods.js';
+	import {listSpuPages} from '@/api/pms/goods.js';
 
 	export default {
 		components: {
@@ -145,7 +145,7 @@
 				this.queryParams.sort = sort
 				this.queryParams.sortField = sortField
 
-				listSpuWithPage(this.queryParams).then(response => {
+				listSpuPages(this.queryParams).then(response => {
 					const {
 						total,list
 					} = response.data

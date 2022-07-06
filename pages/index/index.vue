@@ -12,7 +12,8 @@
 			<!-- 标题栏和状态栏占位符 -->
 			<view class="titleNview-placing"></view>
 			<swiper class="carousel" circular @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: item.title})">
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item"
+					@click="navToDetailPage({title: item.title})">
 					<image :src="item.picUrl" />
 				</swiper-item>
 			</swiper>
@@ -63,10 +64,11 @@
 			</view>
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
+					<view v-for="(item, index) in goodsList" :key="index" class="floor-item"
+						@click="navToDetailPage(item.id)">
+						<image :src="item.picUrl" mode="aspectFill"></image>
+						<text class="title clamp">{{item.name}}</text>
+						<text class="price">￥{{item.price/100}}</text>
 					</view>
 				</view>
 			</scroll-view>
@@ -82,49 +84,8 @@
 			<text class="yticon icon-you"></text>
 		</view>
 		<view class="group-section">
-			<swiper class="g-swiper" :duration="500">
-				<swiper-item class="g-swiper-item" v-for="(item, index) in goodsList" :key="index" v-if="index%2 === 0" @click="navToDetailPage(item)">
-					<view class="g-item left">
-						<image :src="item.image" mode="aspectFill"></image>
-						<view class="t-box">
-							<text class="title clamp">{{item.title}}</text>
-							<view class="price-box">
-								<text class="price">￥{{item.price}}</text>
-								<text class="m-price">￥188</text>
-							</view>
 
-							<view class="pro-box">
-								<view class="progress-box">
-									<progress percent="72" activeColor="#fa436a" active stroke-width="6" />
-								</view>
-								<text>6人成团</text>
-							</view>
-						</view>
-
-					</view>
-					<view class="g-item right">
-						<image :src="goodsList[index+1].image" mode="aspectFill"></image>
-						<view class="t-box">
-							<text class="title clamp">{{goodsList[index+1].title}}</text>
-							<view class="price-box">
-								<text class="price">￥{{goodsList[index+1].price}}</text>
-								<text class="m-price">￥188</text>
-							</view>
-							<view class="pro-box">
-								<view class="progress-box">
-									<progress percent="72" activeColor="#fa436a" active stroke-width="6" />
-								</view>
-								<text>10人成团</text>
-							</view>
-						</view>
-					</view>
-				</swiper-item>
-
-			</swiper>
 		</view>
-
-
-
 		<!-- 分类推荐楼层 -->
 		<view class="f-header m-t">
 			<image src="/static/temp/h1.png"></image>
@@ -133,63 +94,6 @@
 				<text class="tit2">Competitive Products For You</text>
 			</view>
 			<text class="yticon icon-you"></text>
-		</view>
-		<view class="hot-floor">
-			<view class="floor-img-box">
-				<image class="floor-img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"
-				 mode="scaleToFill"></image>
-			</view>
-			<scroll-view class="floor-list" scroll-x>
-				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
-					</view>
-					<view class="more">
-						<text>查看全部</text>
-						<text>More+</text>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view class="hot-floor">
-			<view class="floor-img-box">
-				<image class="floor-img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"
-				 mode="scaleToFill"></image>
-			</view>
-			<scroll-view class="floor-list" scroll-x>
-				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image3" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
-					</view>
-					<view class="more">
-						<text>查看全部</text>
-						<text>More+</text>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view class="hot-floor">
-			<view class="floor-img-box">
-				<image class="floor-img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"
-				 mode="scaleToFill"></image>
-			</view>
-			<scroll-view class="floor-list" scroll-x>
-				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image2" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
-					</view>
-					<view class="more">
-						<text>查看全部</text>
-						<text>More+</text>
-					</view>
-				</view>
-			</scroll-view>
 		</view>
 
 		<!-- 猜你喜欢 -->
@@ -201,18 +105,6 @@
 			</view>
 			<text class="yticon icon-you"></text>
 		</view>
-
-		<view class="guess-section">
-			<view v-for="(item, index) in goodsList" :key="index" class="guess-item" @click="navToDetailPage(item)">
-				<view class="image-wrapper">
-					<image :src="item.image" mode="aspectFill"></image>
-				</view>
-				<text class="title clamp">{{item.title}}</text>
-				<text class="price">￥{{item.price}}</text>
-			</view>
-		</view>
-
-
 	</view>
 </template>
 
@@ -220,6 +112,9 @@
 	import {
 		getAdvertList
 	} from '@/api/sms/advert.js'
+	import {
+		listSeckillingSpu
+	} from '@/api/pms/goods.js'
 
 	export default {
 
@@ -250,9 +145,9 @@
 					}
 				})
 
-
-				let goodsList = await this.$api.json('goodsList');
-				this.goodsList = goodsList || [];
+				listSeckillingSpu().then(response => {
+					that.goodsList = response.data || [];
+				})
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
@@ -260,9 +155,8 @@
 				this.swiperCurrent = index;
 			},
 			//详情页
-			navToDetailPage(item) {
+			navToDetailPage(id) {
 				//测试数据没有写id，用title代替
-				let id = item.title;
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`
 				})
