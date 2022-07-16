@@ -424,8 +424,6 @@
 	/* button样式改写 */
 	uni-button,
 	button {
-		height: 80upx;
-		line-height: 80upx;
 		font-size: $font-lg + 2upx;
 		font-weight: normal;
 
