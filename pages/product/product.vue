@@ -52,7 +52,9 @@
 			</view>
 			<view class="c-row b-b">
 				<text class="tit">优惠券</text>
-				<text class="con t-r red">领取优惠券</text>
+				<view class="con" @click="openCoupon()">
+					<text class=" t-r red">领取优惠券</text>
+				</view>
 				<text class="yticon icon-you"></text>
 			</view>
 			<view class="c-row b-b">
@@ -97,7 +99,7 @@
 
 		<view class="detail-desc">
 			<view class="d-header"><text>图文详情</text></view>
-			<rich-text :nodes="goodsInfo.detail"></rich-text>
+			<rich-text :nodes="spuDetail"></rich-text>
 		</view>
 
 		<!-- 底部操作菜单 -->
@@ -120,6 +122,7 @@
 				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addToCart">加入购物车</button>
 			</view>
 		</view>
+
 
 		<!-- 规格-模态层弹窗 -->
 		<view class="popup spec" :class="specClass" @touchmove.stop.prevent="stopPrevent" @click="toggleSpec">
@@ -151,6 +154,45 @@
 				<button class="btn" @click="toggleSpec">完成</button>
 			</view>
 		</view>
+
+		<!-- 优惠券弹出层 -->
+		<view>
+			<uni-popup ref="popup" class="coupon-popup" type="bottom">
+				<view class="coupon-container">
+					<view class="coupon-item">
+						<uni-row>
+							<uni-col :span="10">
+								<view class="coupon-item__left">
+									<view style="display: flex;flex-direction: column;text-align: center;color: #FFF;
+										padding: 20px 0">
+										<view><text style="font-size: 20px;font-weight: bold;">1</text>折</view>
+										<view style="margin: 5px;">满1000元可用</view>
+									</view>
+								</view>
+							</uni-col>
+							<uni-col :span="14">
+								<view class="coupon-item__right">
+									<view style="display: flex;flex-direction: column;padding: 15px 10px">
+										<view style="display: flex; ">
+											<view>
+												<uni-tag text="通用" type="error" :inverted="true" :circle="true">
+												</uni-tag>
+											</view>
+											<view style="margin-left: 10px;">全场通用</view>
+										</view>
+										<view style="display: flex;margin-top: 10px; justify-content: space-between">
+											<text style="line-height: 1.8;">领取2天有效</text>
+											<view><button size="mini" type="warn">立即领取</button></view>
+										</view>
+									</view>
+								</view>
+							</uni-col>
+						</uni-row>
+					</view>
+				</view>
+			</uni-popup>
+		</view>
+
 		<!-- 分享 -->
 		<share ref="share" :contentHeight="580" :shareList="shareList"></share>
 	</view>
@@ -189,7 +231,8 @@
 				selectedSku: {},
 				selectedSpecValues: [], // 选择的规格项集合
 				favorite: true,
-				shareList: []
+				shareList: [],
+				spuDetail:'' // 图文详情
 
 			};
 		},
@@ -204,6 +247,7 @@
 					skuList
 				} = response.data;
 				this.goodsInfo = goodsInfo;
+				this.spuDetail=this.richImgAuto(goodsInfo.detail)
 				this.attributeList = attributeList;
 				this.specList = specList;
 				this.skuList = skuList;
@@ -222,9 +266,18 @@
 				this.selectedSku = this.skuList.filter(sku => sku.specIds.split('_').equals(
 					defaultSelectedSpecIds))[0]
 			});
-			this.shareList = await this.$api.json('shareList');
 		},
 		methods: {
+			 richImgAuto(html) {
+			        return html.replace(/<(img).*?(\/>|<\/img>)/g, function (mats) {
+			            if (mats.indexOf('style') < 0) {
+			                return mats.replace(/<\s*img/, '<img style="max-width:100%;height:auto;"');
+			            } else {
+			                return mats.replace(/style=("|')/, ' style=$1max-width:100%;height:auto;')
+			            }
+			        });
+			    },
+			
 			//规格弹窗开关
 			toggleSpec() {
 				if (this.specClass === 'show') {
@@ -290,7 +343,11 @@
 					});
 				})
 			},
-			stopPrevent() {}
+			stopPrevent() {},
+			openCoupon() {
+				// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+				this.$refs.popup.open('bottom')
+			}
 		}
 	};
 
@@ -870,6 +927,32 @@
 				padding: 0;
 				border-radius: 0;
 				background: transparent;
+			}
+		}
+	}
+
+	/*优惠券弹出层*/
+	.coupon-popup {
+
+		z-index: 99;
+
+		.coupon-container {
+			width: 100%;
+			padding: 5px 0;
+			background-color: #fff;
+			min-height: 100px;
+
+			.coupon-item {
+				margin: 10px 10px 0;
+				border: 1px solid #ccc;
+
+				&__left {
+					background-color: #f56c6c;
+				}
+
+				&__right {
+					background-color: #fff;
+				}
 			}
 		}
 	}

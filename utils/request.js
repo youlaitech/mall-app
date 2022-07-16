@@ -67,9 +67,10 @@ service.interceptors.response.use(({
 	},
 	error => {
 		const {
-			code,msg
+			code,
+			msg
 		} = error.response.data
-	
+
 		if (code === 'A0230') { // token过期
 			uni.showToast({
 				title: '会话已过期，请重新登录',
