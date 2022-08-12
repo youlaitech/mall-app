@@ -277,7 +277,7 @@
 			            }
 			        });
 			    },
-			
+
 			//规格弹窗开关
 			toggleSpec() {
 				if (this.specClass === 'show') {
@@ -338,7 +338,7 @@
 							let page = getCurrentPages().pop();
 							if (page == undefined || page == null) return;
 							page.curSegment = 0;
-							page.onLoad();
+							page.loadData();
 						},
 					});
 				})
