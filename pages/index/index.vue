@@ -7,6 +7,7 @@
 		</view>
 		<!-- #endif -->
 
+
 		<!-- 头部轮播 -->
 		<view class="carousel-section">
 			<!-- 标题栏和状态栏占位符 -->
@@ -113,7 +114,7 @@
 		getAdvertList
 	} from '@/api/sms/advert.js'
 	import {
-		listSeckillingSpu
+		listSeckillingSpus
 	} from '@/api/pms/goods.js'
 
 	export default {
@@ -145,7 +146,7 @@
 					}
 				})
 
-				listSeckillingSpu().then(response => {
+				listSeckillingSpus().then(response => {
 					that.goodsList = response.data || [];
 				})
 			},

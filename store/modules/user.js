@@ -118,15 +118,12 @@ const actions = {
 		commit,
 		state,
 	}) {
-		console.log('logout')
+		
 		return new Promise((resolve, reject) => {
 			logout().then(() => {
-				uni.removeStorage({
-					key: 'userInfo'
-				})
-				uni.removeStorage({
-					key: 'token'
-				})
+				console.log('logout')
+				uni.removeStorageSync("userInfo")
+				uni.removeStorageSync("token")
 				commit('SET_HAS_LOGIN', false)
 				commit('SET_NICKNAME', '')
 				commit('SET_AVATAR', '')

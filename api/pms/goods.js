@@ -18,9 +18,9 @@ export function listSpuPages(params) {
  * 
  * @param {Object} params
  */
-export function listSeckillingSpu() {
+export function listSeckillingSpus() {
 	return request({
-		url: '/mall-pms/app-api/v1/spu/seckilling_list',
+		url: '/mall-pms/app-api/v1/spu/seckilling',
 		method: 'get',
 	})
 }
