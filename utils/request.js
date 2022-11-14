@@ -5,7 +5,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // create an axios instance
 const service = axios.create({
 	//baseURL: "https://api.youlai.tech", //  微信线上接口地址
-	//baseURL: "http://app.youlai.tech/prod-api", //  H5/Android/iOS 线上地址
+	// baseURL: "http://app.youlai.tech/prod-api", //  H5/Android/iOS 线上地址
 	baseURL: "http://localhost:9999", // 本地开发环境地址
 	withCredentials: true, // send cookies when cross-domain requests
 	timeout: 10000 // request timeout
