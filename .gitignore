@@ -1,3 +1,6 @@
 unpackage/
 node_modules/
 dist/
+.hbuilderx/
+
+package-lock.json
