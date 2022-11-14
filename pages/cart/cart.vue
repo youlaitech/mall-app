@@ -112,9 +112,11 @@
 					this.cartItemList = [];
 					this.totalPrice = 0;
 
-					console.log('获取购物车数据', response.data);
-					this.cartItemList = response.data;
-					this.changeCart(); //计算总价
+          this.$nextTick( _ => {
+            console.log('获取购物车数据', response.data);
+            this.cartItemList = response.data;
+            this.changeCart(); //计算总价
+          })
 				});
 			},
 
