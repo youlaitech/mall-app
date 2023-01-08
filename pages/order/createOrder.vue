@@ -148,6 +148,8 @@
 		},
 		methods: {
 			async loadData(param) {
+				uni.showLoading();
+				
 				confirm(param.skuId).then(response => {
 					console.log('创建订单页加载数据', response.data);
 
@@ -177,6 +179,7 @@
 
 					this.orderToken = orderToken;
 					this.calcPayAmount();
+					uni.hideLoading();
 				});
 			},
 			// 显示优惠券面板
