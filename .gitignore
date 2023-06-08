@@ -1,6 +1,13 @@
-unpackage/
-node_modules/
-dist/
-.hbuilderx/
+# 忽略目录
+/dist
+/node_modules
+.hbuilderx/*
+.idea/*
 
-package-lock.json
+# 忽略文件
+*.log
+**/*.tsbuildinfo
+.eslintcache
+pnpm-lock.yaml
+/.eslintrc-auto-import.json
+/typings/
