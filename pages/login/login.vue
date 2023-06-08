@@ -29,13 +29,13 @@
 
 				<view class="input-item">
 					<text class="tit">验证码</text>
-					<input :value="verificationCode" placeholder="6位随机数字组合" placeholder-class="input-empty" maxlength="20"
-						data-key="verificationCode" @input="inputChange" @confirm="toLogin" />
+					<input :value="verifyCode" placeholder="6位随机数字组合" placeholder-class="input-empty" maxlength="20"
+						data-key="verifyCode" @input="inputChange" @confirm="toLogin" />
 				</view>
 			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
 			<view class="tip">
-				默认手机号码/验证码: 17621590365/666666
+				默认手机号码/验证码: 18866668888/666666
 			</view>
 			<!-- #endif -->
 		</view>
@@ -58,8 +58,8 @@
 	export default {
 		data() {
 			return {
-				mobile: '17621590365',
-				verificationCode: 666666,
+				mobile: '18866668888',
+				verifyCode: 666666,
 				password: undefined,
 				logining: false,
 				countdown: 0,
@@ -91,10 +91,15 @@
 				this.$api.msg('去注册');
 			},
 			getUserProfile() {
+				uni.showLoading({
+					title: "微信授权登录中"
+				})
 				uni.getUserProfile({
+					desc: 'weixin',
 					lang: 'zh_CN',
 					desc: '获取用户相关信息',
 					success: response => {
+						console.log('获取用户信息', response)
 						const {
 							encryptedData,
 							iv
@@ -110,9 +115,15 @@
 					encryptedData: encryptedData,
 					iv: iv
 				}).then(res => {
+					uni.hideLoading();
 					this.$store.dispatch('user/getUserInfo');
 					uni.navigateBack()
 				}).catch(() => {
+					uni.showToast({
+						title: '微信登录失败',
+						icon: 'none'
+					})
+					uni.hideLoading();
 					this.logining = false;
 				});
 			},
@@ -121,7 +132,7 @@
 				uni.login({
 					provider: 'weixin',
 					success: res => {
-						console.log('code:'+res.code)
+						console.log('code:' + res.code)
 						this.code = res.code
 					},
 					fail: err => {
@@ -150,7 +161,7 @@
 			async toLogin() {
 				this.logining = true;
 				this.$store.dispatch('user/login', {
-					code: this.verificationCode,
+					code: this.verifyCode,
 					mobile: this.mobile
 				}).then(res => {
 					this.$store.dispatch('user/getUserInfo');
