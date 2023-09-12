@@ -34,13 +34,13 @@
 							<image class="goods-img" :src="orderItem.picUrl" mode="aspectFill"></image>
 							<view class="right">
 								<text class="title clamp">{{ orderItem.spuName }}</text>
-								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.count }}</text>
+								<text class="attr-box">{{ orderItem.skuName }} x {{ orderItem.quantity }}</text>
 								<text class="price">{{ orderItem.price | moneyFormatter }}</text>
 							</view>
 						</view>
 						<view class="price-box">
 							共<text class="num">{{ order.totalQuantity }}</text>件商品 实付款
-							<text class="price">{{ order.payAmount | moneyFormatter }}</text>
+							<text class="price">{{ order.paymentAmount | moneyFormatter }}</text>
 						</view>
 						<view class="action-box b-t" v-if="order.status === 101">
 							<button class="action-btn" @click="cancelOrder(order)">取消订单</button>
@@ -219,7 +219,7 @@
 				console.info('========订单支付========');
 
                 uni.redirectTo({
-                    url: '/pages/money/pay?orderId=' + order.id + '&orderSn=' + order.orderSn + '&payAmount=' + order.payAmount
+                    url: '/pages/money/pay?orderSn=' + order.orderSn + '&paymentAmount=' + order.paymentAmount
                 });
 			}
 		},

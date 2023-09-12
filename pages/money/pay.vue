@@ -2,7 +2,7 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">{{ payAmount | moneyFormatter }}</text>
+			<text class="price">{{ paymentAmount | moneyFormatter }}</text>
 		</view>
 
 		<!--<view class="container">
@@ -19,7 +19,7 @@
 				<label class="radio"><radio value="" color="#fa436a" :checked="payType == 3"></radio></label>
 			</view>
 
-			<view class="type-item b-b" @click="changePayType(1)">
+			<view class="type-item b-b" @click="changePayType('WX_JSAPI')">
 				<text class="icon yticon icon-weixinzhifu"></text>
 				<view class="con">
 					<text class="tit">微信支付</text>
@@ -28,7 +28,7 @@
 				<label class="radio"><radio value="" color="#fa436a" :checked="payType == 1" /></label>
 			</view>
 
-			<view class="type-item b-b" @click="changePayType(2)">
+			<view class="type-item b-b" @click="changePayType('ALIPAY')">
 				<text class="icon yticon icon-alipay"></text>
 				<view class="con"><text class="tit">支付宝支付</text></view>
 				<label class="radio"><radio value="" color="#fa436a" :checked="payType == 2"></radio></label>
@@ -46,10 +46,9 @@ import {
 export default {
 	data() {
 		return {
-			payType: 3, // 支付方式 1-微信 2-支付宝 3-会员余额
-			orderId: undefined,
+			payType: 'BALANCE', // 支付方式 1-微信 2-支付宝 3-会员余额
 			orderSn: undefined,
-			payAmount: 0,
+			paymentAmount: 0,
 			data: {
 				imgalist: ['@/static/wxpay.png']
 			}
@@ -57,9 +56,8 @@ export default {
 	},
 	onLoad(options) {
 		console.log('========>> 进入支付页面, 路径：', this.$mp.page.route, '参数：', options);
-		this.orderId = options.orderId;
 		this.orderSn = options.orderSn;
-		this.payAmount = options.payAmount;
+		this.paymentAmount = options.paymentAmount;
 	},
 	computed: {
 		...mapGetters(['balance'])
@@ -71,7 +69,11 @@ export default {
 		},
 		pay() {
 			console.info('========付款开始========');
-			pay(this.orderId, this.payType).then(response => {
+			pay({
+				'orderSn':this.orderSn,
+				'paymentMethod':this.payType
+				
+			}).then(response => {
 				console.log('订单付款结果',response)
 				uni.showToast({
 					title: '订单支付成功',

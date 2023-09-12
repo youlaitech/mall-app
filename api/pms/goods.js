@@ -37,13 +37,3 @@ export function getSpuDetail(spuId) {
 	})
 }
 
-
-/**
- * 获取商品库存
- */
-export function getSkuStock(skuId) {
-	return request({
-		url: '/mall-pms/app-api/v1/sku/' + skuId + '/stock_num',
-		method: 'get'
-	})
-}

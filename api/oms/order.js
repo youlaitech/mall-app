@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 订单列表
 export function listOrdersWithPage(params) {
 	return request({
-		url: '/mall-oms/app-api/v1/orders',
+		url: '/mall-oms/api/v1/orders',
 		method: 'get',
 		params: params,
 		headers: {
@@ -15,7 +15,7 @@ export function listOrdersWithPage(params) {
 // 订单确认
 export function confirm(skuId) {
 	return request({
-		url: '/mall-oms/app-api/v1/orders/_confirm',
+		url: '/mall-oms/app-api/v1/orders/confirm',
 		method: 'post',
 		params: {
 			skuId: skuId
@@ -29,7 +29,7 @@ export function confirm(skuId) {
 // 订单提交
 export function submit(data) {
 	return request({
-		url: '/mall-oms/app-api/v1/orders/_submit',
+		url: '/mall-oms/app-api/v1/orders/submit',
 		method: 'post',
 		data: data,
 		headers: {
@@ -39,13 +39,11 @@ export function submit(data) {
 }
 
 // 订单支付
-export function pay(orderId, payType) {
+export function pay(data) {
 	return request({
-		url: '/mall-oms/app-api/v1/orders/' + orderId + '/_pay',
+		url: '/mall-oms/app-api/v1/orders/payment',
 		method: 'post',
-		params: {
-			payType: payType
-		},
+		data:data,
 		headers: {
 			'auth': true // 需要认证
 		}

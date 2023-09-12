@@ -21,7 +21,7 @@
 			</view>
 			<view class="bot-row">
 				<text>销量: {{goodsInfo.sales}}</text>
-				<text>库存: {{selectedSku.stockNum}}</text>
+				<text>库存: {{selectedSku.stock}}</text>
 				<text>浏览量: 768</text>
 			</view>
 		</view>
@@ -133,7 +133,7 @@
 					<image :src="selectedSku.picUrl" />
 					<view class="right">
 						<text class="price">¥{{selectedSku.price|moneyFormatter}}</text>
-						<text class="stock">库存：{{selectedSku.stockNum}}件</text>
+						<text class="stock">库存：{{selectedSku.stock}}件</text>
 						<view class="selected">
 							已选：
 							<text class="selected-text" v-for="(sItem, sIndex) in selectedSpecValues"
@@ -203,7 +203,6 @@
 
 	import {
 		getSpuDetail,
-		getStockNum
 	} from '@/api/pms/goods.js';
 
 	import {

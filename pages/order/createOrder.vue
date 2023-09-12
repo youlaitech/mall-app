@@ -35,7 +35,7 @@
 					<text class="spec"></text>
 					<view class="price-box">
 						<text class="price">￥{{ item.price | moneyFormatter }}</text>
-						<text class="number">x {{ item.count }}</text>
+						<text class="number">x {{ item.quantity }}</text>
 					</view>
 				</view>
 			</view>
@@ -83,7 +83,7 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">{{ payAmount | moneyFormatter }}</text>
+				<text class="price">{{ paymentAmount | moneyFormatter }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -133,7 +133,7 @@
 				couponTitle: undefined,
 				couponAmount: 0,
 				freightAmount: 0,
-				payAmount: 0,
+				paymentAmount: 0,
 				couponList: [],
 				totalAmount: 0,
 				selectedAddress: undefined,
@@ -142,14 +142,14 @@
 		},
 		onShow() {
 			const pages = getCurrentPages(); //获取应用页面栈
-			const  options= pages[pages.length - 1].options
+			const options = pages[pages.length - 1].options
 			console.log('========>> 进入创建订单页面, 路径:', this.$mp.page.route, '参数', options.skuId);
 			this.loadData(options);
 		},
 		methods: {
 			async loadData(param) {
 				uni.showLoading();
-				
+
 				confirm(param.skuId).then(response => {
 					console.log('创建订单页加载数据', response.data);
 
@@ -170,15 +170,15 @@
 					// 获取订单商品列表,计算总价
 					this.orderItems = orderItems;
 					if (this.orderItems.length == 1) {
-						this.totalAmount = this.orderItems[0].count * this.orderItems[0].price;
+						this.totalAmount = this.orderItems[0].quantity * this.orderItems[0].price;
 					} else {
 						this.totalAmount = this.orderItems.reduce((prev, curr) => {
-							return prev.price * prev.count + curr.price * curr.count;
+							return prev.price * prev.quantity + curr.price * curr.quantity;
 						});
 					}
 
 					this.orderToken = orderToken;
-					this.calcPayAmount();
+					this.calcpaymentAmount();
 					uni.hideLoading();
 				});
 			},
@@ -192,15 +192,15 @@
 				}, timer);
 			},
 			// 计算实际支付金额
-			calcPayAmount() {
-				this.payAmount = this.totalAmount - this.couponAmount - this.freightAmount;
+			calcpaymentAmount() {
+				this.paymentAmount = this.totalAmount - this.couponAmount - this.freightAmount;
 			},
 
 			// 优惠券change
 			changeCoupon(data) {
 				this.couponAmount = data.price;
 				this.couponTitle = data.title;
-				this.calcPayAmount();
+				this.calcpaymentAmount();
 				this.maskState = 0;
 			},
 
@@ -215,21 +215,19 @@
 					orderToken: this.orderToken, // 订单提交令牌，防止重复提交
 					orderItems: this.orderItems, // 订单商品
 					totalAmount: this.totalAmount, // 订单商品总价，用于后台验价
-					deliveryAddress: this.selectedAddress, // 收货地址
+					shippingAddress: this.selectedAddress, // 收货地址
 					remark: this.remark, // 订单备注
-					payAmount: this.payAmount // 订单支付金额
+					paymentAmount: this.paymentAmount, // 订单支付金额
+					orderSource: 'APP'
 				};
 				console.log('========订单提交========', data);
 				submit(data).then(response => {
 					console.log('订单提交响应结果', response.data);
 
-					const {
-						orderId,
-						orderSn
-					} = response.data;
+					const orderSn = response.data;
 					uni.redirectTo({
-						url: '/pages/money/pay?orderId=' + orderId + '&orderSn=' + orderSn +
-							'&payAmount=' + this.payAmount
+						url: '/pages/money/pay?orderSn=' + orderSn +
+							'&paymentAmount=' + this.paymentAmount
 					});
 				});
 			}
