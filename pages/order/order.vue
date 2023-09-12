@@ -17,7 +17,7 @@
 					<!-- 订单列表 -->
 					<view v-for="(order, index) in tabItem.orderList" :key="index" class="order-item">
 						<view class="i-top b-b">
-							<text class="time">{{ order.gmtCreate }}</text>
+							<text class="time">{{ order.createTime }}</text>
 							<text class="status" style="#fa436a">{{order.status|orderStatusFilter}}</text>
 							<!-- 已关闭订单可删除 -->
 							<text v-if="order.status === 102 || order.status === 103"
