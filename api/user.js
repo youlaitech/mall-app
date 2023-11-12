@@ -7,7 +7,7 @@ import request from '@/utils/request'
 // #ifdef MP
 export function login(code, encryptedData,iv) {
 	return request({
-		url: '/youlai-auth/oauth/token',
+		url: '/youlai-auth/oauth2/token',
 		method: 'post',
 		params: {
 			code: code,
