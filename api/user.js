@@ -26,7 +26,7 @@ export function login(code, encryptedData,iv) {
 // #ifndef MP
 export function login( mobile,code) {
 	return request({
-		url: '/youlai-auth/oauth/token',
+		url: '/youlai-auth/oauth2/token',
 		method: 'post',
 		params: {
 			mobile: mobile,
