@@ -30,7 +30,7 @@ export function login( mobile,code) {
 		method: 'post',
 		params: {
 			mobile: mobile,
-			code: code,
+			verifyCode: code,
 			grant_type: 'sms_code'
 		},
 		headers: {
