@@ -231,7 +231,7 @@
 				selectedSpecValues: [], // 选择的规格项集合
 				favorite: true,
 				shareList: [],
-				spuDetail:'' // 图文详情
+				spuDetail: '' // 图文详情
 
 			};
 		},
@@ -246,7 +246,7 @@
 					skuList
 				} = response.data;
 				this.goodsInfo = goodsInfo;
-				this.spuDetail=this.richImgAuto(goodsInfo.detail)
+				this.spuDetail = this.richImgAuto(goodsInfo.detail)
 				this.attributeList = attributeList;
 				this.specList = specList;
 				this.skuList = skuList;
@@ -259,23 +259,25 @@
 					}
 				})
 
-				// 默认选择规格项ID的集合
-				const defaultSelectedSpecIds = this.selectedSpecValues.map(item => item.id)
-				// 默认规格项集合生成默认商品库存单元
-				this.selectedSku = this.skuList.filter(sku => sku.specIds.split('_').equals(
-					defaultSelectedSpecIds))[0]
+				// 默认选择规格项ID的集合 defaultSelectedSpecIds=[845,843,841]
+				const defaultSelectedSpecIds = this.selectedSpecValues.map(item => item.id);
+				// 默认规格项集合生成默认商品库存单元 skuList = [{specIds: '841_843_845'}]
+				this.selectedSku = this.skuList.find(sku =>
+					sku.specIds.split('_').sort().join('_') === defaultSelectedSpecIds.sort().join('_')
+				);
+
 			});
 		},
 		methods: {
-			 richImgAuto(html) {
-			        return html.replace(/<(img).*?(\/>|<\/img>)/g, function (mats) {
-			            if (mats.indexOf('style') < 0) {
-			                return mats.replace(/<\s*img/, '<img style="max-width:100%;height:auto;"');
-			            } else {
-			                return mats.replace(/style=("|')/, ' style=$1max-width:100%;height:auto;')
-			            }
-			        });
-			    },
+			richImgAuto(html) {
+				return html.replace(/<(img).*?(\/>|<\/img>)/g, function(mats) {
+					if (mats.indexOf('style') < 0) {
+						return mats.replace(/<\s*img/, '<img style="max-width:100%;height:auto;"');
+					} else {
+						return mats.replace(/style=("|')/, ' style=$1max-width:100%;height:auto;')
+					}
+				});
+			},
 
 			//规格弹窗开关
 			toggleSpec() {
@@ -307,7 +309,9 @@
 				const selectedSpecValueIds = this.selectedSpecValues.map(item => item.id)
 
 				// 根据选择的规格项匹配商品库存单元
-				this.selectedSku = this.skuList.filter(item => item.specIds.split('_').equals(selectedSpecValueIds))[0]
+				this.selectedSku = this.skuList.find(sku =>
+					sku.specIds.split('_').sort().join('_') === selectedSpecValueIds.sort().join('_')
+				);
 
 				console.log('您选择的商品:', JSON.stringify(this.selectedSku))
 

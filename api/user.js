@@ -5,14 +5,14 @@ import request from '@/utils/request'
 
 // 小程序授权登录
 // #ifdef MP
-export function login(code, encryptedData,iv) {
+export function login(code, encryptedData, iv) {
 	return request({
 		url: '/youlai-auth/oauth2/token',
 		method: 'post',
 		params: {
 			code: code,
 			encryptedData: encryptedData,
-			iv:iv,
+			iv: iv,
 			grant_type: 'wechat'
 		},
 		headers: {
@@ -24,14 +24,14 @@ export function login(code, encryptedData,iv) {
 
 // H5/Android/IOS 手机短信验证码登录
 // #ifndef MP
-export function login( mobile,code) {
+export function login(mobile, code) {
 	return request({
 		url: '/youlai-auth/oauth2/token',
 		method: 'post',
 		params: {
 			mobile: mobile,
-			verifyCode: code,
-			grant_type: 'sms_code'
+			code: code,
+			grant_type: 'sms'
 		},
 		headers: {
 			'Authorization': 'Basic bWFsbC1hcHA6MTIzNDU2' // 客户端信息Base64加密，明文：mall-app:123456
