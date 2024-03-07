@@ -36,12 +36,10 @@ const actions = {
 		commit
 	}, data) {
 		const {
-			code,
-			encryptedData,
-			iv
+			code
 		} = data
 		return new Promise((resolve, reject) => {
-			login(code,encryptedData,iv).then(response => {
+			login(code).then(response => {
 				const {
 					access_token,
 					token_type
@@ -56,7 +54,7 @@ const actions = {
 		})
 	},
 	// #endif
-	
+
 	//  #ifndef MP
 	login({
 		commit
@@ -66,7 +64,7 @@ const actions = {
 			code
 		} = data
 		return new Promise((resolve, reject) => {
-			login(mobile,code).then(response => {
+			login(mobile, code).then(response => {
 				const {
 					access_token,
 					token_type
@@ -81,7 +79,7 @@ const actions = {
 		})
 	},
 	// #endif
-	
+
 
 	// get user info
 	getUserInfo({
@@ -118,7 +116,7 @@ const actions = {
 		commit,
 		state,
 	}) {
-		
+
 		return new Promise((resolve, reject) => {
 			logout().then(() => {
 				console.log('logout')

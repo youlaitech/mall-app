@@ -94,26 +94,9 @@
 				uni.showLoading({
 					title: "微信授权登录中"
 				})
-				uni.getUserProfile({
-					desc: 'weixin',
-					lang: 'zh_CN',
-					desc: '获取用户相关信息',
-					success: response => {
-						console.log('获取用户信息', response)
-						const {
-							encryptedData,
-							iv
-						} = response
-						this.login(encryptedData, iv)
-					}
-				})
-			},
-			async login(encryptedData, iv) {
 				this.logining = true;
 				this.$store.dispatch('user/login', {
-					code: this.code,
-					encryptedData: encryptedData,
-					iv: iv
+					code: this.code
 				}).then(res => {
 					uni.hideLoading();
 					this.$store.dispatch('user/getUserInfo');

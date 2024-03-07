@@ -5,18 +5,16 @@ import request from '@/utils/request'
 
 // 小程序授权登录
 // #ifdef MP
-export function login(code, encryptedData, iv) {
+export function login(code) {
 	return request({
 		url: '/youlai-auth/oauth2/token',
 		method: 'post',
 		params: {
 			code: code,
-			encryptedData: encryptedData,
-			iv: iv,
-			grant_type: 'wechat'
+			grant_type: 'wx_mini_app'
 		},
 		headers: {
-			'Authorization': 'Basic bWFsbC13ZWFwcDoxMjM0NTY=' // 客户端信息Base64加密，明文：mall-weapp:123456
+			'Authorization': 'Basic bWFsbC1hcHA6MTIzNDU2' // 客户端信息Base64加密，明文：mall-app:123456
 		}
 	})
 }
