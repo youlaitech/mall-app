@@ -11,7 +11,7 @@ export function login(code) {
 		method: 'post',
 		params: {
 			code: code,
-			grant_type: 'wx_mini_app'
+			grant_type: 'wechat'
 		},
 		headers: {
 			'Authorization': 'Basic bWFsbC1hcHA6MTIzNDU2' // 客户端信息Base64加密，明文：mall-app:123456
@@ -29,7 +29,7 @@ export function login(mobile, code) {
 		params: {
 			mobile: mobile,
 			code: code,
-			grant_type: 'sms'
+			grant_type: 'sms_code'
 		},
 		headers: {
 			'Authorization': 'Basic bWFsbC1hcHA6MTIzNDU2' // 客户端信息Base64加密，明文：mall-app:123456
