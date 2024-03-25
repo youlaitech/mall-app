@@ -1,51 +1,134 @@
+# 项目依赖
 
+-   [uniapp-vue3-vite-ts-template](https://gitee.com/h_mo/uniapp-vue3-vite-ts-template)
+-   [nuitui-uniapp](https://github.com/nutui-uniapp/nutui-uniapp)
+-   [vite-plugin-uni-components](ttps://github.com/uni-helper/vite-plugin-uni-components)
 
-## 预览
+# 导入基础模板
 
-预览地址： [http://app.youlai.tech](http://app.youlai.tech/)
+通过 HBuilderX 导入项目 https://gitee.com/h_mo/uniapp-vue3-vite-ts-template
 
-| ![](https://s2.loli.net/2023/06/09/VkYxOTAj9h417v6.jpg) | ![](https://s2.loli.net/2023/06/09/YaWQkxz9Z2uXbtE.jpg) |
-| ------------------------------------------------------- | ------------------------------------------------------- |
-| ![](https://s2.loli.net/2023/06/09/YXFI7DhNQHBt6ce.jpg) | ![](https://s2.loli.net/2023/06/09/eTXSUjOg9R175DQ.jpg) |
+![image-20240226233320600](https://s2.loli.net/2024/02/27/YWOXUausmLcTS7B.png)
 
+# 模板整合 nutui
 
+参考文档：https://nutui-uniapp.netlify.app/guide/quick-start.html
 
+## npm 安装
 
-## 启动
-### H5 启动
+```bash
+pnpm add nutui-uniapp
+```
 
-1. 下载 [ HBuilder X](https://www.dcloud.io/hbuilderx.html) 
-2.  `Hbuilder X`工具栏点击 `运行`->`运行到内置浏览器` (运行到外置浏览器会有跨域限制，推荐内置浏览器访问)
+## 组件 TS 类型支持
 
+在 tsconfig.json 中通过 compilerOptions.type 指定全局组件类型。
 
-### 微信小程序
+```json
+// tsconfig.json
+{
+    "compilerOptions": {
+        // ...
+        "types": ["nutui-uniapp/global.d.ts"]
+    }
+}
+```
 
-1. 下载 [ HBuilder X](https://www.dcloud.io/hbuilderx.html) 和 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)
-2. [微信公众平台](https://mp.weixin.qq.com/)申请小程序，获得小程序的 AppID
-3. `微信开发者工具`微信扫码登录，开启服务端口，点击工具栏`设置`->`安全设置`->`安全`->`服务端口`选择打开
-4. `Hbuilder X`替换项目AppID 成您刚申请的，点击`manifest.json`文件->微信小程序配置
-5. Nacos 控制台修改`youlai-auth`配置中的微信小程序 AppID 和 AppSecret 为自己申请的小程序
-6. `Hbuilder X`工具栏点击 `运行`->`运行到小程序模拟器`->`微信开发者工具`
+## 自动导入
 
+安装 vite-plugin-uni-components， [安装和使用说明](https://github.com/uni-helper/vite-plugin-uni-components)
 
+```bash
+pnpm i -D @uni-helper/vite-plugin-uni-components
+```
 
-## 接口
+配置 vite.config.ts
 
-默认使用线上接口地址(https://api.youlai.tech)，如果在本地部署 [youlai-mall](https://gitee.com/youlaitech/youlai-mall)  且想使用本地接口开发调试，请修改 `utils/request.js` 的接口地址 `baseURL ` 为 http://localhost:9999  即可。
+```typescript
+// Vite中文网：https://vitejs.cn/config/
+import { ConfigEnv, loadEnv, UserConfig } from 'vite';
+import { resolve } from 'path';
+import uni from '@dcloudio/vite-plugin-uni';
+import Components from '@uni-helper/vite-plugin-uni-components';
+import { NutResolver } from 'nutui-uniapp';
 
-![](https://s2.loli.net/2023/06/09/ruzqRBj4mE2CfXK.png)
+// https://vitejs.dev/config/
+export default ({ mode }: ConfigEnv): UserConfig => {
+    const root = process.cwd();
+    const env = loadEnv(mode, root);
+    return {
+        // ...
+        plugins: [
+            // ...
+            Components({
+                resolvers: [NutResolver()],
+                dirs: ['src/components', 'src/**/components'],
+                dts: 'typings/components.d.ts',
+            }),
+            // uni 插件一定要放到后面
+            uni(),
+        ],
+    };
+};
+```
 
+> 如果你使用 `pnpm` ，请在根目录下创建一个 `.npmrc` 文件，参见[issue](https://github.com/antfu/unplugin-vue-components/issues/389)。
 
-## 交流群🚀
+```
+// .npmrc
+public-hoist-pattern[]=@vue*
+// or
+// shamefully-hoist = true
+```
 
-> 关注「有来技术」公众号，获取交流群二维码。
->
-> 如果交流群的二维码过期，加我微信，备注「前端」、「后端」或「全栈」即可。
->
-> 为了避免营销广告人群混入，此举无奈，望理解！
+## 样式引入
 
+在项目文件 `app.vue` 文件中添加如下代码：
 
-|公众号|交流群|
-|-|-|
-|<img src="https://s2.loli.net/2023/05/28/JaG4L8ZHmkIgRQC.png" height="180px"/>|<img src="https://s2.loli.net/2023/06/21/oikXZGOEDJMHpn5.png" height="180px"/>|
+```html
+// App.vue
+<style lang="scss">
+    @import 'nutui-uniapp/styles/index';
+</style>
+```
 
+导入样式变量
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+    // ...
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: '@import "nutui-uniapp/styles/variables.scss";',
+            },
+        },
+    },
+});
+```
+
+## 测试示例
+
+```html
+<!-- pages/index/index.vue -->
+<template>
+    <AppProvider>
+        <view class="content">
+            <nut-button type="primary"> 主要按钮 </nut-button>
+            <!-- ... -->
+        </view>
+    </AppProvider>
+</template>
+```
+
+![image-20240227003711245](https://s2.loli.net/2024/02/27/hbiwOjTMAeEUc1s.png)
+
+# UnoCSS
+
+```
+pnpm i -D @unocss/transformer-directives
+```

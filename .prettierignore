@@ -1,0 +1,16 @@
+# 忽略目录
+/dist
+/build
+/public
+/node_modules
+/src/static
+
+# 忽略文件
+**/*-min.js
+**/*.min.js
+**/*-min.css
+**/*.min.css
+**/*.tsbuildinfo
+/src/manifest.json
+.eslintcache
+pnpm-lock.yaml

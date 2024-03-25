@@ -1,0 +1,12 @@
+//////////////////////////////////
+// 向此工作区的用户推荐的扩展列表 //
+/////////////////////////////////
+
+{
+    "recommendations": [
+        "Vue.volar", // Vue语言支持扩展
+        "Vue.vscode-typescript-vue-plugin", // 一个TS服务器插件，使TS服务器知道*.vue文件。
+        "esbenp.prettier-vscode", // 代码格式化
+        "dbaeumer.vscode-eslint" //代码质量检查
+    ]
+}

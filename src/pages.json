@@ -1,0 +1,97 @@
+{
+    "pages": [
+        {
+            "name": "Home",
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "Home"
+            },
+            "meta": {
+                "tabBar": true
+            }
+        },
+        {
+            "name": "Demo",
+            "path": "pages/demo/index",
+            "style": {
+                "navigationBarTitleText": "Demo"
+            },
+            "meta": {
+                "tabBar": true
+            }
+        },
+        {
+            "name": "About",
+            "path": "pages/about/index",
+            "style": {
+                "navigationBarTitleText": "关于"
+            },
+            "meta": {
+                "ignoreAuth": true,
+                "tabBar": true
+            }
+        },
+        {
+            "name": "Login",
+            "path": "pages/login/index",
+            "style": {
+                "navigationBarTitleText": "登录"
+            },
+            "meta": {
+                "ignoreAuth": true
+            }
+        },
+        {
+            "name": "Log",
+            "path": "pages/log/index",
+            "style": {
+                "navigationBarTitleText": "日志"
+            }
+        },
+        {
+            "name": "NotFound",
+            "path": "pages/notFound/404",
+            "style": {
+                "navigationBarTitleText": "Not Found"
+            },
+            "meta": {
+                "ignoreAuth": true
+            }
+        }
+    ],
+    "subPackages": [],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "uni-app",
+        "navigationBarBackgroundColor": "#F2F2F2",
+        "backgroundColor": "#F2F2F2",
+        "navigationStyle": "default",
+        "renderingMode": "seperated",
+        "pageOrientation": "portrait"
+    },
+    "tabBar": {
+        "color": "#474747",
+        "selectedColor": "#9BC6FC",
+        "backgroundColor": "#F2F2F2",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "static/images/tabBar/home.png",
+                "selectedIconPath": "static/images/tabBar/selectedHome.png"
+            },
+            {
+                "pagePath": "pages/demo/index",
+                "text": "Demo",
+                "iconPath": "static/images/tabBar/demo.png",
+                "selectedIconPath": "static/images/tabBar/selectedDemo.png"
+            },
+            {
+                "pagePath": "pages/about/index",
+                "text": "关于",
+                "iconPath": "static/images/tabBar/about.png",
+                "selectedIconPath": "static/images/tabBar/selectedAbout.png"
+            }
+        ]
+    }
+}

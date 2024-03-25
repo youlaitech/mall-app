@@ -1,0 +1,69 @@
+view,
+scroll-view,
+swiper,
+match-media,
+movable-area,
+movable-view,
+cover-view,
+cover-image,
+icon,
+text,
+rich-text,
+progress,
+button,
+checkboxe,
+ditor,
+form,
+input,
+label,
+picker,
+picker-view,
+radio,
+slider,
+switch,
+textarea,
+navigator,
+audio,
+camera,
+image,
+video,
+live-player,
+live-pusher,
+map,
+canvas,
+web-view,
+:before,
+:after {
+    box-sizing: border-box;
+}
+
+/* 隐藏scroll-view的滚动条 */
+::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    -webkit-appearance: none;
+    background: transparent;
+}
+
+// 超出省略,最多5行
+@for $i from 1 through 5 {
+    .text-ellipsis-#{$i} {
+        // vue下，单行和多行显示省略号需要单独处理
+        @if $i == '1' {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        } @else {
+            display: -webkit-box !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            -webkit-line-clamp: $i;
+            -webkit-box-orient: vertical !important;
+        }
+    }
+}
+page {
+    background-color: #f2f2f2;
+}

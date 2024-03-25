@@ -1,0 +1,108 @@
+{
+    "name" : "uniapp_vue3_vite_ts",
+    "appid" : "__UNI__4350F4E",
+    "description" : "",
+    "versionName" : "1.2.1",
+    "versionCode" : "100",
+    "transformPx" : false,
+    "app-plus" : {
+        "usingComponents" : true,
+        "nvueStyleCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "modules" : {},
+        "optimization" : {
+            "subPackages" : true
+        },
+        "distribute" : {
+            "android" : {
+                "permissions" : [
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ],
+                "minSdkVersion" : 21
+            },
+            "ios" : {
+                "dSYMs" : false
+            },
+            "sdkConfigs" : {
+                "ad" : {}
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
+            }
+        }
+    },
+    "quickapp" : {},
+    "mp-weixin" : {
+        "appid" : "wxc8e4923d551cd4a4",
+        "setting" : {
+            "urlCheck" : false,
+            "es6" : true,
+            "postcss" : true,
+            "minified" : true
+        },
+        "usingComponents" : true,
+        "permission" : {},
+        "optimization" : {
+            "subPackages" : true
+        },
+        "lazyCodeLoading" : "requiredComponents",
+        "style" : "v2"
+    },
+    "mp-alipay" : {
+        "usingComponents" : true,
+        "optimization" : {
+            "subPackages" : true
+        }
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "vueVersion" : "3",
+    "h5" : {
+        "router" : {
+            "mode" : "hash",
+            "base" : "./"
+        },
+        "devServer" : {
+            "https" : false
+        },
+        "title" : "uniapp_vue3_vite_ts",
+        "unipush" : {
+            "enable" : false
+        },
+        "sdkConfigs" : {
+            "maps" : {}
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+////////////////////////////////////////////////////////////////////////////
+// vscode 编辑器和插件的配置 ////////////////////////////////////////////////
+// 参考：https://blog.csdn.net/weixin_46238462/article/details/125867532 //
+//////////////////////////////////////////////////////////////////////////
+
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.fixAll.eslint": "explicit",
+        "source.fixAll.stylelint": "explicit"
+    },
+    "files.eol": "auto",
+    "eslint.enable": true,
+
+    //////////////////////////////////////////////////////////////////
+    // 官网参考：https://prettier.io/docs/en/options.html#tab-width //
+    ////////////////////////////////////////////////////////////////
+    "prettier.enable": true,
+    "prettier.semi": true,
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 160,
+    "prettier.endOfLine": "auto",
+    "prettier.singleQuote": true,
+    "prettier.ignorePath": ".prettierignore"
+}
