@@ -108,8 +108,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAdvertList } from '@/api/sms/advert.js';
-import { listSeckillingSpus } from '@/api/pms/goods.js';
+import { getAdvertList } from '@/api/advert';
+import { listSeckillingSpus } from '@/api/product';
 
 const swiperCurrent = ref(0);
 const swiperLength = ref(0);
