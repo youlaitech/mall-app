@@ -11,48 +11,10 @@
             }
         },
         {
-            "name": "Demo",
-            "path": "pages/demo/index",
-            "style": {
-                "navigationBarTitleText": "Demo"
-            },
-            "meta": {
-                "tabBar": true
-            }
-        },
-        {
-            "name": "About",
-            "path": "pages/about/index",
-            "style": {
-                "navigationBarTitleText": "关于"
-            },
-            "meta": {
-                "ignoreAuth": true,
-                "tabBar": true
-            }
-        },
-        {
             "name": "Login",
             "path": "pages/login/index",
             "style": {
                 "navigationBarTitleText": "登录"
-            },
-            "meta": {
-                "ignoreAuth": true
-            }
-        },
-        {
-            "name": "Log",
-            "path": "pages/log/index",
-            "style": {
-                "navigationBarTitleText": "日志"
-            }
-        },
-        {
-            "name": "NotFound",
-            "path": "pages/notFound/404",
-            "style": {
-                "navigationBarTitleText": "Not Found"
             },
             "meta": {
                 "ignoreAuth": true

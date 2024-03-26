@@ -8,7 +8,7 @@
         <!-- #ifndef MP -->
         <view class="title">登录</view>
         <view class="form-wrap">
-            <form class="form" @submit="submit">
+            <form class="form" @submit="submitLogin">
                 <label class="form-item">
                     <view class="form-label">手机号:</view>
                     <view class="form-element"><input name="mobile" :value="form.mobile" /></view>
@@ -25,46 +25,44 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/state/modules/auth';
 import { Toast } from '@/utils/uniapi/prompt';
 import { useRequest } from 'alova';
 import { login } from '@/api/auth';
-import { omit } from 'lodash-es';
 import { HOME_PAGE } from '@/enums/routerEnum';
+import { useMemberStore } from '@/store';
+
+import { TOKEN_KEY } from '@/enums/cacheEnum';
 
 const pageQuery = ref<Record<string, any> | undefined>(undefined);
+
 onLoad((query) => {
     pageQuery.value = query;
 });
-
-const router = useRouter();
 
 const form = reactive({
     mobile: '18866668888',
     code: '666666',
 });
-const authStore = useAuthStore();
+
 const { send: sendLogin } = useRequest(login, { immediate: false });
-const submit = (e: any) => {
-    sendLogin(e.detail.value).then((res) => {
+const submitLogin = (e: any) => {
+    sendLogin(e.detail.value).then(async (res) => {
         Toast('登录成功', { duration: 1500 });
-        authStore.setToken(res.token_type + ' ' + res.access_token);
-        setTimeout(() => {
-            if (unref(pageQuery)?.redirect) {
-                // 如果有存在redirect(重定向)参数，登录成功后直接跳转
-                const params = omit(unref(pageQuery), ['redirect', 'tabBar']);
-                console.log('pageQuery', pageQuery, unref(pageQuery)?.tabBar);
-                debugger;
-                if (unref(pageQuery)?.tabBar) {
-                    // 这里replace方法无法跳转tabbar页面故改为replaceAll
-                    router.replaceAll({ name: unref(pageQuery).redirect, params });
-                } else {
-                    router.replace({ name: unref(pageQuery).redirect, params });
-                }
-            } else {
-                router.replaceAll({ path: HOME_PAGE });
-            }
-        }, 1500);
+        uni.setStorageSync(TOKEN_KEY, res.token_type + ' ' + res.access_token);
+
+        // 更新用户信息
+        await useMemberStore().getMemebInfo();
+
+        const pages = getCurrentPages();
+        if (pages.length > 1) {
+            uni.navigateBack();
+        } else {
+            console.log('跳转首页');
+            // 跳转首页
+            uni.switchTab({
+                url: HOME_PAGE,
+            });
+        }
     });
 };
 </script>
@@ -115,4 +113,4 @@ const submit = (e: any) => {
     }
 }
 </style>
-@/services/api/auth/auth @/api/auth
+@/services/api/auth/auth @/api/auth @/store/modules/auth

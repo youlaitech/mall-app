@@ -1,109 +1,107 @@
 <template>
-    <AppProvider>
-        <view class="container">
-            <!-- 小程序头部兼容 -->
-            <!-- #ifdef MP -->
-            <view class="mp-search-box">
-                <input class="ser-input" type="text" value="输入关键字搜索" disabled />
-            </view>
-            <!-- #endif -->
+    <view class="container">
+        <!-- 小程序头部兼容 -->
+        <!-- #ifdef MP -->
+        <view class="mp-search-box">
+            <input class="ser-input" type="text" value="输入关键字搜索" disabled />
+        </view>
+        <!-- #endif -->
 
-            <!-- 头部轮播 -->
-            <view class="carousel-section">
-                <!-- 标题栏和状态栏占位符 -->
-                <view class="titleNview-placing"></view>
-                <swiper class="carousel" circular @change="swiperChange">
-                    <swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({ title: item.title })">
-                        <image :src="item.picUrl" />
-                    </swiper-item>
-                </swiper>
-                <!-- 自定义swiper指示器 -->
-                <view class="swiper-dots">
-                    <text class="num">{{ swiperCurrent + 1 }}</text>
-                    <text class="sign">/</text>
-                    <text class="num">{{ swiperLength }}</text>
-                </view>
-            </view>
-            <!-- 分类 -->
-            <view class="cate-section">
-                <view class="cate-item">
-                    <image src="/static/temp/c3.png"></image>
-                    <text>环球美食</text>
-                </view>
-                <view class="cate-item">
-                    <image src="/static/temp/c5.png"></image>
-                    <text>个护美妆</text>
-                </view>
-                <view class="cate-item">
-                    <image src="/static/temp/c6.png"></image>
-                    <text>营养保健</text>
-                </view>
-                <view class="cate-item">
-                    <image src="/static/temp/c7.png"></image>
-                    <text>家居厨卫</text>
-                </view>
-                <view class="cate-item">
-                    <image src="/static/temp/c8.png"></image>
-                    <text>速食生鲜</text>
-                </view>
-            </view>
-
-            <view class="ad-1">
-                <image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
-            </view>
-
-            <!-- 秒杀楼层 -->
-            <view class="seckill-section m-t">
-                <view class="s-header">
-                    <image class="s-img" src="/static/temp/secskill-img.jpg" mode="widthFix"></image>
-                    <text class="tip">8点场</text>
-                    <text class="hour timer">07</text>
-                    <text class="minute timer">13</text>
-                    <text class="second timer">55</text>
-                    <text class="yticon icon-you"></text>
-                </view>
-                <scroll-view class="floor-list" scroll-x>
-                    <view class="scoll-wrapper">
-                        <view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item.id)">
-                            <image :src="item.picUrl" mode="aspectFill"></image>
-                            <text class="title clamp">{{ item.name }}</text>
-                            <text class="price">￥{{ item.price / 100 }}</text>
-                        </view>
-                    </view>
-                </scroll-view>
-            </view>
-
-            <!-- 团购楼层 -->
-            <view class="f-header m-t">
-                <image src="/static/temp/h1.png"></image>
-                <view class="tit-box">
-                    <text class="tit">精品团购</text>
-                    <text class="tit2">Boutique Group Buying</text>
-                </view>
-                <text class="yticon icon-you"></text>
-            </view>
-            <view class="group-section"> </view>
-            <!-- 分类推荐楼层 -->
-            <view class="f-header m-t">
-                <image src="/static/temp/h1.png"></image>
-                <view class="tit-box">
-                    <text class="tit">分类精选</text>
-                    <text class="tit2">Competitive Products For You</text>
-                </view>
-                <text class="yticon icon-you"></text>
-            </view>
-
-            <!-- 猜你喜欢 -->
-            <view class="f-header m-t">
-                <image src="/static/temp/h1.png"></image>
-                <view class="tit-box">
-                    <text class="tit">猜你喜欢</text>
-                    <text class="tit2">Guess You Like It</text>
-                </view>
-                <text class="yticon icon-you"></text>
+        <!-- 头部轮播 -->
+        <view class="carousel-section">
+            <!-- 标题栏和状态栏占位符 -->
+            <view class="titleNview-placing"></view>
+            <swiper class="carousel" circular @change="swiperChange">
+                <swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({ title: item.title })">
+                    <image :src="item.picUrl" />
+                </swiper-item>
+            </swiper>
+            <!-- 自定义swiper指示器 -->
+            <view class="swiper-dots">
+                <text class="num">{{ swiperCurrent + 1 }}</text>
+                <text class="sign">/</text>
+                <text class="num">{{ swiperLength }}</text>
             </view>
         </view>
-    </AppProvider>
+        <!-- 分类 -->
+        <view class="cate-section">
+            <view class="cate-item">
+                <image src="/static/temp/c3.png"></image>
+                <text>环球美食</text>
+            </view>
+            <view class="cate-item">
+                <image src="/static/temp/c5.png"></image>
+                <text>个护美妆</text>
+            </view>
+            <view class="cate-item">
+                <image src="/static/temp/c6.png"></image>
+                <text>营养保健</text>
+            </view>
+            <view class="cate-item">
+                <image src="/static/temp/c7.png"></image>
+                <text>家居厨卫</text>
+            </view>
+            <view class="cate-item">
+                <image src="/static/temp/c8.png"></image>
+                <text>速食生鲜</text>
+            </view>
+        </view>
+
+        <view class="ad-1">
+            <image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
+        </view>
+
+        <!-- 秒杀楼层 -->
+        <view class="seckill-section m-t">
+            <view class="s-header">
+                <image class="s-img" src="/static/temp/secskill-img.jpg" mode="widthFix"></image>
+                <text class="tip">8点场</text>
+                <text class="hour timer">07</text>
+                <text class="minute timer">13</text>
+                <text class="second timer">55</text>
+                <text class="yticon icon-you"></text>
+            </view>
+            <scroll-view class="floor-list" scroll-x>
+                <view class="scoll-wrapper">
+                    <view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item.id)">
+                        <image :src="item.picUrl" mode="aspectFill"></image>
+                        <text class="title clamp">{{ item.name }}</text>
+                        <text class="price">￥{{ item.price / 100 }}</text>
+                    </view>
+                </view>
+            </scroll-view>
+        </view>
+
+        <!-- 团购楼层 -->
+        <view class="f-header m-t">
+            <image src="/static/temp/h1.png"></image>
+            <view class="tit-box">
+                <text class="tit">精品团购</text>
+                <text class="tit2">Boutique Group Buying</text>
+            </view>
+            <text class="yticon icon-you"></text>
+        </view>
+        <view class="group-section"> </view>
+        <!-- 分类推荐楼层 -->
+        <view class="f-header m-t">
+            <image src="/static/temp/h1.png"></image>
+            <view class="tit-box">
+                <text class="tit">分类精选</text>
+                <text class="tit2">Competitive Products For You</text>
+            </view>
+            <text class="yticon icon-you"></text>
+        </view>
+
+        <!-- 猜你喜欢 -->
+        <view class="f-header m-t">
+            <image src="/static/temp/h1.png"></image>
+            <view class="tit-box">
+                <text class="tit">猜你喜欢</text>
+                <text class="tit2">Guess You Like It</text>
+            </view>
+            <text class="yticon icon-you"></text>
+        </view>
+    </view>
 </template>
 
 <script setup lang="ts">
@@ -309,7 +307,7 @@ page {
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size: 24upx+ 2upx;
+        font-size: $font-sm + 2upx;
         color: $font-color-dark;
     }
 
@@ -365,7 +363,7 @@ page {
             text-align: center;
             line-height: 36upx;
             margin-right: 14upx;
-            font-size: 24upx+ 2upx;
+            font-size: $font-sm + 2upx;
             color: #fff;
             border-radius: 2px;
             background: rgba(0, 0, 0, 0.8);
@@ -391,7 +389,7 @@ page {
     .floor-item {
         width: 150upx;
         margin-right: 20upx;
-        font-size: 24upx+ 2upx;
+        font-size: $font-sm + 2upx;
         color: $font-color-dark;
         line-height: 1.8;
 
@@ -429,6 +427,7 @@ page {
 
     .tit {
         font-size: $font-lg + 2upx;
+        color: #font-color-dark;
         line-height: 1.3;
     }
 
@@ -500,7 +499,7 @@ page {
     }
 
     .m-price {
-        font-size: 24upx+ 2upx;
+        font-size: $font-sm + 2upx;
         text-decoration: line-through;
         color: $font-color-light;
         margin-left: 8upx;
@@ -571,7 +570,7 @@ page {
     .floor-item {
         width: 180upx;
         margin-right: 20upx;
-        font-size: 24upx+ 2upx;
+        font-size: $font-sm + 2upx;
         color: $font-color-dark;
         line-height: 1.8;
 

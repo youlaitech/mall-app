@@ -7,4 +7,7 @@ export function setupStore(app: App<Element>) {
     app.use(store);
 }
 
+export * from './modules/app';
+export * from './modules/member';
+export * from './modules/auth';
 export { store };

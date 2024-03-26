@@ -2,10 +2,7 @@ import { request } from '@/utils/http';
 import { LoginData, LoginResult } from './types';
 import { ContentTypeEnum } from '@/enums/httpEnum';
 
-/**
- * 登录
- * @param params
- */
+/** 登录 */
 export function login(data: LoginData) {
     data.grant_type = 'sms_code';
     return request.Post<LoginResult>('/youlai-auth/oauth2/token', data, {
@@ -16,12 +13,10 @@ export function login(data: LoginData) {
     });
 }
 
-/**
- * 登出
- */
-export function logout() {}
+/** 登出 */
+export function logout() {
+    return request.Delete('/youlai-auth/oauth2/logout');
+}
 
-/**
- * 刷新token
- */
+/** 刷新token */
 export function refreshToken() {}

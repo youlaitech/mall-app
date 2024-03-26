@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app';
-import { useAuthStore } from '@/state/modules/auth';
+import { useAuthStore } from '@/store';
 onLaunch(() => {
     console.log('App Launch');
 });
@@ -17,3 +17,4 @@ onHide(() => {
 @import '@/assets/main.scss';
 @import 'nutui-uniapp/styles/index';
 </style>
+@/store/modules/auth

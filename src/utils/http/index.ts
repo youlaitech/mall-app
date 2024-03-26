@@ -3,10 +3,10 @@ import AdapterUniapp from '@alova/adapter-uniapp';
 import { getBaseURL, isUseMock } from '@/utils/env';
 import { mockAdapter } from '@/mock';
 import { assign } from 'lodash-es';
-import { useAuthStore } from '@/state/modules/auth';
 import { checkStatus } from '@/utils/http/checkStatus';
 import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
 import { Toast } from '@/utils/uniapi/prompt';
+import { TOKEN_KEY } from '@/enums/cacheEnum';
 
 const BASE_URL = getBaseURL();
 
@@ -29,7 +29,7 @@ const alovaInstance = createAlova({
     timeout: 5000,
     beforeRequest: (method) => {
         method.config.headers = assign(HEADER, method.config.headers);
-        const accessToken = useAuthStore().getToken;
+        const accessToken = uni.getStorageSync(TOKEN_KEY);
         if (!method.config.headers.Authorization && accessToken) {
             method.config.headers.Authorization = accessToken;
         }
