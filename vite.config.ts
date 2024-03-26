@@ -74,7 +74,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             Components({
                 resolvers: [NutResolver()],
                 dirs: ['src/components', 'src/**/components'],
-                dts: 'typings/components.d.ts',
+                dts: 'src/typings/components.d.ts',
             }),
             // 自动导入
             AutoImport({
@@ -91,7 +91,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
                         'uni-mini-router': ['useRouter', 'useRoute'],
                     },
                 ],
-                dts: 'typings/auto-imports.d.ts',
+                dts: 'src/typings/auto-imports.d.ts',
                 eslintrc: {
                     enabled: true,
                 },
