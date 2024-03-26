@@ -1,29 +1,9 @@
-export interface LoginData {
-    grant_type: string;
-    mobile: string;
-    code: string;
-    client_id: string;
-    client_secret: string;
-}
-
-/**
- * 登录响应
- */
-export interface LoginResult {
-    /**
-     * 访问token
-     */
-    access_token?: string;
-    /**
-     * 过期时间(单位：毫秒)
-     */
-    expires?: number;
-    /**
-     * 刷新token
-     */
-    refresh_token?: string;
-    /**
-     * token 类型
-     */
-    token_type?: string;
+/** 首页广告横幅视图对象 */
+export interface BannerVO {
+    /** 广告标题 */
+    title?: string;
+    /** 广告图片URL */
+    imageUrl?: string;
+    /** 广告跳转URL */
+    redirectUrl: string;
 }

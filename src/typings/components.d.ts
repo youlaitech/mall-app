@@ -12,6 +12,9 @@ declare module '@vue/runtime-core' {
     AppProvider: typeof import('./../components/AppProvider/index.vue')['default']
     BasicButton: typeof import('./../components/BasicButton/index.vue')['default']
     BasicInput: typeof import('./../components/BasicInput/index.vue')['default']
+    Carousel: typeof import('./../pages/index/components/carousel.vue')['default']
+    HomeCarousel: typeof import('./../pages/index/components/home-carousel.vue')['default']
+    HomeSwiper: typeof import('./../pages/index/components/home-swiper.vue')['default']
     Iconify: typeof import('./../components/Iconify/index.vue')['default']
   }
 }

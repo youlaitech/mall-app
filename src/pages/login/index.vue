@@ -6,7 +6,6 @@
         <!-- #endif -->
 
         <!-- #ifndef MP -->
-        <view class="title">登录</view>
         <view class="form-wrap">
             <form class="form" @submit="submitLogin">
                 <label class="form-item">
@@ -26,13 +25,9 @@
 
 <script setup lang="ts">
 import { Toast } from '@/utils/uniapi/prompt';
-import { useRequest } from 'alova';
-import { login } from '@/api/auth';
 import { HOME_PAGE } from '@/enums/routerEnum';
-import { useMemberStore } from '@/store';
-
-import { TOKEN_KEY } from '@/enums/cacheEnum';
-
+import { useMemberStore, useAuthStore } from '@/store';
+const router = useRouter();
 const pageQuery = ref<Record<string, any> | undefined>(undefined);
 
 onLoad((query) => {
@@ -44,26 +39,30 @@ const form = reactive({
     code: '666666',
 });
 
-const { send: sendLogin } = useRequest(login, { immediate: false });
 const submitLogin = (e: any) => {
-    sendLogin(e.detail.value).then(async (res) => {
-        Toast('登录成功', { duration: 1500 });
-        uni.setStorageSync(TOKEN_KEY, res.token_type + ' ' + res.access_token);
-
-        // 更新用户信息
-        await useMemberStore().getMemebInfo();
-
-        const pages = getCurrentPages();
-        if (pages.length > 1) {
-            uni.navigateBack();
-        } else {
-            console.log('跳转首页');
-            // 跳转首页
-            uni.switchTab({
-                url: HOME_PAGE,
-            });
-        }
-    });
+    useAuthStore()
+        .login(e.detail.value)
+        .then(
+            () => {
+                Toast('登录成功', { duration: 1500 });
+                useMemberStore()
+                    .getMemberInfo()
+                    .then(() => {
+                        const pages = getCurrentPages();
+                        if (pages.length > 1) {
+                            uni.navigateBack();
+                        } else {
+                            console.log('跳转首页');
+                            uni.switchTab({
+                                url: '/pages/index/index',
+                            });
+                        }
+                    });
+            },
+            () => {
+                Toast('登录失败', { duration: 1500 });
+            },
+        );
 };
 </script>
 

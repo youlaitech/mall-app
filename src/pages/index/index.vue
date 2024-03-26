@@ -5,15 +5,16 @@
         <view class="mp-search-box">
             <input class="ser-input" type="text" value="输入关键字搜索" disabled />
         </view>
+
+        <home-swiper></home-swiper>
         <!-- #endif -->
 
         <!-- 头部轮播 -->
         <view class="carousel-section">
-            <!-- 标题栏和状态栏占位符 -->
             <view class="titleNview-placing"></view>
             <swiper class="carousel" circular @change="swiperChange">
-                <swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({ title: item.title })">
-                    <image :src="item.picUrl" />
+                <swiper-item v-for="(item, index) in advertBannerList" :key="index" class="carousel-item" @click="navToDetailPage({ title: item.title })">
+                    <image :src="item.imageUrl" />
                 </swiper-item>
             </swiper>
             <!-- 自定义swiper指示器 -->
@@ -105,17 +106,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getAdvertList } from '@/api/advert';
+import { getAdvertBannerList } from '@/api/advert';
 import { listSeckillingSpus } from '@/api/product';
+import { useRequest } from 'alova';
+import homeSwiper from './components/home-swiper.vue';
+// 加载广告横幅
+const { data: advertBannerList } = useRequest(getAdvertBannerList, {
+    initialData: [],
+});
 
 const swiperCurrent = ref(0);
 const swiperLength = ref(0);
-const carouselList = ref([]);
 const goodsList = ref([]);
 
 onMounted(() => {
-    loadData();
+    //loadData();
 });
 
 async function loadData() {
@@ -124,7 +129,7 @@ async function loadData() {
         const data = advertResponse.data;
         if (data) {
             swiperLength.value = data.length;
-            carouselList.value = data;
+            advertBannerList.value = data;
         }
 
         const goodsResponse = await listSeckillingSpus();

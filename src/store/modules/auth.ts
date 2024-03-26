@@ -6,6 +6,7 @@ import { LoginData } from '@/api/auth/types';
 
 export const useAuthStore = defineStore('auth', () => {
     const token = ref(getCache(TOKEN_KEY));
+    console.log('token', token.value);
 
     const isLogin = computed(() => !!token.value);
 
@@ -14,13 +15,18 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = val;
     };
 
-    // 使用function关键字定义login函数
+    /**
+     * 登录
+     *
+     * @param loginData
+     * @returns
+     */
     function login(loginData: LoginData) {
         return new Promise((resolve, reject) => {
             loginApi(loginData)
                 .then((data) => {
                     setToken(data.token_type + ' ' + data.access_token);
-                    resolve(data);
+                    resolve(null);
                 })
                 .catch((error) => {
                     reject(error);
@@ -28,7 +34,11 @@ export const useAuthStore = defineStore('auth', () => {
         });
     }
 
-    // 使用function关键字定义loginOut函数
+    /**
+     * 登出
+     *
+     * @returns
+     */
     function logout() {
         return new Promise((resolve, reject) => {
             logoutApi()

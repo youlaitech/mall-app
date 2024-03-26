@@ -1,7 +1,14 @@
 import { request } from '@/utils/http';
 
-const ORDER_API_PREFIX = '/mall-oms/app-api/v1/adverts';
+import { BannerVO } from './types';
 
-export function getAdvertList() {
-    return request.Get(ORDER_API_PREFIX);
+const ADVERT_API_PREFIX = '/mall-sms/app-api/v1/adverts';
+
+/**
+ * 获取广告横幅列表
+ *
+ * @returns
+ */
+export function getAdvertBannerList() {
+    return request.Get<BannerVO>(ADVERT_API_PREFIX + '/banners');
 }

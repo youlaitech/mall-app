@@ -8,6 +8,8 @@ import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
 import { Toast } from '@/utils/uniapi/prompt';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
 
+import { getCache } from '@/utils/cache';
+
 const BASE_URL = getBaseURL();
 
 const HEADER = {
@@ -29,8 +31,8 @@ const alovaInstance = createAlova({
     timeout: 5000,
     beforeRequest: (method) => {
         method.config.headers = assign(HEADER, method.config.headers);
-        const accessToken = uni.getStorageSync(TOKEN_KEY);
-        if (!method.config.headers.Authorization && accessToken) {
+        const accessToken = getCache(TOKEN_KEY);
+        if (accessToken) {
             method.config.headers.Authorization = accessToken;
         }
     },
