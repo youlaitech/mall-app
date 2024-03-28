@@ -1,15 +1,14 @@
 <template>
     <view class="container">
-        <!-- 小程序头部兼容 -->
-        <!-- #ifdef MP -->
-        <view class="mp-search-box">
-            <input class="ser-input" type="text" value="输入关键字搜索" disabled />
-        </view>
-
+        <!-- 顶部搜素 -->
+        <home-search></home-search>
+        <!-- 轮播图 -->
         <home-swiper></home-swiper>
-        <!-- #endif -->
+        <!-- 宫格导航 -->
+        <home-grid></home-grid>
 
-        <!-- 头部轮播 -->
+        <!-- 广告横幅 -->
+
         <view class="carousel-section">
             <view class="titleNview-placing"></view>
             <swiper class="carousel" circular @change="swiperChange">
@@ -109,6 +108,9 @@
 import { getAdvertBannerList } from '@/api/advert';
 import { listSeckillingSpus } from '@/api/product';
 import { useRequest } from 'alova';
+
+import homeGrid from './components/home-grid.vue';
+import homeSearch from './components/home-search.vue';
 import homeSwiper from './components/home-swiper.vue';
 // 加载广告横幅
 const { data: advertBannerList } = useRequest(getAdvertBannerList, {
